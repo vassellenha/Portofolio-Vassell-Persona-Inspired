@@ -1,0 +1,157 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------- Tema: CSS variables ----------
+   --bg/--fg  = latar & teks tema aktif
+   --ibg/--ifg = pasangan terbalik, dipakai oleh .inv (section kontras)
+   Kontras (WCAG AA): putih #F5F5F5 di atas merah #DC0000 = 4.76:1,
+   --rt dipilih supaya teks merah kecil tetap >= 4.5:1 di tiap latar. */
+:root {
+  --bg: #f5f5f5;
+  --fg: #0f0f0f;
+  --ibg: #0f0f0f;
+  --ifg: #f5f5f5;
+  --red: #dc0000;
+  --rt: #c00000;
+  --irt: #ff5252;
+  --mu: #454545;
+  --imu: #b5b5b5;
+  color-scheme: light;
+}
+.dark {
+  --bg: #0f0f0f;
+  --fg: #f5f5f5;
+  --ibg: #f5f5f5;
+  --ifg: #0f0f0f;
+  --rt: #ff5252;
+  --irt: #c00000;
+  --mu: #b5b5b5;
+  --imu: #454545;
+  color-scheme: dark;
+}
+/* Scope terbalik: dipakai untuk section hitam<->putih ala majalah */
+.inv {
+  --bg: var(--ibg);
+  --fg: var(--ifg);
+  --rt: var(--irt);
+  --mu: var(--imu);
+  background: var(--bg);
+  color: var(--fg);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 4.5rem;
+  background: var(--bg);
+}
+body {
+  background: var(--bg);
+  color: var(--fg);
+  -webkit-tap-highlight-color: transparent;
+}
+:focus-visible {
+  outline: 3px solid var(--fg);
+  outline-offset: 3px;
+}
+::selection {
+  background: var(--red);
+  color: #f5f5f5;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- Clip-path murni: robekan & pecahan kaca ---------- */
+.torn {
+  clip-path: polygon(
+    0 20px, 5% 0, 11% 16px, 18% 2px, 26% 20px, 34% 0, 43% 14px, 51% 3px, 60% 20px, 69% 0, 77% 16px, 85% 2px, 93% 18px, 100% 0,
+    100% calc(100% - 20px), 94% 100%, 86% calc(100% - 14px), 78% calc(100% - 2px), 70% calc(100% - 18px), 60% 100%,
+    51% calc(100% - 12px), 42% calc(100% - 2px), 33% calc(100% - 20px), 24% 100%, 15% calc(100% - 14px), 7% calc(100% - 3px), 0 calc(100% - 18px)
+  );
+}
+.shard-a {
+  clip-path: polygon(38% 0, 100% 0, 100% 72%, 80% 100%, 64% 52%, 52% 34%);
+}
+.shard-b {
+  clip-path: polygon(0 18%, 30% 0, 22% 40%, 46% 58%, 12% 100%, 0 100%);
+}
+.shard-c {
+  clip-path: polygon(50% 0, 100% 38%, 78% 100%, 20% 86%, 0 30%);
+}
+
+/* ---------- Animasi native CSS ---------- */
+@keyframes marquee {
+  to { transform: translate3d(-50%, 0, 0); }
+}
+.marquee {
+  animation: marquee 22s linear infinite;
+}
+@keyframes eq {
+  0%, 100% { transform: scaleY(0.25); }
+  50% { transform: scaleY(1); }
+}
+.eq-bar {
+  transform-origin: bottom;
+  animation: eq 0.9s ease-in-out infinite;
+}
+.eq-bar:nth-child(2) { animation-duration: 0.65s; animation-delay: -0.3s; }
+.eq-bar:nth-child(3) { animation-duration: 1.1s; animation-delay: -0.6s; }
+.eq-bar:nth-child(4) { animation-duration: 0.8s; animation-delay: -0.15s; }
+
+/* ---------- Slider (progress & volume) ---------- */
+.p5-range {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 1.75rem;
+  background: transparent;
+  cursor: pointer;
+}
+.p5-range::-webkit-slider-runnable-track {
+  height: 8px;
+  background: linear-gradient(to right, var(--red) var(--p, 0%), var(--fg) var(--p, 0%));
+}
+.p5-range::-moz-range-track {
+  height: 8px;
+  background: linear-gradient(to right, var(--red) var(--p, 0%), var(--fg) var(--p, 0%));
+}
+.p5-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 22px;
+  margin-top: -7px;
+  background: var(--red);
+  border: 2px solid var(--bg);
+  outline: 2px solid var(--fg);
+  transform: skewX(-12deg);
+}
+.p5-range::-moz-range-thumb {
+  width: 10px;
+  height: 18px;
+  border-radius: 0;
+  background: var(--red);
+  border: 2px solid var(--bg);
+  outline: 2px solid var(--fg);
+}
+.p5-range:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* ---------- Hormati prefers-reduced-motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .marquee { animation: none !important; }
+  .eq-bar { animation: none !important; transform: scaleY(0.7); }
+  .eq-bar:nth-child(2) { transform: scaleY(1); }
+  .eq-bar:nth-child(3) { transform: scaleY(0.45); }
+}

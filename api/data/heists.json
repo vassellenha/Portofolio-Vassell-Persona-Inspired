@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "codename": "Operation: Enterprise Helpdesk 2.0 & E.V.A",
+    "target": "Sistem tiket helpdesk perusahaan + asisten virtual E.V.A",
+    "loot": ["Next.js", "Node.js", "REST API", "Role-based access"],
+    "status": "Secured"
+  },
+  {
+    "id": 2,
+    "codename": "Operation: AMANIN",
+    "target": "Platform pelaporan & keamanan untuk komunitas kampus",
+    "loot": ["React", "Express", "JSON store", "Tailwind"],
+    "status": "In Progress"
+  },
+  {
+    "id": 3,
+    "codename": "Operation: Placeholder",
+    "target": "Edit file api/data/heists.json untuk mengisi proyekmu",
+    "loot": ["TBD"],
+    "status": "In Progress"
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "_readme": "Taruh file .mp3 di folder ini lalu daftarkan di 'tracks'. 'file' = nama file, 'duration' = 'm:ss', 'cover' (opsional) = nama file gambar di folder ini. Entri yang file-nya belum ada otomatis disembunyikan.",
+  "tracks": [
+    { "title": "Placeholder Track 01", "artist": "Vassell (Suno)", "file": "track-01.mp3", "duration": "3:00" },
+    { "title": "Placeholder Track 02", "artist": "Vassell (Suno)", "file": "track-02.mp3", "duration": "3:00" },
+    { "title": "Placeholder Track 03", "artist": "Vassell (Suno)", "file": "track-03.mp3", "duration": "3:00", "cover": "cover-03.jpg" }
+  ]
+}

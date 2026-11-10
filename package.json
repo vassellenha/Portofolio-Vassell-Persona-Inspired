@@ -1,0 +1,9 @@
+{
+  "name": "persona-portfolio",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "install:all": "npm install --prefix api && npm install --prefix web",
+    "dev": "node dev.mjs"
+  }
+}

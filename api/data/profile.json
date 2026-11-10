@@ -1,0 +1,60 @@
+{
+  "name": "Vassell Enha Atthayya",
+  "nickname": "Marcell",
+  "title": "Full Stack Developer",
+  "tagline": "Steal the spotlight. Ship the code.",
+  "bio": "Mahasiswa Sistem Informasi Telkom University yang membangun aplikasi web dari database sampai antarmuka, dengan gaya yang tidak malu-malu.",
+  "university": "Telkom University — Sistem Informasi",
+  "links": {
+    "github": "https://github.com/vassellenha",
+    "linkedin": "https://www.linkedin.com/in/vassell-enha-atthayya-182661323/",
+    "instagram": "https://instagram.com/vassellenha"
+  },
+  "stats": [
+    {
+      "key": "Knowledge",
+      "level": 8,
+      "skill": "JavaScript / TypeScript, SQL, Sistem Informasi"
+    },
+    {
+      "key": "Guts",
+      "level": 7,
+      "skill": "Deploy ke production & debugging di bawah tekanan"
+    },
+    {
+      "key": "Proficiency",
+      "level": 8,
+      "skill": "Next.js, React, Node.js, Express, Tailwind"
+    },
+    {
+      "key": "Kindness",
+      "level": 7,
+      "skill": "Code review, dokumentasi, kolaborasi tim"
+    },
+    {
+      "key": "Charm",
+      "level": 6,
+      "skill": "UI/UX, presentasi, storytelling produk"
+    }
+  ],
+  "confidants": [
+    {
+      "name": "Nama Dosen / Mentor",
+      "arc": "Mentor",
+      "rank": 5,
+      "quote": "Ganti teks ini dengan testimoni asli dari mentor atau dosen."
+    },
+    {
+      "name": "Nama Rekan Tim",
+      "arc": "Partner",
+      "rank": 4,
+      "quote": "Ganti teks ini dengan testimoni asli dari rekan satu tim."
+    },
+    {
+      "name": "Nama Klien",
+      "arc": "Client",
+      "rank": 3,
+      "quote": "Ganti teks ini dengan testimoni asli dari klien."
+    }
+  ]
+}
