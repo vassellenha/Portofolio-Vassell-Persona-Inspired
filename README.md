@@ -10,7 +10,7 @@
 [![Vercel](https://img.shields.io/badge/Vercel-Frontend-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com)
 [![Render](https://img.shields.io/badge/Render-API-DC0000?style=for-the-badge&logo=render&logoColor=white)](https://render.com)
 
-**4 proyek · 2 selesai · 2 lagu original · tanpa database**
+**6 proyek · 2 selesai · 2 lagu original · tanpa database**
 
 </div>
 
@@ -46,8 +46,8 @@ Mahasiswa Sistem Informasi Telkom University yang berfokus pada pengembangan web
 <details><summary>Versi teks</summary>
 
 - **Frontend:** `Next.js` · `React` · `Tailwind CSS` · `JavaScript` · `HTML/CSS`
-- **Backend:** `Node.js` · `Express` · `REST API` · `SQL` · `JSON data layer`
-- **Tools:** `Git & GitHub` · `Vercel` · `Render` · `VS Code`
+- **Backend:** `Node.js` · `Express` · `Laravel` · `REST API` · `SQL` · `JSON data layer`
+- **Tools:** `Git & GitHub` · `Vercel` · `Render` · `VS Code` · `Figma` · `SAP ERP`
 - **Domain:** `Sistem Informasi` · `Analisis Sistem` · `UI/UX` · `Business Plan`
 
 </details>
@@ -58,9 +58,11 @@ Mahasiswa Sistem Informasi Telkom University yang berfokus pada pengembangan web
 
 | Proyek | Status | Deskripsi | Teknologi |
 |---|---|---|---|
-| **Enterprise Helpdesk 2.0 & E.V.A** | `SELESAI` | Sistem tiket helpdesk internal PT Adhi Karya + asisten virtual E.V.A (magang KPPM, Biro TI) | Next.js, Node.js, REST API |
-| **AMANIN** | `BERJALAN` | Asisten AI anti-scam untuk melindungi masyarakat dari penipuan digital — RISE 2026 Business Plan Competition | AI Assistant, Business Plan |
-| **Pharvia** | `BERJALAN` | Platform digital pharmaceutical take-back: mengembalikan obat sisa/kedaluwarsa dengan aman | Web Platform |
+| **Enterprise Helpdesk 2.0 & E.V.A** | `SELESAI` | Sistem tiket helpdesk internal PT Adhi Karya + asisten virtual E.V.A (magang KPPM, Biro TI) | Next.js, Node.js, REST API, Tailwind CSS |
+| **AMANIN** | `BERJALAN` | Asisten AI anti-scam untuk melindungi masyarakat dari penipuan digital — RISE 2026 Business Plan Competition | AI Assistant, Business Plan, JavaScript |
+| **Pharvia** | `BERJALAN` | Platform digital pharmaceutical take-back: mengembalikan obat sisa/kedaluwarsa dengan aman | Web Platform, HTML |
+| **KWU-BRREAD** | `BERJALAN` | Aplikasi manajemen toko roti all-in-one: storefront & keranjang online, sinkronisasi stok MRP, analitik penjualan (best seller & tren), buku kas dengan ekspor Excel, serta akses berbasis peran. | Laravel, Blade |
+| **Catch & Clash** | `BERJALAN` | Game multiplayer Roblox: pemain memancing, bertarung, dan mengumpulkan ikan unik dengan berbagai senjata, lalu bertanding PvP melawan pemain lain. | Roblox, Python, Lua |
 | **Portfolio** | `SELESAI` | Situs portofolio pribadi yang sedang kamu lihat — ringan, bertema Persona 5, tanpa library animasi | Next.js, Express, Tailwind CSS, Vercel |
 
 </details>
@@ -89,9 +91,13 @@ Mahasiswa Sistem Informasi Telkom University yang berfokus pada pengembangan web
 
 ## ◣ Pengalaman
 
-- **Intern — KPPM (Full Stack)** — PT Adhi Karya (Persero) Tbk — Biro Teknologi Informasi
+- **Fullstack Developer — Intern (KPPM)** — PT Adhi Karya (Persero) Tbk — Biro Teknologi Informasi _(Juni 2026 – September 2026 (4 bulan))_
 - **Peserta — RISE 2026 Business Plan Competition** — Tim AMANIN _(2026)_
-- **Mahasiswa S1 Sistem Informasi** — Telkom University
+- **Lead Photographer — WebVenture (Divisi PDD)** — Himpunan Mahasiswa Sistem Informasi (HIMSI) — Jakarta _(April 2025 – Oktober 2025 (7 bulan))_
+- **Research and Development Staff** — Himpunan Mahasiswa Sistem Informasi (HIMSI) — Jakarta _(Januari 2024 – Oktober 2025 (1 tahun 10 bulan))_
+- **Lead Photographer — Ramadhan Berbagi** — Kegiatan sosial kampus _(Maret 2024 – April 2024 (2 bulan))_
+- **Asisten Praktikum — Sistem Enterprise (SAP)** — Telkom University — Prodi S1 Sistem Informasi, Kampus Jakarta _(September 2024 – Februari 2025 (6 bulan))_
+- **Mahasiswa S1 Sistem Informasi** — Telkom University _(2023 – 2026)_
 
 ## ◣ Fitur interaktif
 

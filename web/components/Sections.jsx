@@ -155,6 +155,26 @@ export function Skills({ profile }) {
           </li>
         ))}
       </ol>
+
+      <h3 className="mb-4 mt-14">
+        <Slash tone="r" className="text-2xl sm:text-3xl">Sertifikat</Slash>
+      </h3>
+      <a
+        href="/sertifikat-sap.jpg"
+        target="_blank"
+        rel="noreferrer"
+        className="block max-w-xl border-[3px] border-fg transition-opacity duration-100 hover:opacity-90"
+      >
+        <img
+          src="/sertifikat-sap.jpg"
+          alt="Sertifikat Penghargaan — Asisten Praktikum Sistem Enterprise, Telkom University"
+          className="w-full"
+          loading="lazy"
+        />
+      </a>
+      <p className="mt-2 max-w-xl text-sm text-mu">
+        Asisten Praktikum Sistem Enterprise (SAP) — Prodi S1 Sistem Informasi Telkom University, predikat Baik Sekali.
+      </p>
     </section>
   );
 }
