@@ -329,37 +329,6 @@ html.intro .intro-ov { display: block; position: fixed; inset: 0; z-index: 600; 
   from { clip-path: polygon(0 0, 125% 0, 100% 100%, 0 100%); }
   to { clip-path: polygon(125% 0, 125% 0, 100% 100%, 100% 100%); }
 }
-.intro-gate { position: absolute; inset: 0; z-index: 2; overflow: hidden; background: #0b0b0b; color: #f5f5f5; cursor: default; --p5: var(--font-p5), "Arial Black", Impact, sans-serif; }
-.gate-red { position: absolute; inset: 0; background: radial-gradient(circle at 12% 30%, #ff3b30 0, #c40000 38%, #5c0000 78%); clip-path: polygon(0 0, 47% 0, 36% 100%, 0 100%); }
-.gate-pattern { position: absolute; inset: -30%; background: repeating-conic-gradient(from 12deg at 80% 42%, #f5f5f5 0 5deg, #0b0b0b 5deg 10deg); clip-path: polygon(63% 22%, 70% 23%, 72% 26%, 100% 24%, 100% 80%, 76% 80%, 74% 70%, 79% 62%, 73% 48%, 77% 36%, 70% 30%); }
-.gate-dots { position: absolute; left: 47%; top: 6%; width: 46vh; height: 46vh; border-radius: 50%; background: radial-gradient(#f5f5f5 32%, transparent 34%) 0 0 / 14px 14px; }
-.gate-sil { position: absolute; left: 39%; bottom: -4%; height: 88%; width: auto; max-width: none; filter: brightness(0) drop-shadow(3px 0 0 #f5f5f5) drop-shadow(-3px 0 0 #f5f5f5) drop-shadow(0 -3px 0 #f5f5f5); pointer-events: none; }
-.gate-slash { position: absolute; inset: 0; background: #e60012; clip-path: polygon(61% 14%, 66% 19%, 47% 47%, 66% 60%, 63% 68%, 37% 53%, 38% 45%); }
-.gate-blob { position: absolute; inset: 0; background: #f5f5f5; clip-path: polygon(13% 22%, 17% 6%, 21% 5%, 23% 24%, 27% 3%, 31% 4%, 31% 26%, 36% 12%, 39% 15%, 37% 38%, 41% 48%, 40% 66%, 34% 84%, 22% 90%, 12% 82%, 8% 62%, 9% 40%); }
-.gate-tags { position: absolute; right: 3%; top: 7%; display: flex; flex-direction: column; align-items: flex-end; gap: 0.7rem; font-family: var(--p5); color: #f5f5f5; }
-.gate-tags span { background: #0b0b0b; border: 3px solid #f5f5f5; padding: 0.2em 0.6em; font-size: clamp(1rem, 2.8vw, 2.3rem); letter-spacing: -0.05em; line-height: 1.1; clip-path: polygon(0 10%, 100% 0, 97% 100%, 3% 88%); }
-.gate-tags span:nth-child(1) { rotate: -5deg; }
-.gate-tags span:nth-child(2) { rotate: 3deg; margin-right: 2rem; }
-.gate-tags span:nth-child(3) { rotate: -2deg; font-size: clamp(2rem, 6vw, 4.5rem); background: #f5f5f5; color: #0b0b0b; }
-.gate-menu { position: absolute; left: 9%; top: 26%; display: flex; flex-direction: column; align-items: flex-start; gap: 0.1rem; }
-.gate-item { border: 0; background: transparent; color: #0b0b0b; padding: 0.08em 0.3em; font-family: var(--p5); font-size: clamp(1.7rem, 5vw, 4.2rem); letter-spacing: -0.07em; -webkit-text-stroke: 1.5px currentColor; line-height: 1; white-space: nowrap; cursor: pointer; transition: translate 0.1s, scale 0.1s; }
-.gate-item:nth-child(1) { rotate: -4deg; margin-left: 3.2rem; }
-.gate-item:nth-child(2) { rotate: 2deg; margin-left: 1.2rem; font-size: clamp(1.9rem, 5.6vw, 4.8rem); }
-.gate-item:nth-child(3) { rotate: -2deg; margin-left: 2.4rem; }
-.gate-item:hover, .gate-item:focus-visible { outline: none; scale: 1.14; translate: 0.6rem 0; background: #c9f7dc; box-shadow: 7px 5px 0 #19c8ff, -5px -3px 0 #0b0b0b; clip-path: none; }
-.gate-title { position: absolute; left: 26%; bottom: 4%; rotate: -7deg; font-family: var(--p5); font-size: clamp(4rem, 15vw, 11.5rem); letter-spacing: -0.06em; line-height: 0.9; color: #f5f5f5; -webkit-text-stroke: 12px #0b0b0b; paint-order: stroke fill; pointer-events: none; }
-.gate-note { position: absolute; left: 1rem; bottom: 1rem; background: #0b0b0b; padding: 0.2rem 0.6rem; font-size: 0.72rem; font-weight: 700; }
-@media (max-width: 700px) {
-  .gate-red { clip-path: polygon(0 0, 100% 0, 100% 46%, 0 62%); }
-  .gate-pattern { clip-path: polygon(40% 56%, 100% 50%, 100% 100%, 46% 100%); }
-  .gate-dots, .gate-slash { display: none; }
-  .gate-sil { left: auto; right: -18%; height: 52%; }
-  .gate-blob { clip-path: polygon(6% 14%, 20% 8%, 60% 6%, 92% 12%, 96% 34%, 88% 50%, 40% 54%, 8% 46%); }
-  .gate-menu { left: 8%; top: 15%; }
-  .gate-item { font-size: 9.5vw !important; margin-left: 0 !important; }
-  .gate-tags { top: auto; bottom: 30%; right: auto; left: 4%; align-items: flex-start; }
-  .gate-title { left: 6%; bottom: 9%; }
-}
 .intro-skip { cursor: pointer; position: absolute; right: 1rem; bottom: 1rem; z-index: 3; background: #0f0f0f; color: #f5f5f5; border: 2px solid #f5f5f5; padding: 0.35rem 0.9rem; font: 900 italic 0.75rem "Arial Black", Arial, sans-serif; text-transform: uppercase; transform: skewX(-12deg); }
 @media (prefers-reduced-motion: reduce) { html.intro .intro-ov { display: none; } html.intro body { overflow: auto; } }
 
@@ -401,7 +370,7 @@ html.intro .intro-ov { display: block; position: fixed; inset: 0; z-index: 600; 
 .hc-tag { position: absolute; left: 0.6rem; top: 0.6rem; background: #0f0f0f; padding: 0.15rem 0.45rem; font: italic 900 0.6rem "Arial Black", Impact, Arial, sans-serif; text-transform: uppercase; transform: skewX(-12deg); }
 .hc-back { transform: rotateY(180deg); background: repeating-radial-gradient(circle at 50% 44%, #dc0000 0 34px, #0f0f0f 34px 68px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.3rem; }
 .hc-hat { width: 78%; filter: drop-shadow(5px 5px 0 #0f0f0f); rotate: -6deg; }
-.hc-take { font-family: var(--font-expose), "Arial Black", Impact, sans-serif; font-size: 2.2rem; line-height: 0.95; text-align: center; color: #f5f5f5; text-transform: uppercase; rotate: -5deg; -webkit-text-stroke: 6px #0f0f0f; paint-order: stroke fill; }
+.hc-take { font-family: var(--font-expose), "Arial Black", Impact, sans-serif; font-size: 3.1rem; line-height: 0.95; text-align: center; color: #f5f5f5; text-transform: uppercase; rotate: -5deg; -webkit-text-stroke: 6px #0f0f0f; paint-order: stroke fill; }
 .hc-take span { display: inline-block; }
 .hc-take span:nth-child(2) { color: #dc0000; -webkit-text-stroke-color: #f5f5f5; }
 .hc-shine { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.22) 50%, transparent 65%); background-size: 250% 250%; mix-blend-mode: screen; transform: translateZ(1px); }

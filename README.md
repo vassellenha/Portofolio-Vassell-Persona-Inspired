@@ -95,10 +95,10 @@ Mahasiswa Sistem Informasi Telkom University yang berfokus pada pengembangan web
 
 ## ◣ Fitur interaktif
 
-- **Pembuka sinematik** — menu pembuka (Masuk Opening / Tanpa Suara / Skip), kaca retak & pecah, serangan beruntun, lalu potret muncul tepat saat lagu masuk bagian puncak (canvas + SFX orisinal, sekali per sesi, bisa dilewati / tanpa suara)
+- **Pembuka sinematik** — langsung diputar saat situs dibuka, kaca retak & pecah, serangan beruntun, lalu potret muncul tepat saat lagu masuk bagian puncak (canvas + SFX orisinal, sekali per sesi, bisa dilewati / tanpa suara)
 - **Stat Allocator** — alokasikan poin, naik level
 - **Menu cepat** — tekan `M` untuk menu perintah ala Persona
-- **Kartu nama lanyard** — kartu di Home tergantung di tali berfisika: tarik, ayun, lempar, klik untuk membalik (depan: foto & peran, belakang: emblem "Take My Heart")
+- **Kartu nama lanyard** — kartu di Home tergantung di tali: tarik ke kiri-kanan untuk mengayun, klik untuk membalik (depan: foto & peran, belakang: "Hire Me")
 - **Playground** — mini-game & tools yang bisa dimainkan
 - **Jukebox** — shuffle, repeat, Media Session (kontrol dari lockscreen), preferensi tersimpan
 - **SFX** — efek suara Web Audio (klik, flip, buka panel), bisa dimatikan

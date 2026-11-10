@@ -8,9 +8,8 @@ import GlobalFx from "../components/GlobalFx";
 import Intro from "../components/Intro";
 
 
-// Font khusus: Expose Regular (belakang kartu nama) dan P5 Menu (menu pembuka). Teks lain tetap font sistem.
+// Expose Regular: hanya untuk tulisan di sisi belakang kartu nama. Teks lain tetap font sistem.
 const fontExpose = localFont({ src: "./fonts/expose.woff2", variable: "--font-expose", display: "swap", weight: "400", preload: false });
-const fontP5 = localFont({ src: "./fonts/p5-menu.woff2", variable: "--font-p5", display: "swap", weight: "400", preload: false });
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL || "https://web-nu-wine-25.vercel.app";
 const DESC = "Portofolio Vassell Enha Atthayya (Marcell), Full Stack Developer & mahasiswa Sistem Informasi Telkom University — bertema Persona 5.";
@@ -87,7 +86,7 @@ async function loadTracks() {
 export default async function RootLayout({ children }) {
   const { tracks, cue } = await loadTracks();
   return (
-    <html lang="id" className={`dark ${fontExpose.variable} ${fontP5.variable}`} suppressHydrationWarning>
+    <html lang="id" className={`dark ${fontExpose.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>

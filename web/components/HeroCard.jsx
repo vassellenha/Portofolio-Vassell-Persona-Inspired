@@ -1,12 +1,9 @@
 "use client";
-// Kartu nama yang digantung dengan lanyard di Home. Tali = rantai titik (integrasi Verlet) dari pengait di atas;
-// kartu menempel di ujungnya, jadi bisa ditarik, dilempar, dan berayun sendiri. Klik/Enter membalik kartu,
-// ayunan ke samping ikut memelintirnya. Depan = foto formal (/foto.jpg) + nama & peran;
-// belakang = emblem topi + "Take My Heart" (font Expose). Tanpa library; loop berhenti saat kartu diam.
+// Kartu nama yang digantung dengan lanyard di Home. Geraknya bandul teredam: tarik kartu ke kiri/kanan
+// lalu lepas, ia berayun halus sampai diam. Klik/Enter membalik kartu ke sisi belakang ("Hire Me", font Expose).
+// Depan = foto formal (/foto.jpg) + nama & peran. Tanpa library; loop berhenti saat kartu diam.
 import { useEffect, useRef, useState } from "react";
 import { playSfx } from "../lib/sfx";
-
-const SEG = 10;
 
 export default function HeroCard({ name, role }) {
   const stage = useRef(null);
@@ -29,154 +26,98 @@ export default function HeroCard({ name, role }) {
     const host = stage.current;
     const el = card.current;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let L = 120;
-    let ax = 0;
     const ay = -14;
-    let pts = [];
-    let raf = 0;
+    let ax = 0;
+    let L = 120; // panjang tali
+    let reach = 300; // jarak pengait -> tengah kartu (untuk memetakan gerak pointer ke sudut)
+    let th = reduce ? 0 : -0.55; // sudut ayun (rad), 0 = lurus ke bawah
+    let om = 0; // kecepatan sudut
+    let ry = 0; // putaran balik kartu (derajat)
+    let vy = 0;
+    let face = 0; // target: kelipatan 180
+    let hover = 0;
     let drag = null;
     let moved = 0;
-    let rz = 0;
-    let ry = 0;
-    let vy = 0;
-    let hover = 0;
+    let raf = 0;
+    let last = 0;
 
-    function layout(swing) {
+    function layout() {
       const r = host.getBoundingClientRect();
       ax = r.width / 2;
       L = Math.max(70, Math.min(r.height - el.offsetHeight - 64, r.height * 0.3));
-      const a = swing && !reduce ? -0.75 : 0;
-      pts = Array.from({ length: SEG + 1 }, (_, i) => {
-        const d = (L * i) / SEG;
-        const x = ax + Math.sin(a) * d;
-        const y = ay + Math.cos(a) * d;
-        return { x, y, px: x, py: y };
-      });
+      reach = L + el.offsetHeight * 0.5;
     }
-
     function render() {
-      const e = pts[SEG];
-      const p = pts[SEG - 2];
-      const want = Math.atan2(-(e.x - p.x), e.y - p.y);
-      rz += (want - rz) * 0.35;
-      holder.current.style.transform = `translate(${e.x.toFixed(1)}px, ${e.y.toFixed(1)}px) rotate(${rz.toFixed(4)}rad)`;
+      const x = ax + Math.sin(th) * L;
+      const y = ay + Math.cos(th) * L;
+      // kartu sedikit tertinggal dari tali supaya ayunannya terasa berat
+      const lag = Math.max(-0.25, Math.min(0.25, om * 0.05));
+      holder.current.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px) rotate(${(-th + lag).toFixed(4)}rad)`;
       el.style.transform = `rotateY(${ry.toFixed(2)}deg)`;
-      if (shine.current) shine.current.style.backgroundPosition = `${50 + ry * 1.2 + rz * 120}% 50%`;
-      let d = `M${ax.toFixed(1)} ${ay}`;
-      for (let i = 1; i < SEG; i++) {
-        const mx = (pts[i].x + pts[i + 1].x) / 2;
-        const my = (pts[i].y + pts[i + 1].y) / 2;
-        d += ` Q${pts[i].x.toFixed(1)} ${pts[i].y.toFixed(1)} ${mx.toFixed(1)} ${my.toFixed(1)}`;
-      }
-      d += ` L${e.x.toFixed(1)} ${e.y.toFixed(1)}`;
+      if (shine.current) shine.current.style.backgroundPosition = `${50 + ry * 1.2 + th * 90}% 50%`;
+      const bow = Math.max(-26, Math.min(26, -om * 7));
+      const cx = (ax + x) / 2 + Math.cos(th) * bow;
+      const cy = (ay + y) / 2 - Math.sin(th) * bow;
+      const d = `M${ax.toFixed(1)} ${ay} Q${cx.toFixed(1)} ${cy.toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)}`;
       strap.current.setAttribute("d", d);
       strapEdge.current.setAttribute("d", d);
     }
-
-    function step() {
+    function step(now) {
       raf = 0;
-      const h = 1 / 120;
-      let energy = 0;
-      const ex0 = pts[SEG].x;
-      for (let sub = 0; sub < 2; sub++) {
-        for (let i = 1; i <= SEG; i++) {
-          const p = pts[i];
-          if (drag && i === SEG) continue;
-          const vx = (p.x - p.px) * 0.992;
-          const vyy = (p.y - p.py) * 0.992;
-          p.px = p.x;
-          p.py = p.y;
-          p.x += vx;
-          p.y += vyy + 2800 * h * h * (i === SEG ? 1.6 : 1);
-          energy += Math.abs(vx) + Math.abs(vyy);
-        }
+      let dt = last ? (now - last) / 1000 : 1 / 60;
+      last = now;
+      dt = Math.min(dt, 0.05);
+      const n = Math.max(1, Math.ceil(dt / 0.008));
+      const h = dt / n;
+      for (let i = 0; i < n; i++) {
         if (drag) {
-          const e = pts[SEG];
-          let tx = drag.x;
-          let ty = drag.y;
-          const dx = tx - ax;
-          const dy = ty - ay;
-          const dist = Math.hypot(dx, dy) || 1;
-          if (dist > L) {
-            tx = ax + (dx / dist) * L;
-            ty = ay + (dy / dist) * L;
-          }
-          e.px = e.x;
-          e.py = e.y;
-          e.x = tx;
-          e.y = ty;
+          // mengikuti pointer dengan halus; kecepatan disimpan supaya ayunan berlanjut saat dilepas
+          const k = 1 - Math.exp(-22 * h);
+          const nt = th + (drag.target - th) * k;
+          om = om * 0.8 + ((nt - th) / h) * 0.2;
+          th = nt;
+        } else {
+          om += -46 * Math.sin(th) * h; // bandul
+          om *= Math.exp(-1.25 * h); // redaman udara
+          th += om * h;
         }
-        const len = L / SEG;
-        for (let it = 0; it < 8; it++) {
-          pts[0].x = ax;
-          pts[0].y = ay;
-          for (let i = 0; i < SEG; i++) {
-            const a = pts[i];
-            const b = pts[i + 1];
-            const dx = b.x - a.x;
-            const dy = b.y - a.y;
-            const dist = Math.hypot(dx, dy) || 1;
-            const diff = (dist - len) / dist;
-            const pinB = drag && i + 1 === SEG;
-            const fa = i === 0 ? 0 : pinB ? 1 : 0.5;
-            const fb = pinB ? 0 : 1 - fa;
-            a.x += dx * diff * fa;
-            a.y += dy * diff * fa;
-            b.x -= dx * diff * fb;
-            b.y -= dy * diff * fb;
-          }
-        }
-      }
-      // pelintiran kartu: ayunan ke samping memutar kartu, lalu pegas ke sisi terdekat
-      const dt = 1 / 60;
-      const evx = (pts[SEG].x - ex0) * 60;
-      vy += evx * 1.1 * dt;
-      ry += vy * dt;
-      vy *= Math.pow(0.14, dt);
-      const face = Math.round(ry / 180) * 180 + hover * 14;
-      if (Math.abs(vy) < 240) {
-        vy += (face - ry) * 55 * dt;
-        vy *= Math.pow(0.001, dt);
+        const goal = face + hover * 8;
+        vy += (goal - ry) * 150 * h; // pegas balik kartu (nyaris teredam kritis)
+        vy *= Math.exp(-17 * h);
+        ry += vy * h;
       }
       render();
-      const rest = !drag && energy < 0.05 && Math.abs(vy) < 0.6 && Math.abs(face - ry) < 0.15;
-      if (!rest) raf = requestAnimationFrame(step);
+      const still = !drag && Math.abs(om) < 0.004 && Math.abs(th) < 0.003 && Math.abs(vy) < 0.4 && Math.abs(face + hover * 8 - ry) < 0.08;
+      if (!still) raf = requestAnimationFrame(step);
+      else last = 0;
     }
     const kick = () => {
       if (!raf) raf = requestAnimationFrame(step);
     };
-    const local = (e) => {
-      const r = host.getBoundingClientRect();
-      return { x: e.clientX - r.left, y: e.clientY - r.top };
-    };
     const flip = () => {
-      vy += 900;
+      face += 180;
       playSfx("flip");
       kick();
     };
     ctl.current = {
       flip,
       nudge: (dir) => {
-        pts[SEG].px -= dir * 9;
+        om += dir * 2.4;
         kick();
       },
     };
 
     const down = (e) => {
-      const p = local(e);
-      drag = { x: pts[SEG].x, y: pts[SEG].y, gx: p.x - pts[SEG].x, gy: p.y - pts[SEG].y };
+      drag = { x0: e.clientX, th0: th, target: th };
       moved = 0;
       el.setPointerCapture?.(e.pointerId);
       kick();
     };
     const move = (e) => {
-      const p = local(e);
       if (drag) {
-        const nx = p.x - drag.gx;
-        const ny = p.y - drag.gy;
-        moved += Math.abs(nx - drag.x) + Math.abs(ny - drag.y);
-        drag.x = nx;
-        drag.y = ny;
+        const dx = e.clientX - drag.x0;
+        moved = Math.max(moved, Math.abs(dx));
+        drag.target = Math.max(-1.15, Math.min(1.15, drag.th0 + dx / reach));
       } else if (e.pointerType === "mouse") {
         const r = el.getBoundingClientRect();
         hover = Math.max(-1, Math.min(1, ((e.clientX - r.left) / r.width - 0.5) * 2));
@@ -194,11 +135,10 @@ export default function HeroCard({ name, role }) {
       kick();
     };
     const ro = new ResizeObserver(() => {
-      layout(false);
+      layout();
       render();
-      kick();
     });
-    layout(true);
+    layout();
     render();
     kick();
     ro.observe(host);
@@ -278,14 +218,14 @@ export default function HeroCard({ name, role }) {
               <path d="M70 112c10 14 40 22 62 2-8 20-22 30-36 32-12-4-22-16-26-34z" fill="#f5f5f5" stroke="#0f0f0f" strokeWidth="3" />
             </svg>
             <p className="hc-take">
-              <span>Take</span> <span>My</span> <span>Heart</span>
+              <span>Hire</span> <span>Me</span>
             </p>
           </div>
           <div ref={shine} className="hc-shine" aria-hidden="true" />
         </div>
       </div>
       <p className="hc-hint" aria-hidden="true">
-        <span>Tarik · ayun · klik balik</span>
+        <span>Tarik untuk mengayun · klik untuk membalik</span>
       </p>
     </div>
   );

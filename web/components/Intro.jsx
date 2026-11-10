@@ -1,12 +1,12 @@
 "use client";
 // Pembuka situs, digambar di <canvas> dan disinkronkan ke audio:
-//   gerbang "Masuk" (browser baru mengizinkan suara setelah klik) -> tinta putih -> layar merah + siluet
+//   langsung jalan saat halaman dibuka: tinta putih -> layar merah + siluet
 //   -> kaca retak, siluet melompat, debu -> kolase keping berisi potongan ilustrasi -> pecah ke gelap
 //   -> serangan beruntun (sapuan tinta hitam + kilatan bintang) -> bintang putih & merah
 //   -> siluet mendarat, berdiri -> ilustrasi penuh + nama, tepat saat lagu masuk bagian puncak.
 // Jam animasi mengikuti posisi lagu (lib/bgm.js), jadi gambar, SFX (public/sfx/intro.mp3) dan musik selalu serempak.
 // Sekali per sesi; Esc / "Lewati" menutup. Dilewati sepenuhnya bila prefers-reduced-motion.
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { sharedAudio } from "../lib/bgm";
 import { isSfxOn, sfxOutput } from "../lib/sfx";
 
@@ -20,6 +20,9 @@ const easeIO = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2
 const FONT = '"Arial Black", Impact, "Helvetica Neue", Arial, sans-serif';
 const RED = "#f40000";
 const PANE = "#e8140a";
+// Suara bawaan sengaja pelan; pengunjung bisa mengeraskan dari Jukebox.
+const SFX_GAIN = 0.3;
+const MUSIC_VOL = 0.25;
 
 // Garis waktu (detik). Sama dengan garis waktu SFX di public/sfx/intro.mp3.
 const T = {
@@ -284,7 +287,6 @@ export default function Intro({ cue = null }) {
   const ref = useRef(null);
   const wrap = useRef(null);
   const ctl = useRef(null);
-  const [stage, setStage] = useState("gate");
   const src = cue?.src;
   const at = cue?.at;
 
@@ -305,7 +307,7 @@ export default function Intro({ cue = null }) {
     let dead = false;
     let running = false;
     let exiting = false;
-    let sound = false;
+    let unlocked = !!navigator.userActivation?.hasBeenActive;
     let musicOn = false;
     let lateMusic = false;
     let assets = false;
@@ -352,6 +354,13 @@ export default function Intro({ cue = null }) {
     };
     if (audio) {
       audio.muted = true;
+      // volume: pakai setelan Jukebox bila pengunjung pernah mengaturnya, kalau belum pakai bawaan yang pelan
+      let vol = MUSIC_VOL;
+      try {
+        const pf = JSON.parse(localStorage.getItem("p5:jukebox") || "{}");
+        if (pf && pf.v === 2 && typeof pf.vol === "number") vol = pf.vol;
+      } catch {}
+      audio.volume = vol;
       audio.preload = "auto";
       audio.src = src;
       audio.addEventListener("loadedmetadata", seek, { once: true });
@@ -1033,6 +1042,19 @@ export default function Intro({ cue = null }) {
       } catch {}
       sfxNode = null;
     }
+    function startSfx(t) {
+      if (sfxNode || !sfxBuf || t >= sfxBuf.duration - 0.05) return;
+      const o = sfxOutput();
+      if (!o) return;
+      try {
+        sfxNode = o.ctx.createBufferSource();
+        sfxNode.buffer = sfxBuf;
+        const g = o.ctx.createGain();
+        g.gain.value = SFX_GAIN;
+        sfxNode.connect(g).connect(o.out);
+        sfxNode.start(0, Math.max(0, t));
+      } catch {}
+    }
     function playFromCue() {
       lateMusic = false;
       try {
@@ -1040,6 +1062,34 @@ export default function Intro({ cue = null }) {
       } catch {}
       audio.muted = false;
       audio.play().catch(() => {});
+    }
+    // Browser baru mengizinkan suara setelah ada interaksi (klik / tombol / sentuh).
+    // Sampai itu terjadi intro berjalan senyap; begitu ada interaksi, suara menyusul di posisi yang pas.
+    function unlock(e) {
+      if (unlocked) return;
+      unlocked = true;
+      window.removeEventListener("pointerdown", unlock);
+      window.removeEventListener("keydown", unlock);
+      window.removeEventListener("touchend", unlock);
+      if (!audio && dead) return;
+      if (dead && e?.target?.closest?.("[data-bgm]")) return; // tombol Jukebox mengurus sendiri
+      if (dead) {
+        // intro sudah selesai: nyalakan musik (lanjut bila masih berjalan senyap, kalau tidak mulai dari bagian puncak)
+        if (!audio.paused) audio.muted = false;
+        else if (lateMusic) playFromCue();
+        return;
+      }
+      if (!running) return;
+      const t = Math.max(0, clock());
+      startSfx(t);
+      if (audio && lateMusic && t < T.art) {
+        lateMusic = false;
+        try {
+          audio.currentTime = P0 + t;
+        } catch {}
+        audio.muted = t < T.music;
+        audio.play().then(() => (musicOn = true)).catch(() => (lateMusic = true));
+      }
     }
     function finish() {
       if (dead) return;
@@ -1050,16 +1100,11 @@ export default function Intro({ cue = null }) {
       stopSfx();
       if (audio) {
         audio.removeEventListener("loadedmetadata", seek);
-        if (sound && musicOn) audio.muted = false;
-        else if (sound && lateMusic) playFromCue();
-        else {
-          // tanpa suara / dilewati di gerbang: kembalikan elemen audio ke keadaan netral untuk Jukebox
-          audio.pause();
-          audio.muted = false;
-          try {
-            audio.currentTime = 0;
-          } catch {}
+        if (unlocked) {
+          if (musicOn) audio.muted = false;
+          else playFromCue();
         }
+        // belum ada interaksi: musik menunggu di unlock()
       }
       endIntro();
     }
@@ -1068,8 +1113,8 @@ export default function Intro({ cue = null }) {
       const t = Math.max(0, clock());
       draw(t);
       if (window.__introDebug) canvas.dataset.t = t.toFixed(3);
-      if (sound && musicOn && audio.muted && t >= T.music) audio.muted = false;
-      if (sound && lateMusic && t >= T.art) playFromCue();
+      if (unlocked && musicOn && audio.muted && t >= T.music) audio.muted = false;
+      if (unlocked && lateMusic && t >= T.art) playFromCue();
       if (t >= T.out && !exiting) {
         exiting = true;
         wrap.current?.classList.add("out");
@@ -1083,58 +1128,38 @@ export default function Intro({ cue = null }) {
       clearTimeout(waitTimer);
       aT = t0;
       aPerf = performance.now();
-      if (sound && sfxBuf) {
-        const o = sfxOutput();
-        if (o) {
-          try {
-            sfxNode = o.ctx.createBufferSource();
-            sfxNode.buffer = sfxBuf;
-            const g = o.ctx.createGain();
-            g.gain.value = 0.9;
-            sfxNode.connect(g).connect(o.out);
-            sfxNode.start(0, Math.max(0, t0));
-          } catch {}
-        }
-      }
+      if (unlocked) startSfx(t0);
       raf = requestAnimationFrame(frame);
     }
-    // Dipanggil di dalam gestur klik supaya browser mengizinkan audio.
-    function start(withSound) {
+    // Langsung jalan saat halaman dibuka. Lagu diputar senyap dulu sebagai jam (autoplay senyap diizinkan browser).
+    function start() {
       if (running || dead) return;
-      sound = withSound;
       size();
       draw(0);
-      if (sound) sfxOutput(); // membangunkan AudioContext
-      const run = () => {
-        if (dead || running) return;
-        if (!(sound && audio)) return begin(0);
-        const go = () => {
-          if (running || dead) return;
-          if (Math.abs(audio.currentTime - P0) > 1) {
-            // metadata baru masuk: lompat ke posisi yang benar dulu
-            audio.addEventListener("seeked", go, { once: true });
-            seek();
-            return;
-          }
-          musicOn = true;
-          begin(Math.max(0, audio.currentTime - P0));
-        };
-        audio.addEventListener("playing", go, { once: true });
-        waitTimer = setTimeout(() => {
-          if (running || dead) return;
-          audio.removeEventListener("playing", go);
-          audio.removeEventListener("seeked", go);
-          audio.pause();
-          lateMusic = true;
-          begin(0);
-        }, 1500);
+      if (!audio) return begin(0);
+      const go = () => {
+        if (running || dead) return;
+        if (Math.abs(audio.currentTime - P0) > 1) {
+          // metadata baru masuk: lompat ke posisi yang benar dulu
+          audio.addEventListener("seeked", go, { once: true });
+          seek();
+          return;
+        }
+        musicOn = true;
+        begin(Math.max(0, audio.currentTime - P0));
       };
-      if (sound && audio) {
-        audio.muted = true;
-        audio.play().catch(() => {});
-      }
-      if (assets) run();
-      else ready.then(run);
+      const fallback = () => {
+        if (running || dead) return;
+        audio.removeEventListener("playing", go);
+        audio.removeEventListener("seeked", go);
+        audio.pause();
+        lateMusic = true;
+        begin(0);
+      };
+      audio.addEventListener("playing", go, { once: true });
+      audio.muted = true;
+      audio.play().catch(fallback);
+      waitTimer = setTimeout(fallback, 1500);
     }
 
     const key = (e) => {
@@ -1143,9 +1168,14 @@ export default function Intro({ cue = null }) {
     const onResize = () => running && size();
     window.addEventListener("keydown", key);
     window.addEventListener("resize", onResize);
-    ctl.current = { start, skip: finish };
+    window.addEventListener("pointerdown", unlock);
+    window.addEventListener("keydown", unlock);
+    window.addEventListener("touchend", unlock);
+    ctl.current = { skip: finish };
+    ready.then(start);
 
     return () => {
+      const wasDone = dead;
       dead = true; // mode Strict (dev) memasang efek dua kali: efek pertama tidak boleh ikut menjalankan animasi
       window.removeEventListener("keydown", key);
       window.removeEventListener("resize", onResize);
@@ -1153,66 +1183,28 @@ export default function Intro({ cue = null }) {
       clearTimeout(outTimer);
       clearTimeout(waitTimer);
       stopSfx();
-      if (audio) audio.removeEventListener("loadedmetadata", seek);
+      if (!wasDone) {
+        unlocked = true; // efek yang dibatalkan tidak boleh menyalakan audio
+        window.removeEventListener("pointerdown", unlock);
+        window.removeEventListener("keydown", unlock);
+        window.removeEventListener("touchend", unlock);
+        if (audio) {
+          audio.removeEventListener("loadedmetadata", seek);
+          audio.pause();
+        }
+      }
       ctl.current = null;
     };
   }, [src, at]);
 
-  const go = (withSound) => {
-    if (stage !== "gate" || !ctl.current) return;
-    setStage("run");
-    ctl.current.start(withSound);
-  };
   const skip = () => (ctl.current ? ctl.current.skip() : endIntro());
 
   return (
     <div ref={wrap} className="intro-ov" role="dialog" aria-modal="true" aria-label="Pembuka situs">
       <canvas ref={ref} className="intro-canvas" aria-hidden="true" />
-      {stage === "gate" ? (
-        <div className="intro-gate">
-          <div aria-hidden="true" className="gate-red" />
-          <div aria-hidden="true" className="gate-pattern" />
-          <div aria-hidden="true" className="gate-dots" />
-          <img aria-hidden="true" alt="" src="/oc-cut.webp" className="gate-sil" />
-          <div aria-hidden="true" className="gate-slash" />
-          <div aria-hidden="true" className="gate-blob" />
-          <div aria-hidden="true" className="gate-tags">
-            <span>Vassell Enha Atthayya</span>
-            <span>Portofolio</span>
-            <span>2026</span>
-          </div>
-          <div
-            className="gate-menu"
-            role="menu"
-            aria-label="Pilih cara masuk"
-            onKeyDown={(e) => {
-              if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
-              e.preventDefault();
-              const items = [...e.currentTarget.querySelectorAll("button")];
-              const i = items.indexOf(document.activeElement);
-              items[(i + (e.key === "ArrowDown" ? 1 : -1) + items.length) % items.length]?.focus();
-            }}
-          >
-            <button type="button" role="menuitem" className="gate-item" onClick={() => go(true)}>
-              Masuk Opening
-            </button>
-            <button type="button" role="menuitem" className="gate-item" onClick={() => go(false)}>
-              Tanpa Suara
-            </button>
-            <button type="button" role="menuitem" className="gate-item" onClick={skip}>
-              Skip Opening
-            </button>
-          </div>
-          <p aria-hidden="true" className="gate-title">
-            Menu
-          </p>
-          <p className="gate-note">Opening ±9 detik · ↑ ↓ lalu Enter, atau klik</p>
-        </div>
-      ) : (
-        <button type="button" className="intro-skip" onClick={skip}>
-          Lewati
-        </button>
-      )}
+      <button type="button" className="intro-skip" onClick={skip}>
+        Lewati
+      </button>
     </div>
   );
 }

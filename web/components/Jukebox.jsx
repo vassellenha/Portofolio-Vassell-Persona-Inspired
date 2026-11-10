@@ -69,7 +69,7 @@ export default function Jukebox({ tracks, autoStart = false, initialOpen = false
   });
   const [open, setOpen] = useState(initialOpen || n === 0);
   const [shuffleOn, setShuffleOn] = useState(!!init.shuffle);
-  const [volume, setVolume] = useState(typeof init.vol === "number" ? init.vol : 0.8);
+  const [volume, setVolume] = useState(init.v === 2 && typeof init.vol === "number" ? init.vol : 0.25); // bawaan pelan
   const [time, setTime] = useState(0);
   const [dur, setDur] = useState(0);
   const [failed, setFailed] = useState([]);
@@ -118,7 +118,7 @@ export default function Jukebox({ tracks, autoStart = false, initialOpen = false
   function toggle(force) {
     const a = audioRef.current;
     if (!a || empty) return setOpen(true);
-    const shouldPlay = force ?? a.paused;
+    const shouldPlay = force ?? (a.paused || a.muted); // intro bisa meninggalkan lagu berjalan senyap
     if (shouldPlay) {
       want.current = true;
       a.muted = false;
@@ -193,7 +193,7 @@ export default function Jukebox({ tracks, autoStart = false, initialOpen = false
   }, [volume, n]);
 
   useEffect(() => {
-    writePrefs({ vol: volume, shuffle: shuffleOn, track: track?.file, on: playing });
+    writePrefs({ v: 2, vol: volume, shuffle: shuffleOn, track: track?.file, on: playing });
   }, [volume, shuffleOn, track, playing]);
 
   // Media Session: judul/artis di lock screen + tombol hardware
@@ -233,13 +233,13 @@ export default function Jukebox({ tracks, autoStart = false, initialOpen = false
 
   return (
     <>
-      <div className="fixed bottom-4 right-4 z-50 flex items-end gap-2">
+      <div data-bgm className="fixed bottom-4 right-4 z-50 flex items-end gap-2">
         <PanelButton open={open} onClick={() => setOpen((o) => !o)} />
         <MusicButton playing={playing} armed={!!init.on} onClick={() => toggle()} />
       </div>
 
       {open && (
-        <section id="jukebox-panel" aria-label="Jukebox" className="jb fixed bottom-24 right-3 z-50 w-[min(94vw,26rem)]">
+        <section data-bgm id="jukebox-panel" aria-label="Jukebox" className="jb fixed bottom-24 right-3 z-50 w-[min(94vw,26rem)]">
           {/* Judul gaya potongan majalah, menempel di tepi atas panel */}
           <h2
             aria-label="Jukebox"
