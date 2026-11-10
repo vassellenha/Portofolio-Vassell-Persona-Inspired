@@ -95,10 +95,10 @@ Mahasiswa Sistem Informasi Telkom University yang berfokus pada pengembangan web
 
 ## ◣ Fitur interaktif
 
-- **Intro kaca pecah** — animasi pembuka canvas (tinta putih, kaca retak, kolase keping, OC) sekali per sesi, bisa dilewati
+- **Pembuka sinematik** — gerbang "Masuk", kaca retak & pecah, serangan beruntun, lalu potret muncul tepat saat lagu masuk bagian puncak (canvas + SFX orisinal, sekali per sesi, bisa dilewati / tanpa suara)
 - **Stat Allocator** — alokasikan poin, naik level
 - **Menu cepat** — tekan `M` untuk menu perintah ala Persona
-- **Pecahkan Kaca** — panel kontak tertutup kaca merah: klik 3x untuk meretakkan, memecahkan, dan membuka kontak
+- **Potret Kaca** — ilustrasi di Home terbuat dari keping kaca berpegas: dorong dengan kursor, klik untuk gelombang kejut
 - **Playground** — mini-game & tools yang bisa dimainkan
 - **Jukebox** — shuffle, repeat, Media Session (kontrol dari lockscreen), preferensi tersimpan
 - **SFX** — efek suara Web Audio (klik, flip, buka panel), bisa dimatikan

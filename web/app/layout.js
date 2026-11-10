@@ -1,15 +1,11 @@
 import { readFile, access } from "node:fs/promises";
 import path from "node:path";
-import localFont from "next/font/local";
 import "./globals.css";
 import Header from "../components/Header";
 import JukeboxLoader from "../components/JukeboxLoader";
 import GlobalFx from "../components/GlobalFx";
 import Intro from "../components/Intro";
 
-// Font asli: Markin Ultra Bold untuk judul, Persona 5 Menu untuk ticker/stempel. Teks biasa tetap font sistem.
-const fontMarkin = localFont({ src: "./fonts/markin-ultra-bold.woff2", variable: "--font-markin", display: "swap", weight: "900" });
-const fontAccent = localFont({ src: "./fonts/p5-menu.woff2", variable: "--font-accent", display: "swap", weight: "400", preload: false });
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL || "https://web-nu-wine-25.vercel.app";
 const DESC = "Portofolio Vassell Enha Atthayya (Marcell), Full Stack Developer & mahasiswa Sistem Informasi Telkom University — bertema Persona 5.";
@@ -73,16 +69,20 @@ async function loadTracks() {
         cover: coverOk ? `/music/${cover}` : null,
       });
     }
-    return out;
+    // Lagu pembuka (opsional): hanya dipakai bila file-nya ada di daftar di atas.
+    const iFile = safe(raw.intro?.file);
+    const cueAt = Number(raw.intro?.cue);
+    const cue = iFile && Number.isFinite(cueAt) && out.some((t) => t.file === `/music/${iFile}`) ? { src: `/music/${iFile}`, at: cueAt } : null;
+    return { tracks: out, cue };
   } catch {
-    return [];
+    return { tracks: [], cue: null };
   }
 }
 
 export default async function RootLayout({ children }) {
-  const tracks = await loadTracks();
+  const { tracks, cue } = await loadTracks();
   return (
-    <html lang="id" className={`dark ${fontMarkin.variable} ${fontAccent.variable}`} suppressHydrationWarning>
+    <html lang="id" className="dark" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>
@@ -97,7 +97,7 @@ export default async function RootLayout({ children }) {
           <i className="w-b" />
           <i className="w-a" />
         </div>
-        <Intro />
+        <Intro cue={cue} />
         <Header />
         {children}
         {/* Di root layout: tetap bermain saat navigasi antar halaman */}

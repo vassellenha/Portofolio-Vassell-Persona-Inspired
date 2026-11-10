@@ -3,7 +3,7 @@ import FlipCard from "./FlipCard";
 import StatAllocator from "./StatAllocator";
 import PlaygroundLoader from "./PlaygroundLoader";
 import CopyEmail from "./CopyEmail";
-import GlassContact from "./GlassContact";
+import ShardPortrait from "./ShardPortrait";
 import { IconGithub, IconInstagram, IconLinkedin } from "./Icons";
 
 const TONES = ["w", "r", "k"];
@@ -13,7 +13,7 @@ const ROMAN = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
 function SectionTitle({ id, children, kicker }) {
   return (
     <div className="mb-8 sm:mb-12">
-      {kicker && <p className="mb-2 text-xs font-black uppercase italic tracking-wider text-rt sm:text-sm">{kicker}</p>}
+      {kicker && <p className="mb-2 text-xs font-black uppercase italic tracking-tighter text-rt sm:text-sm">{kicker}</p>}
       <h2 id={id} className="text-4xl leading-none sm:text-6xl">
         <Slash tone="r" rot={-1}>
           {children}
@@ -33,21 +33,14 @@ export function Hero({ profile }) {
       <div aria-hidden="true" className="shard-a absolute -right-6 -top-4 h-[55vw] max-h-[26rem] w-[60vw] max-w-[30rem] bg-red" />
       <div aria-hidden="true" className="shard-b absolute -left-4 bottom-24 h-[40vw] max-h-72 w-[40vw] max-w-72 bg-fg opacity-10" />
 
-      {/* Ilustrasi karakter: panel miring di sisi kanan (desktop) / banner di atas (mobile) */}
+      {/* Ilustrasi karakter interaktif ("Potret Kaca"): panel miring di kanan (desktop) / banner di atas (mobile) */}
       <div className="oc-panel oc-in relative z-0 aspect-[16/9] w-full lg:absolute lg:inset-y-0 lg:right-0 lg:aspect-auto lg:w-[54%]">
-        <img
-          src="/oc.jpg"
-          alt="Ilustrasi karakter pribadi bertopeng hitam-putih dengan latar kaca pecah merah"
-          width="1600"
-          height="900"
-          fetchPriority="high"
-          className="h-full w-full object-cover object-[62%_50%]"
-        />
+        <ShardPortrait src="/oc.jpg" alt="Ilustrasi karakter pribadi bertopeng hitam-putih dengan latar kaca pecah merah" />
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-10 pt-8 sm:pt-12 lg:pt-20">
         <p className="mb-4">
-          <Slash tone="k" font="body" className="text-xs sm:text-sm">
+          <Slash tone="k" className="text-xs sm:text-sm">
             Portofolio // 2026
           </Slash>
         </p>
@@ -84,7 +77,7 @@ export function Hero({ profile }) {
 
       {/* Marquee: dekoratif, murni CSS */}
       <div aria-hidden="true" className="relative -skew-y-1 overflow-hidden border-y-[3px] border-fg bg-fg py-2 text-bg">
-        <div className="marquee flex w-max whitespace-nowrap font-accent text-lg uppercase tracking-wide sm:text-2xl">
+        <div className="marquee flex w-max whitespace-nowrap font-display text-lg font-black uppercase italic tracking-tighter sm:text-2xl">
           {[0, 1].map((k) => (
             <span key={k} className="flex shrink-0 gap-8 pr-8">
               {ticker.map((t, i) => (
@@ -110,7 +103,7 @@ export function Profile({ profile }) {
           <div>
             <p className="text-lg font-bold leading-snug sm:text-xl">{profile.bio}</p>
             <p className="mt-4">
-              <Slash tone="r" font="body" className="text-sm sm:text-base">{profile.university}</Slash>
+              <Slash tone="r" className="text-sm sm:text-base">{profile.university}</Slash>
             </p>
           </div>
           <StatAllocator stats={profile.stats} />
@@ -131,7 +124,7 @@ export function Skills({ profile }) {
         {profile.skills.map((g) => (
           <div key={g.group}>
             <h3 className="mb-3">
-              <Slash tone="w" font="body" className="text-base sm:text-lg">
+              <Slash tone="w" className="text-base sm:text-lg">
                 {g.group}
               </Slash>
             </h3>
@@ -155,7 +148,7 @@ export function Skills({ profile }) {
       <ol className="space-y-4 border-l-[6px] border-red pl-5">
         {profile.experience.map((e, i) => (
           <li key={i}>
-            <p className="text-xs font-black uppercase italic tracking-wider text-rt">{e.period}</p>
+            <p className="text-xs font-black uppercase italic tracking-tighter text-rt">{e.period}</p>
             <p className="text-lg font-black uppercase italic leading-tight tracking-tighter sm:text-xl">{e.role}</p>
             <p className="text-sm font-bold text-mu">{e.org}</p>
             <p className="mt-1 max-w-2xl text-sm">{e.desc}</p>
@@ -173,7 +166,7 @@ function Stamp({ status }) {
   return (
     <span
       aria-label={`Status: ${label}`}
-      className={`absolute right-0 top-0 -rotate-12 border-4 px-3 py-1 font-accent text-lg uppercase tracking-wide opacity-0 sm:text-2xl ${
+      className={`absolute right-0 top-0 -rotate-12 border-4 px-3 py-1 font-display text-lg font-black uppercase italic tracking-tighter opacity-0 sm:text-2xl ${
         done ? "border-red text-rt" : "border-fg text-fg"
       } group-has-[:checked]:[animation:stamp_.35s_.35s_both]`}
     >
@@ -198,8 +191,8 @@ export function Heists({ heists }) {
                 front={
                   <>
                     <p className="flex items-center justify-between gap-3">
-                      <span className="text-xs font-black uppercase italic tracking-wider text-rt">Proyek {String(i + 1).padStart(2, "0")}</span>
-                      <span className="-skew-x-12 bg-fg px-3 py-1 text-xs font-black uppercase italic tracking-wider text-bg">
+                      <span className="text-xs font-black uppercase italic tracking-tighter text-rt">Proyek {String(i + 1).padStart(2, "0")}</span>
+                      <span className="-skew-x-12 bg-fg px-3 py-1 text-xs font-black uppercase italic tracking-tighter text-bg">
                         <span className="inline-block skew-x-12">{{ Secured: "Selesai", "In Progress": "Berjalan" }[h.status] ?? h.status}</span>
                       </span>
                     </p>
@@ -210,9 +203,9 @@ export function Heists({ heists }) {
                 back={
                   <div className="relative">
                     <Stamp status={h.status} />
-                    <p className="text-xs font-black uppercase italic tracking-wider text-rt">Deskripsi</p>
+                    <p className="text-xs font-black uppercase italic tracking-tighter text-rt">Deskripsi</p>
                     <p className="mt-1 max-w-[70%] text-sm font-bold">{h.target}</p>
-                    <p className="mt-4 text-xs font-black uppercase italic tracking-wider text-rt">Teknologi</p>
+                    <p className="mt-4 text-xs font-black uppercase italic tracking-tighter text-rt">Teknologi</p>
                     <ul className="mt-1 flex flex-wrap gap-2" aria-label="Teknologi">
                       {(h.loot ?? []).map((l) => (
                         <li key={l} className="border-2 border-current px-2 py-0.5 text-xs font-black uppercase italic">
@@ -259,7 +252,7 @@ export function Confidant({ confidants }) {
               front={
                 <div className="flex min-h-64 flex-col justify-between">
                   <div>
-                    <p className="font-accent text-6xl leading-none text-rt" aria-hidden="true">
+                    <p className="font-display text-6xl font-black italic leading-none text-rt" aria-hidden="true">
                       {String(ci + 1).padStart(2, "0")}
                     </p>
                     <p className="mt-3 text-xl font-black uppercase italic leading-tight tracking-tighter">{c.role}</p>
@@ -271,11 +264,11 @@ export function Confidant({ confidants }) {
               back={
                 <div className="flex min-h-64 flex-col justify-between">
                   <div>
-                    <p className="text-xs font-black uppercase italic tracking-wider text-rt">{c.role}</p>
+                    <p className="text-xs font-black uppercase italic tracking-tighter text-rt">{c.role}</p>
                     <blockquote className="mt-3 text-sm font-bold leading-snug">“{c.quote}”</blockquote>
                   </div>
                   <p className="mt-3">
-                    <Slash tone="w" font="body" className="text-sm">
+                    <Slash tone="w" className="text-sm">
                       {c.name}
                     </Slash>
                   </p>
@@ -321,7 +314,6 @@ export function Contact({ profile }) {
         Kontak
       </SectionTitle>
       <p className="mb-8 max-w-xl text-lg font-bold">Tertarik berkolaborasi atau punya pertanyaan? Silakan hubungi saya, akan saya balas secepatnya.</p>
-      <GlassContact>
       <div className="mb-8 flex flex-wrap items-center gap-3">
         <a
           href={`mailto:${profile.email}`}
@@ -355,7 +347,6 @@ export function Contact({ profile }) {
           </li>
         ))}
       </ul>
-      </GlassContact>
       <footer className="mt-20 border-t-[3px] border-fg pt-6 text-xs font-bold uppercase text-mu">
         © {new Date().getFullYear()} {profile.name} · Built with Next.js + Express · Take your time.
       </footer>

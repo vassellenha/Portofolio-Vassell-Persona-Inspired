@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { MusicButton, PanelButton } from "./MusicButton";
 import { isSfxOn, setSfxOn, playSfx } from "../lib/sfx";
+import { sharedAudio, samePath } from "../lib/bgm";
 import { IconClose, IconNext, IconPause, IconPlay, IconPrev, IconShuffle } from "./Icons";
 
 const KEY = "p5:jukebox";
@@ -56,8 +57,16 @@ export default function Jukebox({ tracks, autoStart = false, initialOpen = false
   const api = useRef({});
 
   const [init] = useState(readPrefs);
-  const [current, setCurrent] = useState(() => Math.max(0, tracks.findIndex((t) => t.file === init.track)));
-  const [playing, setPlaying] = useState(false);
+  // Bila intro sudah memutar lagu di elemen audio bersama, lanjutkan lagu itu (bukan preferensi tersimpan).
+  const [current, setCurrent] = useState(() => {
+    const a = sharedAudio();
+    const adopted = tracks.findIndex((t) => samePath(a, t.file));
+    return adopted >= 0 ? adopted : Math.max(0, tracks.findIndex((t) => t.file === init.track));
+  });
+  const [playing, setPlaying] = useState(() => {
+    const a = sharedAudio();
+    return !!a && !!a.src && !a.paused && !a.muted;
+  });
   const [open, setOpen] = useState(initialOpen || n === 0);
   const [shuffleOn, setShuffleOn] = useState(!!init.shuffle);
   const [volume, setVolume] = useState(typeof init.vol === "number" ? init.vol : 0.8);
@@ -95,6 +104,7 @@ export default function Jukebox({ tracks, autoStart = false, initialOpen = false
     want.current = true;
     setTime(0);
     setDur(0);
+    if (audioRef.current) audioRef.current.muted = false;
     if (idx === current) {
       const a = audioRef.current;
       if (a) {
@@ -111,6 +121,7 @@ export default function Jukebox({ tracks, autoStart = false, initialOpen = false
     const shouldPlay = force ?? a.paused;
     if (shouldPlay) {
       want.current = true;
+      a.muted = false;
       a.play().catch(() => setPlaying(false));
     } else {
       want.current = false;
@@ -143,16 +154,39 @@ export default function Jukebox({ tracks, autoStart = false, initialOpen = false
     } else go(idx);
   }
 
-  // Handler terbaru untuk Media Session (dipanggil dari luar render)
+  // Handler terbaru untuk Media Session & event audio (dipanggil dari luar render)
   useEffect(() => {
-    api.current = { toggle, next, prev };
+    api.current = { toggle, next, prev, onError, open };
   });
 
-  // Putar saat lagu berganti (src sudah ter-commit oleh React)
+  // Pasang event ke elemen audio bersama (lihat lib/bgm.js)
+  useEffect(() => {
+    if (n === 0) return;
+    const a = sharedAudio();
+    audioRef.current = a;
+    const on = {
+      play: () => setPlaying(!a.muted),
+      pause: () => setPlaying(false),
+      volumechange: () => !a.paused && setPlaying(!a.muted),
+      ended: () => api.current.next(),
+      error: () => api.current.onError(),
+      timeupdate: () => api.current.open && setTime(a.currentTime),
+      loadedmetadata: () => setDur(a.duration),
+    };
+    Object.entries(on).forEach(([k, f]) => a.addEventListener(k, f));
+    if (Number.isFinite(a.duration)) setDur(a.duration);
+    if (!a.paused) want.current = true;
+    return () => Object.entries(on).forEach(([k, f]) => a.removeEventListener(k, f));
+  }, [n]);
+
+  // Ganti sumber saat lagu berganti; lagu yang sudah dimuat intro tidak dimuat ulang.
+  const file = track?.file;
   useEffect(() => {
     const a = audioRef.current;
-    if (a && want.current) a.play().catch(() => setPlaying(false));
-  }, [current]);
+    if (!a || !file) return;
+    if (!samePath(a, file)) a.src = file;
+    if (want.current && a.paused) a.play().catch(() => setPlaying(false));
+  }, [file]);
 
   useEffect(() => {
     if (audioRef.current) audioRef.current.volume = volume;
@@ -199,20 +233,6 @@ export default function Jukebox({ tracks, autoStart = false, initialOpen = false
 
   return (
     <>
-      {n > 0 && (
-        <audio
-          ref={audioRef}
-          src={track?.file}
-          preload="none"
-          onPlay={() => setPlaying(true)}
-          onPause={() => setPlaying(false)}
-          onEnded={next}
-          onError={onError}
-          onTimeUpdate={(e) => open && setTime(e.currentTarget.currentTime)}
-          onLoadedMetadata={(e) => setDur(e.currentTarget.duration)}
-        />
-      )}
-
       <div className="fixed bottom-4 right-4 z-50 flex items-end gap-2">
         <PanelButton open={open} onClick={() => setOpen((o) => !o)} />
         <MusicButton playing={playing} armed={!!init.on} onClick={() => toggle()} />
@@ -384,7 +404,7 @@ export default function Jukebox({ tracks, autoStart = false, initialOpen = false
                           disabled={bad}
                           onClick={() => pick(i)}
                           aria-current={active ? "true" : undefined}
-                          className={`flex w-full -skew-x-12 items-center gap-3 px-3 py-2 text-left text-sm font-black uppercase italic tracking-tighter transition-[background-color,color,transform] duration-100 ${
+                          className={`flex w-full -skew-x-12 items-center gap-3 px-3 py-2 text-left font-display text-sm font-black uppercase italic tracking-tighter transition-[background-color,color,transform] duration-100 ${
                             active
                               ? "translate-x-2 bg-[#0f0f0f] text-[#f5f5f5] shadow-[4px_4px_0_#f5f5f5]"
                               : "text-[#f5f5f5] hover:translate-x-1 hover:bg-[#f5f5f5] hover:text-[#0f0f0f]"

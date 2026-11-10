@@ -56,6 +56,16 @@ function ac() {
   return ctx;
 }
 
+// Dipakai intro: konteks audio + keluaran master yang sama dengan SFX lain.
+export function sfxOutput() {
+  try {
+    const c = ac();
+    return c ? { ctx: c, out: master } : null;
+  } catch {
+    return null;
+  }
+}
+
 function fire(c, name) {
   try {
     last?.stop();
