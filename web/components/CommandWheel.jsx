@@ -4,17 +4,16 @@ import { useEffect, useRef, useState } from "react";
 import { playSfx } from "../lib/sfx";
 
 const ITEMS = [
-  ["#home", "Home"],
-  ["#profile", "Profile"],
-  ["#skills", "Skills"],
-  ["#heists", "Heists"],
-  ["#confidant", "Confidant"],
-  ["#playground", "Playground"],
-  ["#contact", "Contact"],
+  ["#home", "Home", "Beranda"],
+  ["#profile", "Profil", "Ringkasan profil"],
+  ["#skills", "Skills", "Keahlian & pengalaman"],
+  ["#projects", "Proyek", "Daftar proyek"],
+  ["#references", "Referensi", "Testimoni"],
+  ["#playground", "Playground", "Mini-game & alat"],
+  ["#contact", "Kontak", "Hubungi saya"],
 ];
 const N = ITEMS.length;
-const RX = 112;
-const RY = 132;
+const MID = (N - 1) / 2;
 
 export default function CommandWheel({ onClose }) {
   const [sel, setSel] = useState(0);
@@ -69,20 +68,13 @@ export default function CommandWheel({ onClose }) {
       aria-label="Menu cepat"
       onKeyDown={onKeyDown}
       onClick={(e) => e.target === e.currentTarget && onClose()}
-      className="fixed inset-0 z-[150] grid place-items-center"
+      className="fixed inset-0 z-[150] grid place-items-center overflow-hidden"
       style={{ background: "color-mix(in srgb, var(--bg) 90%, transparent)" }}
     >
-      <div className="relative h-[22rem] w-[min(92vw,22rem)]">
-        <div
-          aria-hidden="true"
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 -skew-x-12 bg-red px-5 py-3 font-display text-lg font-black uppercase italic tracking-tighter text-[#f5f5f5]"
-        >
-          <span className="inline-block skew-x-12">{ITEMS[sel][1]}</span>
-        </div>
-        {ITEMS.map(([id, label], i) => {
-          const a = -Math.PI / 2 + (i * 2 * Math.PI) / N;
-          const x = Math.round(Math.cos(a) * RX);
-          const y = Math.round(Math.sin(a) * RY);
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-20 [background:radial-gradient(circle,var(--red)_2px,transparent_2.5px)_0_0/16px_16px]" />
+      <div className="relative flex w-[min(94vw,28rem)] flex-col gap-1">
+        {ITEMS.map(([id, label, sub], i) => {
+          const off = i - MID;
           const active = i === sel;
           return (
             <button
@@ -94,16 +86,23 @@ export default function CommandWheel({ onClose }) {
               onMouseMove={() => sel !== i && setSel(i)}
               aria-label={`Lompat ke ${label}`}
               style={{
-                left: "50%",
-                top: "50%",
-                transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
-                animationDelay: `${i * 40}ms`,
+                transform: `translateX(${Math.round(Math.abs(off) * 22 - 40 + (active ? 26 : 0))}px) rotate(${(off * 2.2).toFixed(1)}deg)`,
+                animationDelay: `${i * 45}ms`,
               }}
-              className={`wheel-in absolute w-24 -skew-x-12 border-[3px] border-fg py-2 text-xs font-black uppercase italic tracking-tighter transition-colors duration-100 ${
-                active ? "bg-red text-[#f5f5f5]" : "bg-fg text-bg"
-              }`}
+              className="cmd-in group relative block text-left transition-transform duration-150 focus:outline-none"
             >
-              <span className="inline-block skew-x-12">{label}</span>
+              <span aria-hidden="true" className={`cmd-shard absolute inset-0 translate-x-2 translate-y-1.5 transition-colors duration-100 ${active ? "bg-red" : "bg-red/70"}`} />
+              <span
+                className={`cmd-bar relative block px-8 pb-2 pt-1.5 transition-colors duration-100 ${
+                  active ? "bg-[#f5f5f5] text-[#0f0f0f]" : "bg-[#0f0f0f] text-[#f5f5f5]"
+                }`}
+              >
+                <span className="block font-display text-2xl font-black uppercase italic leading-none tracking-tighter sm:text-3xl">
+                  <span className={`text-[1.25em] ${active ? "text-[#dc0000]" : ""}`}>{label.slice(0, 1)}</span>
+                  {label.slice(1)}
+                </span>
+                <span className={`mt-1 block text-xs font-black italic tracking-tight ${active ? "text-[#dc0000]" : "text-[#f5f5f5]"}`}>{sub}</span>
+              </span>
             </button>
           );
         })}

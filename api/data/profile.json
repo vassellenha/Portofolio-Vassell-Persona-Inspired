@@ -2,8 +2,8 @@
   "name": "Vassell Enha Atthayya",
   "nickname": "Marcell",
   "title": "Full Stack Developer",
-  "tagline": "Steal the spotlight. Ship the code.",
-  "bio": "Mahasiswa Sistem Informasi Telkom University yang menyusup ke dunia web dari database sampai antarmuka. Magang di Biro Teknologi Informasi PT Adhi Karya (Persero) Tbk, tempat sistem tiket dan asisten virtual jadi target operasi berikutnya. Kalau ada bug, dia bukan kabur — dia mencurinya sampai bersih.",
+  "tagline": "Membangun aplikasi web yang rapi, andal, dan mudah digunakan.",
+  "bio": "Mahasiswa Sistem Informasi Telkom University yang berfokus pada pengembangan web full stack, dari perancangan basis data hingga antarmuka pengguna. Saat ini magang di Biro Teknologi Informasi PT Adhi Karya (Persero) Tbk, mengembangkan sistem tiket helpdesk dan asisten virtual untuk kebutuhan layanan TI internal.",
   "university": "Telkom University — Sistem Informasi",
   "email": "ganti-dengan-emailmu@example.com",
   "cv": "/cv.pdf",
@@ -13,17 +13,71 @@
     "instagram": "https://instagram.com/vassellenha"
   },
   "stats": [
-    { "key": "Knowledge", "level": 8, "skill": "Sistem Informasi, analisis & perancangan sistem, SQL, JavaScript" },
-    { "key": "Guts", "level": 7, "skill": "Deploy ke production, debugging di bawah tekanan, ikut kompetisi bisnis" },
-    { "key": "Proficiency", "level": 8, "skill": "Next.js, React, Node.js, Express, Tailwind CSS" },
-    { "key": "Kindness", "level": 7, "skill": "Code review, dokumentasi, kolaborasi lintas tim" },
-    { "key": "Charm", "level": 6, "skill": "UI/UX, presentasi, storytelling produk" }
+    {
+      "key": "Analisis",
+      "level": 8,
+      "skill": "Sistem Informasi, analisis & perancangan sistem, SQL, JavaScript"
+    },
+    {
+      "key": "Eksekusi",
+      "level": 7,
+      "skill": "Deploy ke production, debugging, ikut kompetisi bisnis"
+    },
+    {
+      "key": "Teknis",
+      "level": 8,
+      "skill": "Next.js, React, Node.js, Express, Tailwind CSS"
+    },
+    {
+      "key": "Kolaborasi",
+      "level": 7,
+      "skill": "Code review, dokumentasi, kerja lintas tim"
+    },
+    {
+      "key": "Komunikasi",
+      "level": 6,
+      "skill": "UI/UX, presentasi, storytelling produk"
+    }
   ],
   "skills": [
-    { "group": "Frontend", "items": ["Next.js", "React", "Tailwind CSS", "JavaScript", "HTML/CSS"] },
-    { "group": "Backend", "items": ["Node.js", "Express", "REST API", "SQL", "JSON data layer"] },
-    { "group": "Tools", "items": ["Git & GitHub", "Vercel", "Render", "VS Code"] },
-    { "group": "Domain", "items": ["Sistem Informasi", "Analisis Sistem", "UI/UX", "Business Plan"] }
+    {
+      "group": "Frontend",
+      "items": [
+        "Next.js",
+        "React",
+        "Tailwind CSS",
+        "JavaScript",
+        "HTML/CSS"
+      ]
+    },
+    {
+      "group": "Backend",
+      "items": [
+        "Node.js",
+        "Express",
+        "REST API",
+        "SQL",
+        "JSON data layer"
+      ]
+    },
+    {
+      "group": "Tools",
+      "items": [
+        "Git & GitHub",
+        "Vercel",
+        "Render",
+        "VS Code"
+      ]
+    },
+    {
+      "group": "Domain",
+      "items": [
+        "Sistem Informasi",
+        "Analisis Sistem",
+        "UI/UX",
+        "Business Plan"
+      ]
+    }
   ],
   "experience": [
     {

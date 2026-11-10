@@ -1,9 +1,15 @@
 import { readFile, access } from "node:fs/promises";
 import path from "node:path";
+import localFont from "next/font/local";
 import "./globals.css";
 import Header from "../components/Header";
 import JukeboxLoader from "../components/JukeboxLoader";
 import GlobalFx from "../components/GlobalFx";
+import Intro from "../components/Intro";
+
+// Font asli: Markin Ultra Bold untuk judul, Persona 5 Menu untuk ticker/stempel. Teks biasa tetap font sistem.
+const fontMarkin = localFont({ src: "./fonts/markin-ultra-bold.woff2", variable: "--font-markin", display: "swap", weight: "900" });
+const fontAccent = localFont({ src: "./fonts/p5-menu.woff2", variable: "--font-accent", display: "swap", weight: "400", preload: false });
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL || "https://web-nu-wine-25.vercel.app";
 const DESC = "Portofolio Vassell Enha Atthayya (Marcell), Full Stack Developer & mahasiswa Sistem Informasi Telkom University — bertema Persona 5.";
@@ -29,7 +35,7 @@ export const viewport = {
 };
 
 // Dijalankan sebelum paint: baca localStorage, fallback ke prefers-color-scheme. Mencegah flash tema.
-const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem('theme');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',d);if(localStorage.getItem('p5:secret')==='1')document.documentElement.setAttribute('data-secret','')}catch(e){}})()`;
+const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem('theme');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',d);if(!sessionStorage.getItem('p5:intro')&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('intro');if(localStorage.getItem('p5:secret')==='1')document.documentElement.setAttribute('data-secret','')}catch(e){}})()`;
 
 // Baca playlist.json di server saat build; hanya lagu yang file-nya benar-benar ada yang dikirim ke client.
 async function loadTracks() {
@@ -76,7 +82,7 @@ async function loadTracks() {
 export default async function RootLayout({ children }) {
   const tracks = await loadTracks();
   return (
-    <html lang="id" className="dark" suppressHydrationWarning>
+    <html lang="id" className={`dark ${fontMarkin.variable} ${fontAccent.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>
@@ -91,6 +97,7 @@ export default async function RootLayout({ children }) {
           <i className="w-b" />
           <i className="w-a" />
         </div>
+        <Intro />
         <Header />
         {children}
         {/* Di root layout: tetap bermain saat navigasi antar halaman */}

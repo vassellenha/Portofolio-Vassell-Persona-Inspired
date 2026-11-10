@@ -1,34 +1,51 @@
 [
   {
     "id": 1,
-    "codename": "Operation: Enterprise Helpdesk 2.0 & E.V.A",
+    "codename": "Enterprise Helpdesk 2.0 & E.V.A",
     "target": "Sistem tiket helpdesk internal PT Adhi Karya + asisten virtual E.V.A (magang KPPM, Biro TI)",
-    "loot": ["Next.js", "Node.js", "REST API", "[EDIT] tambah stack"],
-    "status": "Secured",
+    "loot": [
+      "Next.js",
+      "Node.js",
+      "REST API",
+      "[EDIT] tambah stack"
+    ],
+    "status": "Selesai",
     "link": null
   },
   {
     "id": 2,
-    "codename": "Operation: AMANIN",
+    "codename": "AMANIN",
     "target": "Asisten AI anti-scam untuk melindungi masyarakat dari penipuan digital — RISE 2026 Business Plan Competition",
-    "loot": ["AI Assistant", "Business Plan", "[EDIT] tambah stack"],
-    "status": "In Progress",
+    "loot": [
+      "AI Assistant",
+      "Business Plan",
+      "[EDIT] tambah stack"
+    ],
+    "status": "Berjalan",
     "link": null
   },
   {
     "id": 3,
-    "codename": "Operation: Pharvia",
+    "codename": "Pharvia",
     "target": "Platform digital pharmaceutical take-back: mengembalikan obat sisa/kedaluwarsa dengan aman",
-    "loot": ["Web Platform", "[EDIT] tambah stack"],
-    "status": "In Progress",
+    "loot": [
+      "Web Platform",
+      "[EDIT] tambah stack"
+    ],
+    "status": "Berjalan",
     "link": null
   },
   {
     "id": 4,
-    "codename": "Operation: Portfolio",
-    "target": "Situs portofolio bertema Persona 5 yang sedang kamu lihat — ultra-ringan, tanpa library animasi",
-    "loot": ["Next.js", "Express", "Tailwind CSS", "Vercel"],
-    "status": "Secured",
+    "codename": "Portfolio",
+    "target": "Situs portofolio pribadi yang sedang kamu lihat — ringan, bertema Persona 5, tanpa library animasi",
+    "loot": [
+      "Next.js",
+      "Express",
+      "Tailwind CSS",
+      "Vercel"
+    ],
+    "status": "Selesai",
     "link": "https://github.com/vassellenha/Persona5_Inspired_Portofolio_Vassell-Enha-Atthayya"
   }
 ]

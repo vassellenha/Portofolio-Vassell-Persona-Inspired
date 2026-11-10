@@ -16,6 +16,13 @@ const RATE = {
   secret: 0.62,
 };
 
+// Volume relatif per bunyi (1 = penuh). Klik dipelankan karena paling sering terdengar.
+const VOL = {
+  click: 0.35,
+  flip: 0.7,
+  open: 0.7,
+};
+
 let ctx = null;
 let master = null;
 let buf = null;
@@ -56,7 +63,9 @@ function fire(c, name) {
   const s = c.createBufferSource();
   s.buffer = buf;
   s.playbackRate.value = RATE[name] ?? 1;
-  s.connect(master);
+  const g = c.createGain();
+  g.gain.value = VOL[name] ?? 1;
+  s.connect(g).connect(master);
   s.start();
   last = s;
 }

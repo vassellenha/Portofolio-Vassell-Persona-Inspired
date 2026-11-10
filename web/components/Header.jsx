@@ -3,12 +3,12 @@ import Slash from "./Slash";
 
 const NAV = [
   ["#home", "Home"],
-  ["#profile", "Profile"],
+  ["#profile", "Profil"],
   ["#skills", "Skills"],
-  ["#heists", "Heists"],
-  ["#confidant", "Confidant"],
+  ["#projects", "Proyek"],
+  ["#references", "Referensi"],
   ["#playground", "Playground"],
-  ["#contact", "Contact"],
+  ["#contact", "Kontak"],
 ];
 
 export default function Header() {

@@ -62,20 +62,20 @@ function draw(canvas, name, msg) {
   poly(ctx, [[W * 0.84, H * 0.08], [W * 0.96, H * 0.02], [W * 0.92, H * 0.3]], "#f5f5f5");
 
   let y = 50;
-  y += slash(ctx, "TAKE YOUR HEART", 56, y, 54, "#f5f5f5", "#0f0f0f", -1.5) + 16;
+  y += slash(ctx, "PESAN UNTUKMU", 56, y, 54, "#f5f5f5", "#0f0f0f", -1.5) + 16;
   y += slash(ctx, `TO: ${(name || "???").toUpperCase().slice(0, 24)}`, 70, y, 38, "#dc0000", "#f5f5f5", 1) + 22;
 
   const lines = wrap(ctx, (msg || "Your heart will be mine.").toUpperCase(), 640, 34);
   lines.forEach((l, i) => {
     y += slash(ctx, l, 60 + (i % 2) * 24, y, 34, i % 2 ? "#f5f5f5" : "#0f0f0f", i % 2 ? "#0f0f0f" : "#f5f5f5", i % 2 ? 0.8 : -0.6) + (i % 2 ? 8 : 10);
   });
-  slash(ctx, "— THE PHANTOM THIEVES", 56, H - 78, 28, "#dc0000", "#f5f5f5", -1);
+  slash(ctx, "— VASSELL ENHA ATTHAYYA", 56, H - 78, 28, "#dc0000", "#f5f5f5", -1);
 }
 
 export default function CallingCard() {
   const canvasRef = useRef(null);
   const [name, setName] = useState("Marcell");
-  const [msg, setMsg] = useState("Hati kamu sudah jadi targetku");
+  const [msg, setMsg] = useState("Terima kasih sudah berkunjung");
   const [note, setNote] = useState("");
   const [canShare] = useState(() => typeof navigator !== "undefined" && typeof navigator.share === "function");
 

@@ -50,7 +50,7 @@ export default function StatAllocator({ stats }) {
                         aria-hidden="true"
                         className="rank-up -skew-x-12 bg-red px-2 py-0.5 text-xs text-[#f5f5f5]"
                       >
-                        <span className="inline-block skew-x-12">RANK UP!</span>
+                        <span className="inline-block skew-x-12">LEVEL UP!</span>
                       </span>
                     )}
                   </span>

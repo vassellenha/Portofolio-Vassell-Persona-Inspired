@@ -34,16 +34,16 @@ export default function TakeYourHeart({ onDone }) {
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Take your heart"
+      aria-label="Tema rahasia"
       onClick={() => done.current()}
       className="fixed inset-0 z-[300] grid place-items-center overflow-hidden bg-[#0f0f0f] text-[#f5f5f5]"
     >
       <div className="relative text-center">
         <p
-          data-text="TAKE YOUR HEART"
+          data-text="TEMA RAHASIA"
           className="glitch relative -skew-x-12 font-display text-[clamp(2.2rem,11vw,7rem)] font-black uppercase italic leading-none tracking-tighter"
         >
-          TAKE YOUR HEART
+          TEMA RAHASIA
         </p>
         <p className="mt-6 text-sm font-black uppercase italic tracking-tighter text-[#dc0000] [text-shadow:0_0_0_#f5f5f5]">
           <span className="bg-[#f5f5f5] px-3 py-1">Tema rahasia aktif — ulangi kode untuk mematikan</span>

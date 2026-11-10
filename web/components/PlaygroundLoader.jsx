@@ -6,11 +6,11 @@ import { playSfx } from "../lib/sfx";
 
 const Loading = () => <p className="p-4 text-sm font-black uppercase italic">Loading…</p>;
 const CallingCard = dynamic(() => import("./play/CallingCard"), { ssr: false, loading: Loading });
-const StealGame = dynamic(() => import("./play/StealGame"), { ssr: false, loading: Loading });
+const TimingGame = dynamic(() => import("./play/TimingGame"), { ssr: false, loading: Loading });
 
 const TILES = [
-  { id: "card", title: "Calling Card Generator", desc: "Tulis pesan, unduh kartu PNG ala Phantom Thieves.", Comp: CallingCard },
-  { id: "game", title: "Steal the Treasure", desc: "Mini-game timing: klik di zona merah. 3 ronde.", Comp: StealGame },
+  { id: "card", title: "Generator Kartu Pesan", desc: "Tulis pesan, unduh sebagai kartu PNG bergaya Persona.", Comp: CallingCard },
+  { id: "game", title: "Timing Challenge", desc: "Mini-game timing: klik di zona merah. 3 ronde.", Comp: TimingGame },
 ];
 
 export default function PlaygroundLoader() {
@@ -32,7 +32,7 @@ export default function PlaygroundLoader() {
                 }}
                 aria-expanded={on}
                 aria-controls="playground-panel"
-                className={`block w-full -skew-x-6 border-[3px] border-fg p-5 text-left shadow-[6px_6px_0_var(--red)] transition-colors duration-100 hover:bg-red hover:text-[#f5f5f5] ${
+                className={`block w-full -skew-x-6 border-[3px] border-fg p-5 text-left shadow-[6px_6px_0_var(--red)] transition-colors duration-100 hover:bg-red hover:text-[#f5f5f5] hover:shadow-[6px_6px_0_var(--fg)] ${
                   on ? "bg-red text-[#f5f5f5]" : "bg-bg"
                 }`}
               >

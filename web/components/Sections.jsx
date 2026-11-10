@@ -3,6 +3,7 @@ import FlipCard from "./FlipCard";
 import StatAllocator from "./StatAllocator";
 import PlaygroundLoader from "./PlaygroundLoader";
 import CopyEmail from "./CopyEmail";
+import GlassContact from "./GlassContact";
 import { IconGithub, IconInstagram, IconLinkedin } from "./Icons";
 
 const TONES = ["w", "r", "k"];
@@ -12,7 +13,7 @@ const ROMAN = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
 function SectionTitle({ id, children, kicker }) {
   return (
     <div className="mb-8 sm:mb-12">
-      {kicker && <p className="mb-2 text-xs font-black uppercase italic tracking-tighter text-rt sm:text-sm">{kicker}</p>}
+      {kicker && <p className="mb-2 text-xs font-black uppercase italic tracking-wider text-rt sm:text-sm">{kicker}</p>}
       <h2 id={id} className="text-4xl leading-none sm:text-6xl">
         <Slash tone="r" rot={-1}>
           {children}
@@ -25,20 +26,32 @@ function SectionTitle({ id, children, kicker }) {
 /* ---------------- HERO ---------------- */
 export function Hero({ profile }) {
   const words = profile.name.split(" ");
-  const ticker = Array.from({ length: 6 }, () => `${profile.title} // ${profile.nickname} // Take your heart`);
+  const ticker = Array.from({ length: 6 }, () => `${profile.title} // ${profile.nickname} // Sistem Informasi — Telkom University`);
 
   return (
     <section id="home" aria-labelledby="hero-title" className="relative flex min-h-[calc(100svh-3.5rem)] flex-col justify-between overflow-hidden">
       <div aria-hidden="true" className="shard-a absolute -right-6 -top-4 h-[55vw] max-h-[26rem] w-[60vw] max-w-[30rem] bg-red" />
       <div aria-hidden="true" className="shard-b absolute -left-4 bottom-24 h-[40vw] max-h-72 w-[40vw] max-w-72 bg-fg opacity-10" />
 
-      <div className="relative mx-auto w-full max-w-6xl px-4 pb-10 pt-12 sm:pt-20">
+      {/* Ilustrasi karakter: panel miring di sisi kanan (desktop) / banner di atas (mobile) */}
+      <div className="oc-panel oc-in relative z-0 aspect-[16/9] w-full lg:absolute lg:inset-y-0 lg:right-0 lg:aspect-auto lg:w-[54%]">
+        <img
+          src="/oc.jpg"
+          alt="Ilustrasi karakter pribadi bertopeng hitam-putih dengan latar kaca pecah merah"
+          width="1600"
+          height="900"
+          fetchPriority="high"
+          className="h-full w-full object-cover object-[62%_50%]"
+        />
+      </div>
+
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-10 pt-8 sm:pt-12 lg:pt-20">
         <p className="mb-4">
-          <Slash tone="k" className="text-xs sm:text-sm">
-            All-out attack // Portfolio
+          <Slash tone="k" font="body" className="text-xs sm:text-sm">
+            Portofolio // 2026
           </Slash>
         </p>
-        <h1 id="hero-title" className="flex flex-wrap items-start gap-x-2 gap-y-2 text-[clamp(2.6rem,13vw,7.5rem)] leading-[0.95]">
+        <h1 id="hero-title" className="flex flex-wrap items-start gap-x-2 gap-y-2 text-[clamp(2.4rem,11vw,6.5rem)] leading-[0.95]">
           {words.map((w, i) => (
             <Slash key={w + i} tone={TONES[i % 3]} rot={ROTS[i % 3]}>
               {w}
@@ -55,10 +68,10 @@ export function Hero({ profile }) {
 
         <div className="mt-8 flex flex-wrap gap-3">
           <a
-            href="#heists"
+            href="#projects"
             className="-skew-x-12 bg-red px-6 py-3 text-base font-black uppercase italic tracking-tighter text-[#f5f5f5] transition-colors duration-100 hover:bg-fg hover:text-bg"
           >
-            <span className="inline-block skew-x-12">Lihat Heists</span>
+            <span className="inline-block skew-x-12">Lihat Proyek</span>
           </a>
           <a
             href="#playground"
@@ -71,7 +84,7 @@ export function Hero({ profile }) {
 
       {/* Marquee: dekoratif, murni CSS */}
       <div aria-hidden="true" className="relative -skew-y-1 overflow-hidden border-y-[3px] border-fg bg-fg py-2 text-bg">
-        <div className="marquee flex w-max whitespace-nowrap font-display text-lg font-black uppercase italic tracking-tighter sm:text-2xl">
+        <div className="marquee flex w-max whitespace-nowrap font-accent text-lg uppercase tracking-wide sm:text-2xl">
           {[0, 1].map((k) => (
             <span key={k} className="flex shrink-0 gap-8 pr-8">
               {ticker.map((t, i) => (
@@ -90,14 +103,14 @@ export function Profile({ profile }) {
   return (
     <section id="profile" aria-labelledby="profile-title" className="inv torn -mt-5 pb-20 pt-24">
       <div className="mx-auto max-w-6xl px-4">
-        <SectionTitle id="profile-title" kicker="Status screen">
-          Profile
+        <SectionTitle id="profile-title" kicker="Ringkasan profil">
+          Profil
         </SectionTitle>
         <div className="grid gap-10 md:grid-cols-[1fr_1.4fr]">
           <div>
             <p className="text-lg font-bold leading-snug sm:text-xl">{profile.bio}</p>
             <p className="mt-4">
-              <Slash tone="r">{profile.university}</Slash>
+              <Slash tone="r" font="body" className="text-sm sm:text-base">{profile.university}</Slash>
             </p>
           </div>
           <StatAllocator stats={profile.stats} />
@@ -107,18 +120,18 @@ export function Profile({ profile }) {
   );
 }
 
-/* ---------------- SKILLS / LOOT INVENTORY ---------------- */
+/* ---------------- SKILLS ---------------- */
 export function Skills({ profile }) {
   return (
     <section id="skills" aria-labelledby="skills-title" className="mx-auto max-w-6xl px-4 py-20">
-      <SectionTitle id="skills-title" kicker="Loot inventory">
+      <SectionTitle id="skills-title" kicker="Keahlian & teknologi">
         Skills
       </SectionTitle>
       <div className="grid gap-8 md:grid-cols-2">
         {profile.skills.map((g) => (
           <div key={g.group}>
             <h3 className="mb-3">
-              <Slash tone="w" className="text-base sm:text-lg">
+              <Slash tone="w" font="body" className="text-base sm:text-lg">
                 {g.group}
               </Slash>
             </h3>
@@ -137,12 +150,12 @@ export function Skills({ profile }) {
       </div>
 
       <h3 className="mb-4 mt-14">
-        <Slash tone="r">Experience</Slash>
+        <Slash tone="r" className="text-2xl sm:text-3xl">Pengalaman</Slash>
       </h3>
       <ol className="space-y-4 border-l-[6px] border-red pl-5">
         {profile.experience.map((e, i) => (
           <li key={i}>
-            <p className="text-xs font-black uppercase italic tracking-tighter text-rt">{e.period}</p>
+            <p className="text-xs font-black uppercase italic tracking-wider text-rt">{e.period}</p>
             <p className="text-lg font-black uppercase italic leading-tight tracking-tighter sm:text-xl">{e.role}</p>
             <p className="text-sm font-bold text-mu">{e.org}</p>
             <p className="mt-1 max-w-2xl text-sm">{e.desc}</p>
@@ -153,40 +166,41 @@ export function Skills({ profile }) {
   );
 }
 
-/* ---------------- HEISTS (kartu flip + stempel) ---------------- */
+/* ---------------- PROYEK (kartu flip + stempel) ---------------- */
 function Stamp({ status }) {
-  const done = status === "Secured";
+  const done = status === "Secured" || status === "Selesai";
+  const label = { Secured: "Selesai", "In Progress": "Berjalan" }[status] ?? status;
   return (
     <span
-      aria-label={`Status: ${status}`}
-      className={`absolute right-0 top-0 -rotate-12 border-4 px-3 py-1 font-display text-lg font-black uppercase italic tracking-tighter opacity-0 sm:text-2xl ${
+      aria-label={`Status: ${label}`}
+      className={`absolute right-0 top-0 -rotate-12 border-4 px-3 py-1 font-accent text-lg uppercase tracking-wide opacity-0 sm:text-2xl ${
         done ? "border-red text-rt" : "border-fg text-fg"
       } group-has-[:checked]:[animation:stamp_.35s_.35s_both]`}
     >
-      {status}
+      {label}
     </span>
   );
 }
 
 export function Heists({ heists }) {
   return (
-    <section id="heists" aria-labelledby="heists-title" className="inv torn -mt-5 pb-20 pt-24">
+    <section id="projects" aria-labelledby="projects-title" className="inv torn -mt-5 pb-20 pt-24">
       <div className="mx-auto max-w-6xl px-4">
-        <SectionTitle id="heists-title" kicker="Mission log — klik kartu untuk membuka">
-          Heists
+        <SectionTitle id="projects-title" kicker="Proyek — klik kartu untuk melihat detail">
+          Proyek
         </SectionTitle>
         <ul className="grid gap-8 md:grid-cols-2">
           {heists.map((h, i) => (
             <li key={h.id ?? h.codename} className={i % 2 ? "md:mt-10" : ""}>
               <FlipCard
-                id={`heist-${i}`}
+                id={`project-${i}`}
                 label={`Buka detail ${h.codename}`}
                 front={
                   <>
                     <p className="flex items-center justify-between gap-3">
-                      <span className="text-xs font-black uppercase italic tracking-tighter text-rt">Heist #{String(i + 1).padStart(2, "0")}</span>
-                      <span className="-skew-x-12 bg-fg px-3 py-1 text-xs font-black uppercase italic tracking-tighter text-bg">
-                        <span className="inline-block skew-x-12">{h.status}</span>
+                      <span className="text-xs font-black uppercase italic tracking-wider text-rt">Proyek {String(i + 1).padStart(2, "0")}</span>
+                      <span className="-skew-x-12 bg-fg px-3 py-1 text-xs font-black uppercase italic tracking-wider text-bg">
+                        <span className="inline-block skew-x-12">{{ Secured: "Selesai", "In Progress": "Berjalan" }[h.status] ?? h.status}</span>
                       </span>
                     </p>
                     <h3 className="mt-3 text-2xl font-black uppercase italic leading-tight tracking-tighter sm:text-3xl">{h.codename}</h3>
@@ -196,10 +210,10 @@ export function Heists({ heists }) {
                 back={
                   <div className="relative">
                     <Stamp status={h.status} />
-                    <p className="text-xs font-black uppercase italic tracking-tighter text-rt">Target</p>
+                    <p className="text-xs font-black uppercase italic tracking-wider text-rt">Deskripsi</p>
                     <p className="mt-1 max-w-[70%] text-sm font-bold">{h.target}</p>
-                    <p className="mt-4 text-xs font-black uppercase italic tracking-tighter text-rt">Loot</p>
-                    <ul className="mt-1 flex flex-wrap gap-2" aria-label="Loot">
+                    <p className="mt-4 text-xs font-black uppercase italic tracking-wider text-rt">Teknologi</p>
+                    <ul className="mt-1 flex flex-wrap gap-2" aria-label="Teknologi">
                       {(h.loot ?? []).map((l) => (
                         <li key={l} className="border-2 border-current px-2 py-0.5 text-xs font-black uppercase italic">
                           {l}
@@ -214,7 +228,7 @@ export function Heists({ heists }) {
                         aria-label={`Buka ${h.codename} (tab baru)`}
                         className="mt-4 inline-block border-b-[3px] border-current text-sm font-black uppercase italic tracking-tighter hover:text-rt"
                       >
-                        Lihat target
+                        Lihat proyek
                       </a>
                     )}
                   </div>
@@ -228,66 +242,43 @@ export function Heists({ heists }) {
   );
 }
 
-/* ---------------- CONFIDANT (kartu Tarot) ---------------- */
-const PIP =
-  "h-3 flex-1 -skew-x-12 border-2 border-current transition-colors duration-150 group-hover:bg-red group-focus-within:bg-red group-has-[:checked]:bg-red";
-
-function Pips({ rank }) {
-  return (
-    <span className="mt-4 flex gap-1" role="img" aria-label={`Rank ${rank} dari 10`}>
-      {Array.from({ length: 10 }, (_, i) => (
-        <span
-          key={i}
-          aria-hidden="true"
-          style={{ transitionDelay: `${i * 70}ms` }}
-          className={i < rank ? PIP : "h-3 flex-1 -skew-x-12 border-2 border-current opacity-30"}
-        />
-      ))}
-    </span>
-  );
-}
-
+/* ---------------- REFERENSI (kartu testimoni) ---------------- */
 export function Confidant({ confidants }) {
   return (
-    <section id="confidant" aria-labelledby="confidant-title" className="mx-auto max-w-6xl px-4 py-20">
-      <SectionTitle id="confidant-title" kicker="Bonds — klik kartu untuk membalik">
-        Confidant
+    <section id="references" aria-labelledby="references-title" className="mx-auto max-w-6xl px-4 py-20">
+      <SectionTitle id="references-title" kicker="Relasi profesional — klik kartu untuk membaca testimoni">
+        Referensi
       </SectionTitle>
       <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
         {confidants.map((c, ci) => (
           <li key={c.name}>
             <FlipCard
-              id={`tarot-${ci}`}
+              id={`ref-${ci}`}
               shadow="red"
-              label={`Balik kartu ${c.arcana}: ${c.name}`}
+              label={`Balik kartu ${c.role}: ${c.name}`}
               front={
-                <div className="flex min-h-72 flex-col justify-between">
+                <div className="flex min-h-64 flex-col justify-between">
                   <div>
-                    <p className="font-display text-6xl font-black italic leading-none text-rt" aria-hidden="true">
-                      {ROMAN[c.rank] ?? c.rank}
+                    <p className="font-accent text-6xl leading-none text-rt" aria-hidden="true">
+                      {String(ci + 1).padStart(2, "0")}
                     </p>
-                    <p className="mt-2 text-xl font-black uppercase italic tracking-tighter">{c.arcana}</p>
-                    <p className="text-xs font-bold text-mu">{c.role}</p>
+                    <p className="mt-3 text-xl font-black uppercase italic leading-tight tracking-tighter">{c.role}</p>
+                    <p className="mt-1 text-sm font-bold text-mu">{c.name}</p>
                   </div>
-                  <Pips rank={c.rank} />
+                  <p className="text-xs font-black uppercase italic tracking-tighter text-mu">Klik untuk membaca</p>
                 </div>
               }
               back={
                 <div className="flex min-h-64 flex-col justify-between">
                   <div>
-                    <p className="text-xs font-black uppercase italic tracking-tighter text-rt">
-                      {c.arcana} · Rank {c.rank}
-                    </p>
+                    <p className="text-xs font-black uppercase italic tracking-wider text-rt">{c.role}</p>
                     <blockquote className="mt-3 text-sm font-bold leading-snug">“{c.quote}”</blockquote>
                   </div>
-                  <div>
-                    <p className="mt-3">
-                      <Slash tone="w" className="text-sm">
-                        {c.name}
-                      </Slash>
-                    </p>
-                    <Pips rank={c.rank} />
-                  </div>
+                  <p className="mt-3">
+                    <Slash tone="w" font="body" className="text-sm">
+                      {c.name}
+                    </Slash>
+                  </p>
                 </div>
               }
             />
@@ -303,12 +294,12 @@ export function Playground() {
   return (
     <section id="playground" aria-labelledby="playground-title" className="inv torn -mt-5 pb-20 pt-24">
       <div className="mx-auto max-w-6xl px-4">
-        <SectionTitle id="playground-title" kicker="Hideout">
+        <SectionTitle id="playground-title" kicker="Mini-game & alat">
           Playground
         </SectionTitle>
         <p className="mb-8 max-w-xl font-bold">
-          Mainan kecil di markas. Dimuat hanya saat dibuka — tombol <kbd className="border-2 border-current px-1">M</kbd> membuka menu cepat. Ada
-          rahasia untuk yang hafal kode lama.
+          Beberapa proyek kecil interaktif. Dimuat hanya saat dibuka — tombol <kbd className="border-2 border-current px-1">M</kbd> membuka menu cepat. Ada
+          kejutan kecil untuk yang menemukan kode lama.
         </p>
         <PlaygroundLoader />
       </div>
@@ -326,10 +317,11 @@ const SOCIALS = [
 export function Contact({ profile }) {
   return (
     <section id="contact" aria-labelledby="contact-title" className="mx-auto max-w-6xl px-4 pb-28 pt-20">
-      <SectionTitle id="contact-title" kicker="Calling card">
-        Contact
+      <SectionTitle id="contact-title" kicker="Hubungi saya">
+        Kontak
       </SectionTitle>
-      <p className="mb-8 max-w-xl text-lg font-bold">Ada proyek atau ide gila? Kirim calling card — gue balas secepatnya.</p>
+      <p className="mb-8 max-w-xl text-lg font-bold">Tertarik berkolaborasi atau punya pertanyaan? Silakan hubungi saya, akan saya balas secepatnya.</p>
+      <GlassContact>
       <div className="mb-8 flex flex-wrap items-center gap-3">
         <a
           href={`mailto:${profile.email}`}
@@ -355,7 +347,7 @@ export function Contact({ profile }) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${label} (buka di tab baru)`}
-              className="flex -skew-x-6 items-center gap-4 border-[3px] border-fg bg-bg p-5 shadow-[6px_6px_0_var(--red)] transition-colors duration-100 hover:bg-red hover:text-[#f5f5f5]"
+              className="flex -skew-x-6 items-center gap-4 border-[3px] border-fg bg-bg p-5 shadow-[6px_6px_0_var(--red)] transition-colors duration-100 hover:bg-red hover:text-[#f5f5f5] hover:shadow-[6px_6px_0_var(--fg)]"
             >
               <Icon className="h-8 w-8 shrink-0" />
               <span className="text-xl font-black uppercase italic tracking-tighter">{label}</span>
@@ -363,6 +355,7 @@ export function Contact({ profile }) {
           </li>
         ))}
       </ul>
+      </GlassContact>
       <footer className="mt-20 border-t-[3px] border-fg pt-6 text-xs font-bold uppercase text-mu">
         © {new Date().getFullYear()} {profile.name} · Built with Next.js + Express · Take your time.
       </footer>

@@ -231,7 +231,7 @@ export default function Jukebox({ tracks, autoStart = false, initialOpen = false
             <span aria-hidden="true" className="-ml-1 rotate-2 -skew-x-12 bg-[#0f0f0f] px-3 py-1 text-3xl text-[#f5f5f5] shadow-[3px_3px_0_#dc0000]">
               Box
             </span>
-            <span aria-hidden="true" className="-ml-1 -rotate-1 -skew-x-12 bg-[#f5f5f5] px-2 py-0.5 text-xs text-[#0f0f0f] shadow-[2px_2px_0_#dc0000]">
+            <span aria-hidden="true" className="-ml-1 -rotate-1 -skew-x-12 bg-[#f5f5f5] px-2 py-0.5 font-sans text-[11px] font-black text-[#0f0f0f] shadow-[2px_2px_0_#dc0000]">
               BGM
             </span>
           </h2>
@@ -384,7 +384,7 @@ export default function Jukebox({ tracks, autoStart = false, initialOpen = false
                           disabled={bad}
                           onClick={() => pick(i)}
                           aria-current={active ? "true" : undefined}
-                          className={`flex w-full -skew-x-12 items-center gap-3 px-3 py-2 text-left font-display text-sm font-black uppercase italic tracking-tighter transition-[background-color,color,transform] duration-100 ${
+                          className={`flex w-full -skew-x-12 items-center gap-3 px-3 py-2 text-left text-sm font-black uppercase italic tracking-tighter transition-[background-color,color,transform] duration-100 ${
                             active
                               ? "translate-x-2 bg-[#0f0f0f] text-[#f5f5f5] shadow-[4px_4px_0_#f5f5f5]"
                               : "text-[#f5f5f5] hover:translate-x-1 hover:bg-[#f5f5f5] hover:text-[#0f0f0f]"
