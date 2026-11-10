@@ -3,7 +3,7 @@ import FlipCard from "./FlipCard";
 import StatAllocator from "./StatAllocator";
 import PlaygroundLoader from "./PlaygroundLoader";
 import CopyEmail from "./CopyEmail";
-import ShardPortrait from "./ShardPortrait";
+import HeroCard from "./HeroCard";
 import { IconGithub, IconInstagram, IconLinkedin } from "./Icons";
 
 const TONES = ["w", "r", "k"];
@@ -33,9 +33,9 @@ export function Hero({ profile }) {
       <div aria-hidden="true" className="shard-a absolute -right-6 -top-4 h-[55vw] max-h-[26rem] w-[60vw] max-w-[30rem] bg-red" />
       <div aria-hidden="true" className="shard-b absolute -left-4 bottom-24 h-[40vw] max-h-72 w-[40vw] max-w-72 bg-fg opacity-10" />
 
-      {/* Ilustrasi karakter interaktif ("Potret Kaca"): panel miring di kanan (desktop) / banner di atas (mobile) */}
-      <div className="oc-panel oc-in relative z-0 aspect-[16/9] w-full lg:absolute lg:inset-y-0 lg:right-0 lg:aspect-auto lg:w-[54%]">
-        <ShardPortrait src="/oc.jpg" alt="Ilustrasi karakter pribadi bertopeng hitam-putih dengan latar kaca pecah merah" />
+      {/* Kartu nama 3D yang bisa diputar & dibalik */}
+      <div className="relative z-20 flex justify-center px-4 pt-8 lg:pointer-events-none lg:absolute lg:inset-y-0 lg:right-0 lg:w-[38%] lg:items-center lg:pt-0">
+        <HeroCard name={profile.name} role="Fullstack Developer · Cloud Engineer" />
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-10 pt-8 sm:pt-12 lg:pt-20">
@@ -44,7 +44,7 @@ export function Hero({ profile }) {
             Portofolio // 2026
           </Slash>
         </p>
-        <h1 id="hero-title" className="flex flex-wrap items-start gap-x-2 gap-y-2 text-[clamp(2.4rem,11vw,6.5rem)] leading-[0.95]">
+        <h1 id="hero-title" className="flex flex-wrap items-start gap-x-2 gap-y-2 text-[clamp(2.4rem,11vw,6.5rem)] leading-[0.95] lg:max-w-[62%]">
           {words.map((w, i) => (
             <Slash key={w + i} tone={TONES[i % 3]} rot={ROTS[i % 3]}>
               {w}

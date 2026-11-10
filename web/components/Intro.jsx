@@ -1170,18 +1170,35 @@ export default function Intro({ cue = null }) {
       <canvas ref={ref} className="intro-canvas" aria-hidden="true" />
       {stage === "gate" ? (
         <div className="intro-gate">
-          <p className="intro-kicker">Vassell Enha Atthayya — Portofolio</p>
-          <button type="button" className="intro-start" onClick={() => go(true)}>
-            <span>Masuk</span>
-          </button>
-          <p className="intro-note">Pembuka ±9 detik, dengan suara</p>
-          <div className="intro-alt">
-            <button type="button" onClick={() => go(false)}>
-              Masuk tanpa suara
+          <div aria-hidden="true" className="gate-burst" />
+          <div aria-hidden="true" className="gate-red" />
+          <div
+            className="gate-menu"
+            role="menu"
+            aria-label="Pilih cara masuk"
+            onKeyDown={(e) => {
+              if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+              e.preventDefault();
+              const items = [...e.currentTarget.querySelectorAll("button")];
+              const i = items.indexOf(document.activeElement);
+              items[(i + (e.key === "ArrowDown" ? 1 : -1) + items.length) % items.length]?.focus();
+            }}
+          >
+            <p className="gate-kicker">Vassell Enha Atthayya // Portofolio</p>
+            <button type="button" role="menuitem" className="gate-item" onClick={() => go(true)}>
+              <b>01</b>
+              <span>Masuk Opening</span>
             </button>
-            <button type="button" onClick={skip}>
-              Lewati pembuka
+            <button type="button" role="menuitem" className="gate-item" onClick={() => go(false)}>
+              <b>02</b>
+              <span>Masuk Tanpa Suara</span>
             </button>
+            <button type="button" role="menuitem" className="gate-item" onClick={skip}>
+              <b>03</b>
+              <span>Skip Opening</span>
+            </button>
+            <p className="gate-title">Menu</p>
+            <p className="gate-note">Opening ±9 detik · ↑ ↓ lalu Enter, atau klik</p>
           </div>
         </div>
       ) : (
