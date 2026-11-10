@@ -142,6 +142,39 @@ body {
   cursor: default;
 }
 
+/* ---------- Jukebox ala menu BGM Persona 5 ---------- */
+.jb {
+  filter: drop-shadow(7px 7px 0 var(--fg));
+  transform: rotate(-1.5deg);
+  transform-origin: bottom right;
+  animation: jb-in 180ms ease-out both;
+}
+.jb-body {
+  background: #dc0000;
+  color: #f5f5f5;
+  clip-path: polygon(0 3%, 100% 0, 98.5% 100%, 1.5% 97%);
+}
+@keyframes jb-in {
+  from { opacity: 0; transform: rotate(-1.5deg) translateX(36px) skewX(-8deg); }
+  to { opacity: 1; transform: rotate(-1.5deg); }
+}
+.jb .p5-range::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, #0f0f0f var(--p, 0%), #f5f5f5 var(--p, 0%));
+}
+.jb .p5-range::-moz-range-track {
+  background: linear-gradient(to right, #0f0f0f var(--p, 0%), #f5f5f5 var(--p, 0%));
+}
+.jb .p5-range::-webkit-slider-thumb {
+  background: #0f0f0f;
+  border: 2px solid #f5f5f5;
+  outline: 2px solid #0f0f0f;
+}
+.jb .p5-range::-moz-range-thumb {
+  background: #0f0f0f;
+  border: 2px solid #f5f5f5;
+  outline: 2px solid #0f0f0f;
+}
+
 /* ---------- Hormati prefers-reduced-motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

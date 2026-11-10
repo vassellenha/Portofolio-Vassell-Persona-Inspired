@@ -46,7 +46,7 @@ const toSeconds = (d) => {
 };
 
 const CTRL =
-  "grid h-11 w-11 -skew-x-12 place-items-center border-[3px] border-fg transition-colors duration-100 hover:bg-fg hover:text-bg";
+  "grid h-11 w-11 -skew-x-12 place-items-center border-[3px] border-[#f5f5f5] bg-[#0f0f0f] text-[#f5f5f5] transition-colors duration-100 hover:bg-[#f5f5f5] hover:text-[#0f0f0f]";
 
 export default function Jukebox({ tracks, autoStart = false, initialOpen = false }) {
   const n = tracks.length;
@@ -219,164 +219,194 @@ export default function Jukebox({ tracks, autoStart = false, initialOpen = false
       </div>
 
       {open && (
-        <section
-          id="jukebox-panel"
-          aria-label="Jukebox"
-          className="fixed bottom-24 right-3 z-50 max-h-[calc(100svh-7.5rem)] w-[min(92vw,24rem)] overflow-y-auto border-[3px] border-fg bg-bg text-fg shadow-[8px_8px_0_var(--red)]"
-        >
-          <div className="flex items-center justify-between gap-2 border-b-[3px] border-fg bg-red px-4 py-2 text-[#f5f5f5]">
-            <h2 className="font-display text-lg font-black uppercase italic tracking-tighter">Jukebox</h2>
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              aria-label="Tutup Jukebox"
-              className="grid h-9 w-9 place-items-center hover:bg-bg hover:text-fg"
-            >
+        <section id="jukebox-panel" aria-label="Jukebox" className="jb fixed bottom-24 right-3 z-50 w-[min(94vw,26rem)]">
+          {/* Judul gaya potongan majalah, menempel di tepi atas panel */}
+          <h2
+            aria-label="Jukebox"
+            className="absolute -left-3 -top-7 z-10 flex items-end font-display font-black uppercase italic leading-none tracking-tighter"
+          >
+            <span aria-hidden="true" className="-rotate-3 -skew-x-12 bg-[#f5f5f5] px-3 py-1 text-3xl text-[#0f0f0f] shadow-[3px_3px_0_#dc0000]">
+              Juke
+            </span>
+            <span aria-hidden="true" className="-ml-1 rotate-2 -skew-x-12 bg-[#0f0f0f] px-3 py-1 text-3xl text-[#f5f5f5] shadow-[3px_3px_0_#dc0000]">
+              Box
+            </span>
+            <span aria-hidden="true" className="-ml-1 -rotate-1 -skew-x-12 bg-[#f5f5f5] px-2 py-0.5 text-xs text-[#0f0f0f] shadow-[2px_2px_0_#dc0000]">
+              BGM
+            </span>
+          </h2>
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            aria-label="Tutup Jukebox"
+            className="absolute -right-2 -top-5 z-10 grid h-10 w-10 -skew-x-12 place-items-center border-[3px] border-[#f5f5f5] bg-[#0f0f0f] text-[#f5f5f5] transition-colors duration-100 hover:bg-[#f5f5f5] hover:text-[#0f0f0f]"
+          >
+            <span className="skew-x-12">
               <IconClose />
-            </button>
-          </div>
+            </span>
+          </button>
 
-          {empty ? (
-            <div className="p-5">
-              <p className="font-display text-2xl font-black uppercase italic tracking-tighter">No tracks yet</p>
-              <p className="mt-2 text-sm text-mu">
-                Taruh file .mp3 di <b>web/public/music</b> lalu daftarkan di <b>playlist.json</b>.
-              </p>
-            </div>
-          ) : (
-            <div className="p-4">
-              <p className="text-xs font-black uppercase italic tracking-tighter text-rt">
-                {playing ? "Now playing" : "Paused"}
-              </p>
-              <div className="mt-1 flex items-center gap-3">
-                {track.cover && (
-                  <Image
-                    src={track.cover}
-                    alt=""
-                    width={56}
-                    height={56}
-                    unoptimized
-                    className="h-14 w-14 shrink-0 border-[3px] border-fg object-cover"
+          <div className="jb-body max-h-[calc(100svh-8rem)] overflow-y-auto px-6 pb-8 pt-9">
+            {empty ? (
+              <div className="py-4">
+                <p className="inline-block -skew-x-12 bg-[#0f0f0f] px-3 py-1 font-display text-2xl font-black uppercase italic tracking-tighter">
+                  <span className="inline-block skew-x-12">No tracks yet</span>
+                </p>
+                <p className="mt-3 text-sm font-bold">
+                  Taruh file .mp3 di <b>web/public/music</b> lalu daftarkan di <b>playlist.json</b>.
+                </p>
+              </div>
+            ) : (
+              <>
+                <span className="inline-block -skew-x-12 bg-[#f5f5f5] px-2 py-0.5 text-[11px] font-black uppercase italic tracking-tighter text-[#0f0f0f]">
+                  <span className="inline-block skew-x-12">{playing ? "Now playing" : "Paused"}</span>
+                </span>
+                <div className="mt-2 flex items-center gap-3">
+                  {track.cover && (
+                    <Image
+                      src={track.cover}
+                      alt=""
+                      width={56}
+                      height={56}
+                      unoptimized
+                      className="h-14 w-14 shrink-0 border-[3px] border-[#f5f5f5] object-cover"
+                    />
+                  )}
+                  <div className="min-w-0 flex-1 -skew-x-12 bg-[#0f0f0f] px-4 py-2 shadow-[5px_5px_0_#f5f5f5]">
+                    <p className="skew-x-12 truncate font-display text-xl font-black uppercase italic leading-tight tracking-tighter text-[#f5f5f5]">
+                      {track.title}
+                    </p>
+                    {track.artist && (
+                      <p className="skew-x-12 truncate text-xs font-bold uppercase tracking-tight text-[#f5f5f5]/80">
+                        {track.artist}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  <input
+                    type="range"
+                    className="p5-range"
+                    aria-label="Posisi lagu"
+                    min={0}
+                    max={Math.max(1, Math.floor(dur))}
+                    step={1}
+                    value={Math.min(Math.floor(time), Math.max(1, Math.floor(dur)))}
+                    disabled={!dur}
+                    style={{ "--p": `${pct}%` }}
+                    onChange={(e) => {
+                      const v = Number(e.target.value);
+                      if (audioRef.current) audioRef.current.currentTime = v;
+                      setTime(v);
+                    }}
                   />
-                )}
-                <div className="min-w-0">
-                  <p className="truncate font-display text-xl font-black uppercase italic leading-tight tracking-tighter">
-                    {track.title}
-                  </p>
-                  <p className="truncate text-sm text-mu">{track.artist}</p>
+                  <div className="flex justify-between text-xs font-black italic tabular-nums">
+                    <span>{fmt(time)}</span>
+                    <span>{fmt(total)}</span>
+                  </div>
                 </div>
-              </div>
 
-              <div className="mt-3">
-                <input
-                  type="range"
-                  className="p5-range"
-                  aria-label="Posisi lagu"
-                  min={0}
-                  max={Math.max(1, Math.floor(dur))}
-                  step={1}
-                  value={Math.min(Math.floor(time), Math.max(1, Math.floor(dur)))}
-                  disabled={!dur}
-                  style={{ "--p": `${pct}%` }}
-                  onChange={(e) => {
-                    const v = Number(e.target.value);
-                    if (audioRef.current) audioRef.current.currentTime = v;
-                    setTime(v);
-                  }}
-                />
-                <div className="flex justify-between text-xs font-bold tabular-nums text-mu">
-                  <span>{fmt(time)}</span>
-                  <span>{fmt(total)}</span>
+                <div className="mt-3 flex items-center justify-between gap-2">
+                  <button type="button" onClick={prev} aria-label="Lagu sebelumnya" className={CTRL}>
+                    <span className="skew-x-12">
+                      <IconPrev />
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => toggle()}
+                    aria-label={playing ? "Jeda" : "Putar"}
+                    className={`${CTRL} !h-12 !w-16 !border-[#0f0f0f] !bg-[#f5f5f5] !text-[#0f0f0f] hover:!border-[#f5f5f5] hover:!bg-[#0f0f0f] hover:!text-[#f5f5f5]`}
+                  >
+                    <span className="skew-x-12">{playing ? <IconPause /> : <IconPlay />}</span>
+                  </button>
+                  <button type="button" onClick={next} aria-label="Lagu berikutnya" className={CTRL}>
+                    <span className="skew-x-12">
+                      <IconNext />
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={toggleShuffle}
+                    aria-label="Acak urutan lagu"
+                    aria-pressed={shuffleOn}
+                    className={`${CTRL} ${shuffleOn ? "!bg-[#f5f5f5] !text-[#0f0f0f]" : ""}`}
+                  >
+                    <span className="skew-x-12">
+                      <IconShuffle />
+                    </span>
+                  </button>
                 </div>
-              </div>
 
-              <div className="mt-3 flex items-center justify-between gap-2">
-                <button type="button" onClick={prev} aria-label="Lagu sebelumnya" className={CTRL}>
-                  <span className="skew-x-12">
-                    <IconPrev />
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => toggle()}
-                  aria-label={playing ? "Jeda" : "Putar"}
-                  className={`${CTRL} !h-12 !w-16 bg-red text-[#f5f5f5] hover:!bg-fg hover:!text-bg`}
-                >
-                  <span className="skew-x-12">{playing ? <IconPause /> : <IconPlay />}</span>
-                </button>
-                <button type="button" onClick={next} aria-label="Lagu berikutnya" className={CTRL}>
-                  <span className="skew-x-12">
-                    <IconNext />
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  onClick={toggleShuffle}
-                  aria-label="Acak urutan lagu"
-                  aria-pressed={shuffleOn}
-                  className={`${CTRL} ${shuffleOn ? "bg-fg text-bg" : ""}`}
-                >
-                  <span className="skew-x-12">
-                    <IconShuffle />
-                  </span>
-                </button>
-              </div>
+                <div className="mt-4 flex items-center gap-3">
+                  <label className="flex min-w-0 flex-1 items-center gap-3 text-xs font-black uppercase italic tracking-tighter">
+                    Vol
+                    <input
+                      type="range"
+                      className="p5-range"
+                      aria-label="Volume"
+                      min={0}
+                      max={1}
+                      step={0.05}
+                      value={volume}
+                      style={{ "--p": `${volume * 100}%` }}
+                      onChange={(e) => setVolume(Number(e.target.value))}
+                    />
+                  </label>
+                  <button
+                    type="button"
+                    aria-pressed={sfx}
+                    aria-label="Efek suara (SFX)"
+                    onClick={() => {
+                      const v = !sfx;
+                      setSfx(v);
+                      setSfxOn(v);
+                      if (v) playSfx("click");
+                    }}
+                    className={`shrink-0 -skew-x-12 border-[3px] border-[#f5f5f5] px-3 py-1 text-xs font-black uppercase italic tracking-tighter transition-colors duration-100 hover:bg-[#f5f5f5] hover:text-[#0f0f0f] ${
+                      sfx ? "bg-[#f5f5f5] text-[#0f0f0f]" : "bg-[#0f0f0f] text-[#f5f5f5]"
+                    }`}
+                  >
+                    <span className="inline-block skew-x-12">SFX {sfx ? "ON" : "OFF"}</span>
+                  </button>
+                </div>
 
-              <label className="mt-3 flex items-center gap-3 text-xs font-black uppercase italic tracking-tighter">
-                Vol
-                <input
-                  type="range"
-                  className="p5-range"
-                  aria-label="Volume"
-                  min={0}
-                  max={1}
-                  step={0.05}
-                  value={volume}
-                  style={{ "--p": `${volume * 100}%` }}
-                  onChange={(e) => setVolume(Number(e.target.value))}
-                />
-              </label>
-
-              <button
-                type="button"
-                aria-pressed={sfx}
-                aria-label="Efek suara (SFX)"
-                onClick={() => {
-                  const v = !sfx;
-                  setSfx(v);
-                  setSfxOn(v);
-                  if (v) playSfx("click");
-                }}
-                className={`mt-3 -skew-x-12 border-[3px] border-fg px-3 py-1 text-xs font-black uppercase italic tracking-tighter transition-colors duration-100 hover:bg-fg hover:text-bg ${sfx ? "bg-fg text-bg" : ""}`}
-              >
-                <span className="inline-block skew-x-12">SFX {sfx ? "ON" : "OFF"}</span>
-              </button>
-
-              <ol className="mt-3 max-h-48 overflow-y-auto border-t-[3px] border-fg pt-2">
-                {tracks.map((t, i) => {
-                  const active = i === current;
-                  const bad = failed.includes(i);
-                  return (
-                    <li key={t.file}>
-                      <button
-                        type="button"
-                        disabled={bad}
-                        onClick={() => pick(i)}
-                        aria-current={active ? "true" : undefined}
-                        className={`flex w-full items-baseline gap-2 px-3 py-2 text-left text-sm font-black uppercase italic tracking-tighter transition-colors duration-100 ${
-                          active ? "bg-red text-[#f5f5f5]" : "hover:bg-fg hover:text-bg"
-                        } ${bad ? "line-through opacity-50" : ""}`}
-                      >
-                        <span className="w-5 shrink-0 tabular-nums">{String(i + 1).padStart(2, "0")}</span>
-                        <span className="min-w-0 flex-1 truncate">{t.title}</span>
-                        <span className="shrink-0 text-xs font-bold tabular-nums">{t.duration}</span>
-                      </button>
-                    </li>
-                  );
-                })}
-              </ol>
-            </div>
-          )}
+                {/* Daftar lagu: baris miring bertingkat seperti menu BGM */}
+                <ol className="mt-5 max-h-48 space-y-1.5 overflow-y-auto py-1 pr-2">
+                  {tracks.map((t, i) => {
+                    const active = i === current;
+                    const bad = failed.includes(i);
+                    return (
+                      <li key={t.file} style={{ marginLeft: `${(i % 4) * 8}px` }}>
+                        <button
+                          type="button"
+                          disabled={bad}
+                          onClick={() => pick(i)}
+                          aria-current={active ? "true" : undefined}
+                          className={`flex w-full -skew-x-12 items-center gap-3 px-3 py-2 text-left font-display text-sm font-black uppercase italic tracking-tighter transition-[background-color,color,transform] duration-100 ${
+                            active
+                              ? "translate-x-2 bg-[#0f0f0f] text-[#f5f5f5] shadow-[4px_4px_0_#f5f5f5]"
+                              : "text-[#f5f5f5] hover:translate-x-1 hover:bg-[#f5f5f5] hover:text-[#0f0f0f]"
+                          } ${bad ? "line-through opacity-50" : ""}`}
+                        >
+                          <span
+                            className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-[11px] tabular-nums ${
+                              active ? "bg-[#dc0000] text-[#f5f5f5]" : "bg-[#f5f5f5] text-[#0f0f0f]"
+                            }`}
+                          >
+                            <span className="skew-x-12">{i + 1}</span>
+                          </span>
+                          <span className="min-w-0 flex-1 skew-x-12 truncate">{t.title}</span>
+                          <span className="shrink-0 skew-x-12 text-xs tabular-nums">{t.duration}</span>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ol>
+              </>
+            )}
+          </div>
         </section>
       )}
     </>

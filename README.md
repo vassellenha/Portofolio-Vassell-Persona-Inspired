@@ -135,11 +135,11 @@ npm run build
 
 ```json
 { "tracks": [
-  { "title": "Judul Lagu", "artist": "Nama Artis", "file": "judul-lagu.mp3", "duration": "3:12" }
+  { "title": "Judul Lagu", "file": "judul-lagu.mp3", "duration": "3:12" }
 ] }
 ```
 
-`cover` bersifat opsional. Entri yang file mp3-nya belum ada otomatis disembunyikan. Playlist dibaca saat build, jadi **deploy ulang** setelah menambah lagu. Disarankan kompres ke 128 kbps supaya repo dan loading tetap ringan.
+`artist` dan `cover` bersifat opsional (kalau `artist` kosong, nama artis tidak ditampilkan). Entri yang file mp3-nya belum ada otomatis disembunyikan. Playlist dibaca saat build, jadi **deploy ulang** setelah menambah lagu. Disarankan kompres ke 128 kbps supaya repo dan loading tetap ringan.
 
 <img src="assets/divider.svg" alt="" width="100%" />
 
