@@ -22,7 +22,25 @@
       "JavaScript"
     ],
     "status": "Berjalan",
-    "link": "https://github.com/vassellenha/AMANIN-Project"
+    "link": "https://github.com/vassellenha/AMANIN-Project",
+    "shots": [
+      {
+        "src": "/projects/amanin/screen-dashboard.jpg",
+        "alt": "AMANIN — dashboard cek risiko"
+      },
+      {
+        "src": "/projects/amanin/screen-login.jpg",
+        "alt": "AMANIN — layar masuk"
+      },
+      {
+        "src": "/projects/amanin/screen-history.jpg",
+        "alt": "AMANIN — riwayat pemeriksaan"
+      },
+      {
+        "src": "/projects/amanin/screen-news.jpg",
+        "alt": "AMANIN — wawasan siber"
+      }
+    ]
   },
   {
     "id": 3,

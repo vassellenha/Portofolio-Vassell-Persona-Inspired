@@ -4,11 +4,12 @@ import StatAllocator from "./StatAllocator";
 import PlaygroundLoader from "./PlaygroundLoader";
 import CopyEmail from "./CopyEmail";
 import HeroCard from "./HeroCard";
-import { IconGithub, IconInstagram, IconLinkedin } from "./Icons";
+import { IconGithub, IconInstagram, IconLinkedin, IconBriefcase, IconUsers, IconCamera, IconCap, IconStar } from "./Icons";
 
 const TONES = ["w", "r", "k"];
 const ROTS = [-1.5, 1, -0.5];
 const ROMAN = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
+const XP_ICON = { internship: IconBriefcase, competition: IconStar, photo: IconCamera, org: IconUsers, academic: IconCap };
 
 function SectionTitle({ id, children, kicker }) {
   return (
@@ -142,38 +143,51 @@ export function Skills({ profile }) {
         ))}
       </div>
 
-      <h3 className="mb-4 mt-14">
-        <Slash tone="r" className="text-2xl sm:text-3xl">Pengalaman</Slash>
+      <h3 className="mb-6 mt-14">
+        <Slash tone="r" className="text-2xl sm:text-3xl">Work Experiences</Slash>
       </h3>
-      <ol className="space-y-4 border-l-[6px] border-red pl-5">
-        {profile.experience.map((e, i) => (
-          <li key={i}>
-            <p className="text-xs font-black uppercase italic tracking-tighter text-rt">{e.period}</p>
-            <p className="text-lg font-black uppercase italic leading-tight tracking-tighter sm:text-xl">{e.role}</p>
-            <p className="text-sm font-bold text-mu">{e.org}</p>
-            <p className="mt-1 max-w-2xl text-sm">{e.desc}</p>
-          </li>
-        ))}
-      </ol>
+      <ul className="grid gap-6 sm:grid-cols-2">
+        {profile.experience.map((e, i) => {
+          const Icon = XP_ICON[e.kind] ?? IconBriefcase;
+          const tone = i % 2 ? "k" : "r";
+          return (
+            <li key={i} className={`xp-card p-5 ${i % 2 ? "xp-tilt-r" : "xp-tilt-l"}`}>
+              <div className="flex items-center justify-between gap-3">
+                <span
+                  className={`grid h-10 w-10 -skew-x-12 place-items-center border-[3px] ${
+                    tone === "r" ? "border-red bg-red text-[#f5f5f5]" : "border-fg bg-fg text-bg"
+                  }`}
+                >
+                  <Icon width={20} height={20} className="skew-x-12" />
+                </span>
+                <span className="text-right text-[0.65rem] font-black uppercase italic leading-tight tracking-tighter text-rt sm:text-xs">
+                  {e.period}
+                </span>
+              </div>
+              <p className="mt-4 text-lg font-black uppercase italic leading-tight tracking-tighter sm:text-xl">{e.role}</p>
+              <p className="text-sm font-bold text-mu">{e.org}</p>
+              <p className="mt-2 text-sm">{e.desc}</p>
+            </li>
+          );
+        })}
+      </ul>
 
-      <h3 className="mb-4 mt-14">
+      <h3 className="mb-6 mt-14">
         <Slash tone="r" className="text-2xl sm:text-3xl">Sertifikat</Slash>
       </h3>
-      <a
-        href="/sertifikat-sap.jpg"
-        target="_blank"
-        rel="noreferrer"
-        className="block max-w-xl border-[3px] border-fg transition-opacity duration-100 hover:opacity-90"
-      >
-        <img
-          src="/sertifikat-sap.jpg"
-          alt="Sertifikat Penghargaan — Asisten Praktikum Sistem Enterprise, Telkom University"
-          className="w-full"
-          loading="lazy"
-        />
-      </a>
-      <p className="mt-2 max-w-xl text-sm text-mu">
-        Asisten Praktikum Sistem Enterprise (SAP) — Prodi S1 Sistem Informasi Telkom University, predikat Baik Sekali.
+      <div className="max-w-xl overflow-hidden">
+        <a href="/sertifikat-sap.jpg" target="_blank" rel="noreferrer" className="cert-frame block transition-opacity duration-100 hover:opacity-90">
+          <span className="cert-ribbon" aria-hidden="true">Diperoleh</span>
+          <img
+            src="/sertifikat-sap.jpg"
+            alt="Sertifikat Penghargaan — Asisten Praktikum Sistem Enterprise, Telkom University"
+            className="block w-full"
+            loading="lazy"
+          />
+        </a>
+      </div>
+      <p className="mt-3 max-w-xl text-sm text-mu">
+        <span className="font-black uppercase italic tracking-tighter text-rt">Predikat Baik Sekali</span> — Asisten Praktikum Sistem Enterprise (SAP), Prodi S1 Sistem Informasi Telkom University, Semester Ganjil 2024/2025.
       </p>
     </section>
   );
@@ -204,7 +218,7 @@ export function Heists({ heists }) {
         </SectionTitle>
         <ul className="grid gap-8 md:grid-cols-2">
           {heists.map((h, i) => (
-            <li key={h.id ?? h.codename} className={i % 2 ? "md:mt-10" : ""}>
+            <li key={h.id ?? h.codename} className={`transition-transform duration-150 hover:rotate-0 ${i % 2 ? "md:mt-10 rotate-1" : "-rotate-1"}`}>
               <FlipCard
                 id={`project-${i}`}
                 label={`Buka detail ${h.codename}`}
@@ -233,6 +247,18 @@ export function Heists({ heists }) {
                         </li>
                       ))}
                     </ul>
+                    {h.shots?.length > 0 && (
+                      <>
+                        <p className="mt-4 text-xs font-black uppercase italic tracking-tighter text-rt">Tampilan Aplikasi</p>
+                        <ul className="mt-1 flex flex-wrap gap-2" aria-label="Tangkapan layar">
+                          {h.shots.map((s, si) => (
+                            <li key={s.src} className={`-skew-x-6 border-2 border-current p-0.5 ${si % 2 ? "rotate-1" : "-rotate-1"}`}>
+                              <img src={s.src} alt={s.alt} className="h-16 w-11 skew-x-6 object-cover object-top sm:h-20 sm:w-14" loading="lazy" />
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    )}
                     {h.link && (
                       <a
                         href={h.link}

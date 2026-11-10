@@ -376,3 +376,50 @@ html.intro .intro-ov { display: block; position: fixed; inset: 0; z-index: 600; 
 .hc-shine { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.22) 50%, transparent 65%); background-size: 250% 250%; mix-blend-mode: screen; transform: translateZ(1px); }
 .hc-hint { position: absolute; left: 50%; bottom: 0.6rem; translate: -50% 0; white-space: nowrap; transform: skewX(-12deg); background: var(--fg); color: var(--bg); padding: 0.2rem 0.7rem; font-size: 0.68rem; font-weight: 900; font-style: italic; text-transform: uppercase; }
 .hc-hint span { display: inline-block; transform: skewX(12deg); }
+
+/* ---------- Kartu Work Experience (gaya calling card Persona 5) ---------- */
+.xp-card {
+  position: relative;
+  border: 3px solid var(--fg);
+  background: var(--bg);
+  clip-path: polygon(0 0, 100% 1.5%, 100% 100%, 0 98.5%);
+  transition: transform 120ms ease-out;
+}
+.xp-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: #dc0000;
+}
+.xp-tilt-l { transform: rotate(-0.6deg); }
+.xp-tilt-r { transform: rotate(0.6deg); }
+.xp-card:hover { transform: rotate(0deg) scale(1.015); }
+
+/* ---------- Badge "item diperoleh" buat sertifikat ---------- */
+.cert-frame {
+  position: relative;
+  border: 3px solid var(--fg);
+  filter: drop-shadow(6px 6px 0 var(--fg));
+  transform: rotate(-0.8deg);
+}
+.cert-frame .cert-ribbon {
+  position: absolute;
+  top: 14px;
+  right: -34px;
+  width: 160px;
+  transform: rotate(40deg);
+  background: #dc0000;
+  color: #f5f5f5;
+  text-align: center;
+  padding: 4px 0;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+  z-index: 2;
+}
