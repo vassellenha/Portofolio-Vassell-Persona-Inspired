@@ -3,10 +3,20 @@ import path from "node:path";
 import "./globals.css";
 import Header from "../components/Header";
 import JukeboxLoader from "../components/JukeboxLoader";
+import GlobalFx from "../components/GlobalFx";
+
+const SITE = process.env.NEXT_PUBLIC_SITE_URL || "https://web-nu-wine-25.vercel.app";
+const DESC = "Portofolio Vassell Enha Atthayya (Marcell), Full Stack Developer & mahasiswa Sistem Informasi Telkom University — bertema Persona 5.";
 
 export const metadata = {
-  title: "Vassell Enha Atthayya — Full Stack Developer",
-  description: "Portofolio Vassell Enha Atthayya (Marcell), Full Stack Developer & mahasiswa Sistem Informasi Telkom University.",
+  metadataBase: new URL(SITE),
+  title: { default: "Vassell Enha Atthayya — Full Stack Developer", template: "%s | Vassell Enha Atthayya" },
+  description: DESC,
+  keywords: ["Vassell Enha Atthayya", "Marcell", "Full Stack Developer", "Next.js", "Telkom University", "portfolio"],
+  authors: [{ name: "Vassell Enha Atthayya", url: SITE }],
+  alternates: { canonical: "/" },
+  openGraph: { type: "website", url: SITE, siteName: "Vassell Enha Atthayya", title: "Vassell Enha Atthayya — Full Stack Developer", description: DESC, locale: "id_ID" },
+  twitter: { card: "summary_large_image", title: "Vassell Enha Atthayya — Full Stack Developer", description: DESC },
 };
 
 export const viewport = {
@@ -19,7 +29,7 @@ export const viewport = {
 };
 
 // Dijalankan sebelum paint: baca localStorage, fallback ke prefers-color-scheme. Mencegah flash tema.
-const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem('theme');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',d)}catch(e){}})()`;
+const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem('theme');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',d);if(localStorage.getItem('p5:secret')==='1')document.documentElement.setAttribute('data-secret','')}catch(e){}})()`;
 
 // Baca playlist.json di server saat build; hanya lagu yang file-nya benar-benar ada yang dikirim ke client.
 async function loadTracks() {
@@ -77,10 +87,15 @@ export default async function RootLayout({ children }) {
         >
           Lewati ke konten
         </a>
+        <div aria-hidden="true" className="wipe">
+          <i className="w-b" />
+          <i className="w-a" />
+        </div>
         <Header />
         {children}
         {/* Di root layout: tetap bermain saat navigasi antar halaman */}
         <JukeboxLoader tracks={tracks} />
+        <GlobalFx />
       </body>
     </html>
   );

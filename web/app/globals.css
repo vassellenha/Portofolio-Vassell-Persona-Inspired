@@ -155,3 +155,119 @@ body {
   .eq-bar:nth-child(2) { transform: scaleY(1); }
   .eq-bar:nth-child(3) { transform: scaleY(0.45); }
 }
+
+/* ---------- Fase 3: efek interaktif (CSS native) ---------- */
+@keyframes stamp {
+  from { opacity: 0; transform: scale(2.2) rotate(-12deg); }
+  to { opacity: 0.95; transform: scale(1) rotate(-12deg); }
+}
+@keyframes flashred {
+  from { opacity: 0.85; }
+  to { opacity: 0; }
+}
+.flash-red { animation: flashred 0.5s ease-out both; }
+@keyframes rankup {
+  0% { transform: translateX(-12px) skewX(-12deg); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateX(6px) skewX(-12deg); opacity: 0; }
+}
+.rank-up { animation: rankup 1.1s ease-out both; }
+@keyframes pippop {
+  0% { transform: skewX(-12deg) scale(1.9); }
+  100% { transform: skewX(-12deg) scale(1); }
+}
+.pip-pop { animation: pippop 0.3s ease-out both; }
+@keyframes pop {
+  0% { transform: scale(0.4) skewX(-12deg); opacity: 0; }
+  60% { transform: scale(1.15) skewX(-12deg); opacity: 1; }
+  100% { transform: scale(1) skewX(-12deg); opacity: 1; }
+}
+.pop { animation: pop 0.3s ease-out both; }
+@keyframes wheelin {
+  from { opacity: 0; scale: 0.3; }
+  to { opacity: 1; scale: 1; }
+}
+.wheel-in { animation: wheelin 0.25s ease-out both; }
+
+/* Efek klik slash */
+@keyframes slashfx {
+  0% { transform: translate(-50%, -50%) rotate(-35deg) scaleX(0); opacity: 1; }
+  60% { transform: translate(-50%, -50%) rotate(-35deg) scaleX(1); opacity: 1; }
+  100% { transform: translate(-50%, -50%) rotate(-35deg) scaleX(1); opacity: 0; }
+}
+.slash-fx {
+  position: fixed;
+  z-index: 400;
+  width: 64px;
+  height: 5px;
+  background: #dc0000;
+  box-shadow: 0 0 0 2px #f5f5f5;
+  pointer-events: none;
+  animation: slashfx 0.3s ease-out forwards;
+}
+
+/* Wipe merah-hitam saat halaman dimuat (diagonal, murni CSS) */
+.wipe { position: fixed; inset: 0; z-index: 500; pointer-events: none; }
+.wipe i { position: absolute; inset: 0; display: block; }
+@keyframes wipeout {
+  from { clip-path: polygon(0 0, 125% 0, 100% 100%, 0 100%); }
+  to { clip-path: polygon(125% 0, 125% 0, 100% 100%, 100% 100%); }
+}
+.wipe .w-a { background: #dc0000; animation: wipeout 0.55s 0.12s cubic-bezier(0.7, 0, 0.3, 1) both; }
+.wipe .w-b { background: #0f0f0f; animation: wipeout 0.55s 0.04s cubic-bezier(0.7, 0, 0.3, 1) both; }
+
+/* Easter egg: pecahan kaca + glitch */
+@keyframes shardfly {
+  0%, 25% { transform: none; opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) rotate(var(--r)); opacity: 0; }
+}
+.shard-fly { animation: shardfly 1s cubic-bezier(0.6, 0, 0.9, 0.4) forwards; }
+@keyframes glitch-a {
+  0% { clip-path: inset(0 0 80% 0); transform: translate(-6px, 0); }
+  25% { clip-path: inset(45% 0 35% 0); transform: translate(6px, 0); }
+  50% { clip-path: inset(75% 0 5% 0); transform: translate(-4px, 0); }
+  75% { clip-path: inset(15% 0 60% 0); transform: translate(5px, 0); }
+  100% { clip-path: inset(0 0 100% 0); transform: none; }
+}
+@keyframes glitch-b {
+  0% { clip-path: inset(60% 0 20% 0); transform: translate(6px, 0); }
+  30% { clip-path: inset(10% 0 70% 0); transform: translate(-6px, 0); }
+  60% { clip-path: inset(85% 0 0 0); transform: translate(4px, 0); }
+  100% { clip-path: inset(0 0 100% 0); transform: none; }
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.glitch::before { color: #dc0000; animation: glitch-a 0.8s steps(2, end) 3 forwards; }
+.glitch::after { color: #8a8a8a; animation: glitch-b 0.8s steps(2, end) 3 forwards; }
+
+/* Tema rahasia (Konami): merah penuh. Kontras tetap AA (putih di atas #dc0000 = 4.76:1) */
+html[data-secret] {
+  --bg: #dc0000;
+  --fg: #f5f5f5;
+  --ibg: #0f0f0f;
+  --ifg: #f5f5f5;
+  --red: #0f0f0f;
+  --rt: #f5f5f5;
+  --irt: #ff5252;
+  --mu: #f5f5f5;
+  --imu: #b5b5b5;
+}
+
+/* Kursor kustom sederhana (hanya perangkat dengan pointer halus; touch tidak terpengaruh) */
+@media (pointer: fine) {
+  body {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M3 2 L21 10 L12 13 L9 22 Z' fill='%23dc0000' stroke='%230f0f0f' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E") 3 2, auto;
+  }
+  a, button, [role="button"], input[type="range"], summary {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M3 2 L21 10 L12 13 L9 22 Z' fill='%23f5f5f5' stroke='%23dc0000' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E") 3 2, pointer;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wipe, .slash-fx { display: none !important; }
+}

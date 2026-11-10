@@ -1,5 +1,5 @@
 import { getSiteData } from "../lib/api";
-import { Hero, Profile, Skills, Heists, Confidant, Contact } from "../components/Sections";
+import { Hero, Profile, Skills, Heists, Confidant, Playground, Contact } from "../components/Sections";
 
 // ISR: halaman dibangun statis lalu disegarkan di server tiap 60 detik.
 export const revalidate = 60;
@@ -14,6 +14,7 @@ export default async function Page() {
       <Skills profile={profile} />
       <Heists heists={heists} />
       <Confidant confidants={confidants} />
+      <Playground />
       <Contact profile={profile} />
     </main>
   );

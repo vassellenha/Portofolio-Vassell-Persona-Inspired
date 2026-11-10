@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { MusicButton, PanelButton } from "./MusicButton";
+import { isSfxOn, setSfxOn, playSfx } from "../lib/sfx";
 import { IconClose, IconNext, IconPause, IconPlay, IconPrev, IconShuffle } from "./Icons";
 
 const KEY = "p5:jukebox";
@@ -63,6 +64,7 @@ export default function Jukebox({ tracks, autoStart = false, initialOpen = false
   const [time, setTime] = useState(0);
   const [dur, setDur] = useState(0);
   const [failed, setFailed] = useState([]);
+  const [sfx, setSfx] = useState(isSfxOn);
 
   const track = tracks[current];
   const empty = n === 0 || failed.length >= n;
@@ -334,6 +336,21 @@ export default function Jukebox({ tracks, autoStart = false, initialOpen = false
                   onChange={(e) => setVolume(Number(e.target.value))}
                 />
               </label>
+
+              <button
+                type="button"
+                aria-pressed={sfx}
+                aria-label="Efek suara (SFX)"
+                onClick={() => {
+                  const v = !sfx;
+                  setSfx(v);
+                  setSfxOn(v);
+                  if (v) playSfx("click");
+                }}
+                className={`mt-3 -skew-x-12 border-[3px] border-fg px-3 py-1 text-xs font-black uppercase italic tracking-tighter transition-colors duration-100 hover:bg-fg hover:text-bg ${sfx ? "bg-fg text-bg" : ""}`}
+              >
+                <span className="inline-block skew-x-12">SFX {sfx ? "ON" : "OFF"}</span>
+              </button>
 
               <ol className="mt-3 max-h-48 overflow-y-auto border-t-[3px] border-fg pt-2">
                 {tracks.map((t, i) => {

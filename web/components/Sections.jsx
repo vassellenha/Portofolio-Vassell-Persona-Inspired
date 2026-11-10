@@ -1,6 +1,9 @@
 import Slash from "./Slash";
-import { IconGithub, IconInstagram, IconLinkedin, IconStar } from "./Icons";
+import FlipCard from "./FlipCard";
+import StatAllocator from "./StatAllocator";
+import PlaygroundLoader from "./PlaygroundLoader";
 import CopyEmail from "./CopyEmail";
+import { IconGithub, IconInstagram, IconLinkedin } from "./Icons";
 
 const TONES = ["w", "r", "k"];
 const ROTS = [-1.5, 1, -0.5];
@@ -58,10 +61,10 @@ export function Hero({ profile }) {
             <span className="inline-block skew-x-12">Lihat Heists</span>
           </a>
           <a
-            href="#contact"
+            href="#playground"
             className="-skew-x-12 border-[3px] border-fg px-6 py-3 text-base font-black uppercase italic tracking-tighter transition-colors duration-100 hover:bg-fg hover:text-bg"
           >
-            <span className="inline-block skew-x-12">Hubungi</span>
+            <span className="inline-block skew-x-12">Playground</span>
           </a>
         </div>
       </div>
@@ -83,16 +86,6 @@ export function Hero({ profile }) {
 }
 
 /* ---------------- PROFILE / STATS ---------------- */
-function Pips({ level }) {
-  return (
-    <span className="flex gap-1" role="img" aria-label={`Level ${level} dari 9`}>
-      {Array.from({ length: 9 }, (_, i) => (
-        <span key={i} aria-hidden="true" className={`h-4 w-3 -skew-x-12 border-2 border-fg sm:w-5 ${i < level ? "bg-red" : ""}`} />
-      ))}
-    </span>
-  );
-}
-
 export function Profile({ profile }) {
   return (
     <section id="profile" aria-labelledby="profile-title" className="inv torn -mt-5 pb-20 pt-24">
@@ -101,27 +94,13 @@ export function Profile({ profile }) {
           Profile
         </SectionTitle>
         <div className="grid gap-10 md:grid-cols-[1fr_1.4fr]">
-          <div >
+          <div>
             <p className="text-lg font-bold leading-snug sm:text-xl">{profile.bio}</p>
             <p className="mt-4">
               <Slash tone="r">{profile.university}</Slash>
             </p>
           </div>
-          <ul className="space-y-4">
-            {profile.stats.length === 0 && <li className="text-mu">Data stats belum tersedia.</li>}
-            {profile.stats.map((s) => (
-              <li key={s.key} >
-                <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
-                  <span className="flex items-center gap-2 text-xl font-black uppercase italic tracking-tighter sm:text-2xl">
-                    <IconStar className="h-5 w-5 text-rt" />
-                    {s.key}
-                  </span>
-                  <Pips level={s.level} />
-                </div>
-                <p className="mt-1 text-sm text-mu">{s.skill}</p>
-              </li>
-            ))}
-          </ul>
+          <StatAllocator stats={profile.stats} />
         </div>
       </div>
     </section>
@@ -138,7 +117,7 @@ export function Skills({ profile }) {
       <div className="grid gap-8 md:grid-cols-2">
         {profile.skills.map((g) => (
           <div key={g.group}>
-            <h3 className="mb-3 text-xl font-black uppercase italic tracking-tighter sm:text-2xl">
+            <h3 className="mb-3">
               <Slash tone="w" className="text-base sm:text-lg">
                 {g.group}
               </Slash>
@@ -157,7 +136,7 @@ export function Skills({ profile }) {
         ))}
       </div>
 
-      <h3 className="mb-4 mt-14 text-xl font-black uppercase italic tracking-tighter sm:text-2xl">
+      <h3 className="mb-4 mt-14">
         <Slash tone="r">Experience</Slash>
       </h3>
       <ol className="space-y-4 border-l-[6px] border-red pl-5">
@@ -174,96 +153,164 @@ export function Skills({ profile }) {
   );
 }
 
-/* ---------------- HEISTS ---------------- */
+/* ---------------- HEISTS (kartu flip + stempel) ---------------- */
+function Stamp({ status }) {
+  const done = status === "Secured";
+  return (
+    <span
+      aria-label={`Status: ${status}`}
+      className={`absolute right-0 top-0 -rotate-12 border-4 px-3 py-1 font-display text-lg font-black uppercase italic tracking-tighter opacity-0 sm:text-2xl ${
+        done ? "border-red text-rt" : "border-fg text-fg"
+      } group-has-[:checked]:[animation:stamp_.35s_.35s_both]`}
+    >
+      {status}
+    </span>
+  );
+}
+
 export function Heists({ heists }) {
   return (
-    <section id="heists" aria-labelledby="heists-title" className="mx-auto max-w-6xl px-4 py-20">
-      <SectionTitle id="heists-title" kicker="Mission log">
-        Heists
-      </SectionTitle>
-      {heists.length === 0 ? (
-        <p className="text-mu">Belum ada heist yang tercatat.</p>
-      ) : (
+    <section id="heists" aria-labelledby="heists-title" className="inv torn -mt-5 pb-20 pt-24">
+      <div className="mx-auto max-w-6xl px-4">
+        <SectionTitle id="heists-title" kicker="Mission log — klik kartu untuk membuka">
+          Heists
+        </SectionTitle>
         <ul className="grid gap-8 md:grid-cols-2">
           {heists.map((h, i) => (
-            <li key={h.id ?? h.codename} className={`${i % 2 ? "md:mt-10" : ""}`}>
-              <article className="group -skew-x-6 border-[3px] border-fg bg-bg shadow-[8px_8px_0_var(--fg)] transition-colors duration-100 hover:bg-red hover:text-[#f5f5f5]">
-                <div className="skew-x-6 p-5">
-                  <p className="flex items-center justify-between gap-3">
-                    <span className="text-xs font-black uppercase italic tracking-tighter text-rt group-hover:text-[#f5f5f5]">
-                      Heist #{String(i + 1).padStart(2, "0")}
-                    </span>
-                    <span
-                      className={`-skew-x-12 px-3 py-1 text-xs font-black uppercase italic tracking-tighter ${
-                        h.status === "Secured" ? "bg-red text-[#f5f5f5] group-hover:bg-bg group-hover:text-fg" : "bg-fg text-bg group-hover:bg-[#f5f5f5] group-hover:text-[#0f0f0f]"
-                      }`}
-                    >
-                      <span className="inline-block skew-x-12">{h.status}</span>
-                    </span>
-                  </p>
-                  <h3 className="mt-3 text-2xl font-black uppercase italic leading-tight tracking-tighter sm:text-3xl">{h.codename}</h3>
-                  <p className="mt-3 text-sm font-bold">
-                    <span className="uppercase text-rt group-hover:text-[#f5f5f5]">Target:</span> {h.target}
-                  </p>
-                  <ul className="mt-4 flex flex-wrap gap-2" aria-label="Loot">
-                    {(h.loot ?? []).map((l) => (
-                      <li key={l} className="border-2 border-current px-2 py-0.5 text-xs font-black uppercase italic">
-                        {l}
-                      </li>
-                    ))}
-                  </ul>
-                  {h.link && (
-                    <a
-                      href={h.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`Buka ${h.codename} (tab baru)`}
-                      className="mt-4 inline-block border-b-[3px] border-current text-sm font-black uppercase italic tracking-tighter"
-                    >
-                      Lihat target
-                    </a>
-                  )}
-                </div>
-              </article>
+            <li key={h.id ?? h.codename} className={i % 2 ? "md:mt-10" : ""}>
+              <FlipCard
+                id={`heist-${i}`}
+                label={`Buka detail ${h.codename}`}
+                front={
+                  <>
+                    <p className="flex items-center justify-between gap-3">
+                      <span className="text-xs font-black uppercase italic tracking-tighter text-rt">Heist #{String(i + 1).padStart(2, "0")}</span>
+                      <span className="-skew-x-12 bg-fg px-3 py-1 text-xs font-black uppercase italic tracking-tighter text-bg">
+                        <span className="inline-block skew-x-12">{h.status}</span>
+                      </span>
+                    </p>
+                    <h3 className="mt-3 text-2xl font-black uppercase italic leading-tight tracking-tighter sm:text-3xl">{h.codename}</h3>
+                    <p className="mt-4 text-xs font-black uppercase italic tracking-tighter text-mu">Klik untuk membuka</p>
+                  </>
+                }
+                back={
+                  <div className="relative">
+                    <Stamp status={h.status} />
+                    <p className="text-xs font-black uppercase italic tracking-tighter text-rt">Target</p>
+                    <p className="mt-1 max-w-[70%] text-sm font-bold">{h.target}</p>
+                    <p className="mt-4 text-xs font-black uppercase italic tracking-tighter text-rt">Loot</p>
+                    <ul className="mt-1 flex flex-wrap gap-2" aria-label="Loot">
+                      {(h.loot ?? []).map((l) => (
+                        <li key={l} className="border-2 border-current px-2 py-0.5 text-xs font-black uppercase italic">
+                          {l}
+                        </li>
+                      ))}
+                    </ul>
+                    {h.link && (
+                      <a
+                        href={h.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Buka ${h.codename} (tab baru)`}
+                        className="mt-4 inline-block border-b-[3px] border-current text-sm font-black uppercase italic tracking-tighter hover:text-rt"
+                      >
+                        Lihat target
+                      </a>
+                    )}
+                  </div>
+                }
+              />
             </li>
           ))}
         </ul>
-      )}
+      </div>
     </section>
   );
 }
 
-/* ---------------- CONFIDANT ---------------- */
+/* ---------------- CONFIDANT (kartu Tarot) ---------------- */
+const PIP =
+  "h-3 flex-1 -skew-x-12 border-2 border-current transition-colors duration-150 group-hover:bg-red group-focus-within:bg-red group-has-[:checked]:bg-red";
+
+function Pips({ rank }) {
+  return (
+    <span className="mt-4 flex gap-1" role="img" aria-label={`Rank ${rank} dari 10`}>
+      {Array.from({ length: 10 }, (_, i) => (
+        <span
+          key={i}
+          aria-hidden="true"
+          style={{ transitionDelay: `${i * 70}ms` }}
+          className={i < rank ? PIP : "h-3 flex-1 -skew-x-12 border-2 border-current opacity-30"}
+        />
+      ))}
+    </span>
+  );
+}
+
 export function Confidant({ confidants }) {
   return (
-    <section id="confidant" aria-labelledby="confidant-title" className="inv torn -mt-5 pb-20 pt-24">
+    <section id="confidant" aria-labelledby="confidant-title" className="mx-auto max-w-6xl px-4 py-20">
+      <SectionTitle id="confidant-title" kicker="Bonds — klik kartu untuk membalik">
+        Confidant
+      </SectionTitle>
+      <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        {confidants.map((c, ci) => (
+          <li key={c.name}>
+            <FlipCard
+              id={`tarot-${ci}`}
+              shadow="red"
+              label={`Balik kartu ${c.arcana}: ${c.name}`}
+              front={
+                <div className="flex min-h-72 flex-col justify-between">
+                  <div>
+                    <p className="font-display text-6xl font-black italic leading-none text-rt" aria-hidden="true">
+                      {ROMAN[c.rank] ?? c.rank}
+                    </p>
+                    <p className="mt-2 text-xl font-black uppercase italic tracking-tighter">{c.arcana}</p>
+                    <p className="text-xs font-bold text-mu">{c.role}</p>
+                  </div>
+                  <Pips rank={c.rank} />
+                </div>
+              }
+              back={
+                <div className="flex min-h-64 flex-col justify-between">
+                  <div>
+                    <p className="text-xs font-black uppercase italic tracking-tighter text-rt">
+                      {c.arcana} · Rank {c.rank}
+                    </p>
+                    <blockquote className="mt-3 text-sm font-bold leading-snug">“{c.quote}”</blockquote>
+                  </div>
+                  <div>
+                    <p className="mt-3">
+                      <Slash tone="w" className="text-sm">
+                        {c.name}
+                      </Slash>
+                    </p>
+                    <Pips rank={c.rank} />
+                  </div>
+                </div>
+              }
+            />
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+/* ---------------- PLAYGROUND ---------------- */
+export function Playground() {
+  return (
+    <section id="playground" aria-labelledby="playground-title" className="inv torn -mt-5 pb-20 pt-24">
       <div className="mx-auto max-w-6xl px-4">
-        <SectionTitle id="confidant-title" kicker="Bonds">
-          Confidant
+        <SectionTitle id="playground-title" kicker="Hideout">
+          Playground
         </SectionTitle>
-        {confidants.length === 0 ? (
-          <p className="text-mu">Belum ada confidant.</p>
-        ) : (
-          <ul className="grid gap-8 md:grid-cols-3">
-            {confidants.map((c, i) => (
-              <li key={c.name} >
-                <figure className={`border-[3px] border-fg bg-bg p-5 ${i % 2 ? "md:translate-y-6" : ""}`}>
-                  <p className="font-display text-5xl font-black italic leading-none text-rt" aria-label={`Rank ${c.rank}`}>
-                    {ROMAN[c.rank] ?? c.rank}
-                  </p>
-                  <p className="mt-1 text-sm font-black uppercase italic tracking-tighter">{c.arcana}</p>
-                  <blockquote className="mt-3 text-base font-bold leading-snug">“{c.quote}”</blockquote>
-                  <figcaption className="mt-4 flex flex-wrap items-center gap-2">
-                    <Slash tone="w" className="text-sm">
-                      {c.name}
-                    </Slash>
-                    <span className="text-xs font-black uppercase italic tracking-tighter text-mu">{c.role}</span>
-                  </figcaption>
-                </figure>
-              </li>
-            ))}
-          </ul>
-        )}
+        <p className="mb-8 max-w-xl font-bold">
+          Mainan kecil di markas. Dimuat hanya saat dibuka — tombol <kbd className="border-2 border-current px-1">M</kbd> membuka menu cepat. Ada
+          rahasia untuk yang hafal kode lama.
+        </p>
+        <PlaygroundLoader />
       </div>
     </section>
   );

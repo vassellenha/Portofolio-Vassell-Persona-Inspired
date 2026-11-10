@@ -7,6 +7,7 @@ const NAV = [
   ["#skills", "Skills"],
   ["#heists", "Heists"],
   ["#confidant", "Confidant"],
+  ["#playground", "Playground"],
   ["#contact", "Contact"],
 ];
 
