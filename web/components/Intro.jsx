@@ -1170,8 +1170,17 @@ export default function Intro({ cue = null }) {
       <canvas ref={ref} className="intro-canvas" aria-hidden="true" />
       {stage === "gate" ? (
         <div className="intro-gate">
-          <div aria-hidden="true" className="gate-burst" />
           <div aria-hidden="true" className="gate-red" />
+          <div aria-hidden="true" className="gate-pattern" />
+          <div aria-hidden="true" className="gate-dots" />
+          <img aria-hidden="true" alt="" src="/oc-cut.webp" className="gate-sil" />
+          <div aria-hidden="true" className="gate-slash" />
+          <div aria-hidden="true" className="gate-blob" />
+          <div aria-hidden="true" className="gate-tags">
+            <span>Vassell Enha Atthayya</span>
+            <span>Portofolio</span>
+            <span>2026</span>
+          </div>
           <div
             className="gate-menu"
             role="menu"
@@ -1184,22 +1193,20 @@ export default function Intro({ cue = null }) {
               items[(i + (e.key === "ArrowDown" ? 1 : -1) + items.length) % items.length]?.focus();
             }}
           >
-            <p className="gate-kicker">Vassell Enha Atthayya // Portofolio</p>
             <button type="button" role="menuitem" className="gate-item" onClick={() => go(true)}>
-              <b>01</b>
-              <span>Masuk Opening</span>
+              Masuk Opening
             </button>
             <button type="button" role="menuitem" className="gate-item" onClick={() => go(false)}>
-              <b>02</b>
-              <span>Masuk Tanpa Suara</span>
+              Tanpa Suara
             </button>
             <button type="button" role="menuitem" className="gate-item" onClick={skip}>
-              <b>03</b>
-              <span>Skip Opening</span>
+              Skip Opening
             </button>
-            <p className="gate-title">Menu</p>
-            <p className="gate-note">Opening ±9 detik · ↑ ↓ lalu Enter, atau klik</p>
           </div>
+          <p aria-hidden="true" className="gate-title">
+            Menu
+          </p>
+          <p className="gate-note">Opening ±9 detik · ↑ ↓ lalu Enter, atau klik</p>
         </div>
       ) : (
         <button type="button" className="intro-skip" onClick={skip}>

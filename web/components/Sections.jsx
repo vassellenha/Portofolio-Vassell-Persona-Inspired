@@ -33,8 +33,8 @@ export function Hero({ profile }) {
       <div aria-hidden="true" className="shard-a absolute -right-6 -top-4 h-[55vw] max-h-[26rem] w-[60vw] max-w-[30rem] bg-red" />
       <div aria-hidden="true" className="shard-b absolute -left-4 bottom-24 h-[40vw] max-h-72 w-[40vw] max-w-72 bg-fg opacity-10" />
 
-      {/* Kartu nama 3D yang bisa diputar & dibalik */}
-      <div className="relative z-20 flex justify-center px-4 pt-8 lg:pointer-events-none lg:absolute lg:inset-y-0 lg:right-0 lg:w-[38%] lg:items-center lg:pt-0">
+      {/* Kartu nama yang digantung dengan lanyard: bisa ditarik, diayun, dibalik */}
+      <div className="pointer-events-none relative z-20 px-4 lg:absolute lg:inset-y-0 lg:right-0 lg:w-[38%]">
         <HeroCard name={profile.name} role="Fullstack Developer · Cloud Engineer" />
       </div>
 
