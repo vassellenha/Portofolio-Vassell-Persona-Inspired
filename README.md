@@ -1,24 +1,107 @@
-# Persona 5 Portfolio — Vassell Enha Atthayya
+<div align="center">
 
-Portofolio full-stack bertema Persona 5, ultra-ringan.
+<img src="assets/banner.svg" alt="Vassell Enha Atthayya — Full Stack Developer — Persona 5 inspired portfolio" width="100%" />
 
-- **/web** — Next.js (App Router, React Server Components) + Tailwind CSS v3 murni
-- **/api** — Node.js + Express, data dari file JSON (`fs/promises`), tanpa database
+<br />
 
-Client Component hanya: `ThemeToggle`, `Jukebox` (+ `JukeboxLoader` tipis yang me-lazy-load Jukebox via `next/dynamic`). Tanpa library animasi/audio/UI tambahan.
+[![LIVE](https://img.shields.io/badge/TAKE_YOUR_HEART-LIVE_SITE-DC0000?style=for-the-badge&labelColor=0F0F0F)](https://web-nu-wine-25.vercel.app/)
+[![Next.js](https://img.shields.io/badge/NEXT.JS-16-0F0F0F?style=for-the-badge&logo=nextdotjs&logoColor=F5F5F5)](https://nextjs.org/)
+[![Tailwind](https://img.shields.io/badge/TAILWIND-3-DC0000?style=for-the-badge&logo=tailwindcss&logoColor=F5F5F5&labelColor=0F0F0F)](https://tailwindcss.com/)
+[![Express](https://img.shields.io/badge/EXPRESS-5-F5F5F5?style=for-the-badge&logo=express&logoColor=0F0F0F&labelColor=DC0000)](https://expressjs.com/)
 
-## Jalankan lokal
+**Portofolio full-stack bertema Persona 5 UI. Ultra-ringan, tanpa database, tanpa library animasi.**
+
+</div>
+
+<img src="assets/divider.svg" alt="" width="100%" />
+
+## ▌ MISSION BRIEFING
+
+Portofolio ini dibangun ulang dari nol setelah versi CSR sebelumnya gagal karena JavaScript client yang terlalu berat. Aturannya satu: **tampil radikal, load secepat mungkin.**
+
+- **Server Components dulu.** Data diambil di server, browser menerima HTML siap pakai.
+- **Tailwind murni + CSS native.** Tidak ada Framer Motion, Three.js, atau React-Spring.
+- **Tanpa database.** Data hidup di file JSON dan dibaca lewat `fs/promises`.
+- **Client Component dibatasi** hanya untuk bagian yang memang interaktif.
+
+<img src="assets/divider.svg" alt="" width="100%" />
+
+## ▌ STATUS SCREEN
+
+Atribut Phantom Thief, dihubungkan ke skill teknis.
+
+| Atribut | Level | Skill |
+| :-- | :-- | :-- |
+| **Knowledge** | `▰▰▰▰▰▰▰▰▱` 8 | Sistem Informasi, analisis dan perancangan sistem, SQL, JavaScript |
+| **Guts** | `▰▰▰▰▰▰▰▱▱` 7 | Deploy ke production, debugging di bawah tekanan, kompetisi bisnis |
+| **Proficiency** | `▰▰▰▰▰▰▰▰▱` 8 | Next.js, React, Node.js, Express, Tailwind CSS |
+| **Kindness** | `▰▰▰▰▰▰▰▱▱` 7 | Code review, dokumentasi, kolaborasi lintas tim |
+| **Charm** | `▰▰▰▰▰▰▱▱▱` 6 | UI/UX, presentasi, storytelling produk |
+
+<img src="assets/divider.svg" alt="" width="100%" />
+
+## ▌ FITUR
+
+| | |
+| :-- | :-- |
+| **Dark / Light mode** | Tema merah-hitam-putih khas Persona 5. Script inline di `<head>` mencegah flash saat load. |
+| **Jukebox** | Playlist OST original (Suno) dengan shuffle, volume, progress, dan Media Session. Tidak pernah autoplay. |
+| **Command Wheel** | Tekan `M` untuk menu navigasi bergaya Persona. |
+| **Playground** | Calling Card Generator, mini-game *Steal the Treasure*, Stat Allocator, kartu heist dan confidant yang bisa di-flip. |
+| **Easter egg** | Masukkan Konami Code dan lihat apa yang terjadi. |
+| **Ringan** | Animasi CSS native, ikon SVG inline, menghormati `prefers-reduced-motion`. |
+
+<img src="assets/divider.svg" alt="" width="100%" />
+
+## ▌ HEISTS
+
+| Codename | Status |
+| :-- | :-- |
+| **Operation: Enterprise Helpdesk 2.0 & E.V.A** | `SECURED` |
+| **Operation: AMANIN** | `IN PROGRESS` |
+| **Operation: Pharvia** | `IN PROGRESS` |
+| **Operation: Portfolio** | `SECURED` |
+
+<img src="assets/divider.svg" alt="" width="100%" />
+
+## ▌ ARSITEKTUR
+
+```
+┌──────────────────────┐   fetch (server-side)   ┌────────────────────────┐
+│  /web                │ ──────────────────────▶ │  /api                  │
+│  Next.js App Router  │      ISR (60 detik)     │  Node.js + Express     │
+│  Vercel              │ ◀────────────────────── │  Render                │
+└──────────────────────┘     JSON + fallback     └───────────┬────────────┘
+                                                             │ fs/promises
+                                                   ┌─────────▼──────────┐
+                                                   │  api/data/*.json   │
+                                                   └────────────────────┘
+```
+
+| Bagian | Teknologi |
+| :-- | :-- |
+| **Frontend** | Next.js (App Router, React Server Components), Tailwind CSS v3 |
+| **Backend** | Node.js >= 20, Express 5, REST API minimalis |
+| **Data** | File JSON lokal (`profile.json`, `heists.json`, `confidants.json`) |
+| **Deploy** | Web di Vercel, API di Render |
+
+Endpoint: `GET /api/profile` · `GET /api/heists` · `GET /health`
+
+Kalau API tidak terjangkau (misalnya Render free tier sedang tidur), web memakai data fallback lokal dengan timeout 4 detik, jadi halaman tidak pernah kosong.
+
+<img src="assets/divider.svg" alt="" width="100%" />
+
+## ▌ JALANKAN LOKAL
 
 Butuh Node.js >= 20.
 
-**Satu perintah** (dari root, setelah dependency terpasang):
-
 ```bash
 npm run install:all   # sekali saja
-npm run dev           # API :4000 + Web :3000 sekaligus (Ctrl+C untuk berhenti)
+npm run dev           # API :4000 + Web :3000 sekaligus
 ```
 
-**Atau manual**, dua terminal:
+<details>
+<summary><b>Atau manual, dua terminal</b></summary>
 
 ```bash
 # Terminal 1 — API (http://localhost:4000)
@@ -33,49 +116,68 @@ npm install
 npm run dev
 ```
 
-Endpoint API: `GET /api/profile`, `GET /api/heists`, `GET /health`.
-Web mengambil data **di server** (Server Components, ISR `revalidate = 60`); browser tidak fetch API langsung.
+</details>
 
-Edit data kamu di `api/data/profile.json` dan `api/data/heists.json`.
-Status heist: `"Secured"` atau `"In Progress"`. Stats memakai level 1–9.
-
-Build, lint, dan cek ukuran bundle:
+Edit data di `api/data/profile.json`, `api/data/heists.json`, dan `api/data/confidants.json`. Status heist: `"Secured"` atau `"In Progress"`. Stats memakai level 1 sampai 9.
 
 ```bash
 cd web
 npm run lint
-npm run build      # Next 16 tidak lagi mencetak "First Load JS"; ukur dengan `npx next build --webpack`
+npm run build
 ```
 
-## Menambah lagu
+<img src="assets/divider.svg" alt="" width="100%" />
+
+## ▌ MENAMBAH LAGU
 
 1. Taruh file `.mp3` di `web/public/music/`.
 2. Daftarkan di `web/public/music/playlist.json`:
 
 ```json
 { "tracks": [
-  { "title": "Judul Lagu", "artist": "Vassell (Suno)", "file": "judul-lagu.mp3", "duration": "3:12", "cover": "judul-lagu.jpg" }
+  { "title": "Judul Lagu", "artist": "Nama Artis", "file": "judul-lagu.mp3", "duration": "3:12" }
 ] }
 ```
 
-`cover` opsional (gambar di folder yang sama). Entri yang file mp3-nya belum ada otomatis disembunyikan; jika semua kosong, Jukebox menampilkan "No tracks yet". Playlist dibaca saat build, jadi **build/deploy ulang** setelah menambah lagu.
+`cover` bersifat opsional. Entri yang file mp3-nya belum ada otomatis disembunyikan. Playlist dibaca saat build, jadi **deploy ulang** setelah menambah lagu. Disarankan kompres ke 128 kbps supaya repo dan loading tetap ringan.
 
-Catatan perilaku: musik tidak pernah autoplay (default OFF, butuh klik pertama). Volume, shuffle, dan lagu terakhir diingat di localStorage.
+<img src="assets/divider.svg" alt="" width="100%" />
 
-## Deploy
+## ▌ DEPLOY
 
 **API → Render** (Web Service)
+
 - Root Directory: `api` · Build: `npm install` · Start: `npm start`
-- Env opsional: `CORS_ORIGIN` (URL web). Render menyediakan `PORT` otomatis.
-- Health check path: `/health`
+- Env opsional: `CORS_ORIGIN` (URL web). Health check: `/health`
 
 **Web → Vercel**
+
 - Root Directory: `web` · Framework: Next.js
 - Env: `API_URL=https://<nama-api>.onrender.com`
-- Free tier Render bisa tertidur; bila API tidak terjangkau saat build/revalidate, halaman memakai data fallback minimal dan akan memperbarui diri pada revalidate berikutnya.
 
-## Catatan desain
+<img src="assets/divider.svg" alt="" width="100%" />
 
-- Tema: Tailwind `darkMode: 'class'` + CSS variables. Script inline di `<head>` membaca `localStorage` lalu fallback ke `prefers-color-scheme` sebelum paint (tanpa flash). Hanya warna yang berubah, jadi tidak ada layout shift.
-- Font memakai system stack (Arial Black/Impact) — tanpa webfont, tanpa request tambahan. Hindari simbol di luar Latin dasar pada teks display (misalnya ★) karena memicu pencarian font fallback yang mahal; pakai SVG.
-- Semua animasi CSS native dan menghormati `prefers-reduced-motion`.
+## ▌ CATATAN DESAIN
+
+- **Palet:** merah `#DC0000`, hitam `#0F0F0F`, putih `#F5F5F5`. Kontras teks lolos WCAG AA di kedua tema.
+- **Tipografi:** system stack (Arial Black / Impact) yang di-skew. Tanpa webfont, tanpa request tambahan.
+- **Bentuk:** kotak miring `skew-x-[-12deg]` dan `clip-path` murni untuk efek pecahan kaca, tanpa gambar PNG.
+- **Interaksi:** hover menukar warna secara instan (`duration-100`), gaya punk-rock.
+
+<br />
+
+<div align="center">
+
+<img src="assets/divider.svg" alt="" width="100%" />
+
+### CALLING CARD
+
+[![GitHub](https://img.shields.io/badge/GITHUB-vassellenha-0F0F0F?style=for-the-badge&logo=github&logoColor=F5F5F5)](https://github.com/vassellenha)
+[![LinkedIn](https://img.shields.io/badge/LINKEDIN-Vassell_Enha_Atthayya-DC0000?style=for-the-badge&logo=linkedin&logoColor=F5F5F5&labelColor=0F0F0F)](https://www.linkedin.com/in/vassell-enha-atthayya-182661323/)
+[![Instagram](https://img.shields.io/badge/INSTAGRAM-vassellenha-F5F5F5?style=for-the-badge&logo=instagram&logoColor=0F0F0F&labelColor=DC0000)](https://www.instagram.com/vassellenha/)
+
+**Steal the spotlight. Ship the code.**
+
+*Take your time.*
+
+</div>
