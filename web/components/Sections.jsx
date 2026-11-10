@@ -1,5 +1,6 @@
 import Slash from "./Slash";
 import { IconGithub, IconInstagram, IconLinkedin, IconStar } from "./Icons";
+import CopyEmail from "./CopyEmail";
 
 const TONES = ["w", "r", "k"];
 const ROTS = [-1.5, 1, -0.5];
@@ -127,6 +128,52 @@ export function Profile({ profile }) {
   );
 }
 
+/* ---------------- SKILLS / LOOT INVENTORY ---------------- */
+export function Skills({ profile }) {
+  return (
+    <section id="skills" aria-labelledby="skills-title" className="mx-auto max-w-6xl px-4 py-20">
+      <SectionTitle id="skills-title" kicker="Loot inventory">
+        Skills
+      </SectionTitle>
+      <div className="grid gap-8 md:grid-cols-2">
+        {profile.skills.map((g) => (
+          <div key={g.group}>
+            <h3 className="mb-3 text-xl font-black uppercase italic tracking-tighter sm:text-2xl">
+              <Slash tone="w" className="text-base sm:text-lg">
+                {g.group}
+              </Slash>
+            </h3>
+            <ul className="flex flex-wrap gap-2">
+              {g.items.map((it) => (
+                <li
+                  key={it}
+                  className="-skew-x-12 border-[3px] border-fg px-3 py-1 text-sm font-black uppercase italic tracking-tighter transition-colors duration-100 hover:bg-red hover:text-[#f5f5f5]"
+                >
+                  <span className="inline-block skew-x-12">{it}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <h3 className="mb-4 mt-14 text-xl font-black uppercase italic tracking-tighter sm:text-2xl">
+        <Slash tone="r">Experience</Slash>
+      </h3>
+      <ol className="space-y-4 border-l-[6px] border-red pl-5">
+        {profile.experience.map((e, i) => (
+          <li key={i}>
+            <p className="text-xs font-black uppercase italic tracking-tighter text-rt">{e.period}</p>
+            <p className="text-lg font-black uppercase italic leading-tight tracking-tighter sm:text-xl">{e.role}</p>
+            <p className="text-sm font-bold text-mu">{e.org}</p>
+            <p className="mt-1 max-w-2xl text-sm">{e.desc}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
 /* ---------------- HEISTS ---------------- */
 export function Heists({ heists }) {
   return (
@@ -165,6 +212,17 @@ export function Heists({ heists }) {
                       </li>
                     ))}
                   </ul>
+                  {h.link && (
+                    <a
+                      href={h.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Buka ${h.codename} (tab baru)`}
+                      className="mt-4 inline-block border-b-[3px] border-current text-sm font-black uppercase italic tracking-tighter"
+                    >
+                      Lihat target
+                    </a>
+                  )}
                 </div>
               </article>
             </li>
@@ -193,12 +251,13 @@ export function Confidant({ confidants }) {
                   <p className="font-display text-5xl font-black italic leading-none text-rt" aria-label={`Rank ${c.rank}`}>
                     {ROMAN[c.rank] ?? c.rank}
                   </p>
+                  <p className="mt-1 text-sm font-black uppercase italic tracking-tighter">{c.arcana}</p>
                   <blockquote className="mt-3 text-base font-bold leading-snug">“{c.quote}”</blockquote>
                   <figcaption className="mt-4 flex flex-wrap items-center gap-2">
                     <Slash tone="w" className="text-sm">
                       {c.name}
                     </Slash>
-                    <span className="text-xs font-black uppercase italic tracking-tighter text-mu">{c.arc}</span>
+                    <span className="text-xs font-black uppercase italic tracking-tighter text-mu">{c.role}</span>
                   </figcaption>
                 </figure>
               </li>
@@ -224,6 +283,23 @@ export function Contact({ profile }) {
         Contact
       </SectionTitle>
       <p className="mb-8 max-w-xl text-lg font-bold">Ada proyek atau ide gila? Kirim calling card — gue balas secepatnya.</p>
+      <div className="mb-8 flex flex-wrap items-center gap-3">
+        <a
+          href={`mailto:${profile.email}`}
+          className="-skew-x-12 bg-red px-5 py-3 text-base font-black uppercase italic tracking-tighter text-[#f5f5f5] transition-colors duration-100 hover:bg-fg hover:text-bg"
+        >
+          <span className="inline-block skew-x-12">{profile.email}</span>
+        </a>
+        <CopyEmail email={profile.email} />
+        <a
+          href={profile.cv}
+          download
+          aria-label="Unduh CV (PDF)"
+          className="-skew-x-12 border-[3px] border-fg px-5 py-2 text-sm font-black uppercase italic tracking-tighter transition-colors duration-100 hover:bg-fg hover:text-bg"
+        >
+          <span className="inline-block skew-x-12">Download CV</span>
+        </a>
+      </div>
       <ul className="grid gap-4 sm:grid-cols-3">
         {SOCIALS.filter(([k]) => profile.links?.[k]).map(([k, label, Icon]) => (
           <li key={k}>

@@ -1,0 +1,30 @@
+[
+  {
+    "name": "[EDIT] Nama Dosen Pembimbing",
+    "arcana": "Magician",
+    "role": "Dosen Pembimbing",
+    "rank": 7,
+    "quote": "[EDIT] Tulis testimoni asli dari dosen pembimbing di sini."
+  },
+  {
+    "name": "[EDIT] Nama Supervisor Lapangan",
+    "arcana": "Hierophant",
+    "role": "Supervisor — Biro TI Adhi Karya",
+    "rank": 8,
+    "quote": "[EDIT] Tulis testimoni asli dari supervisor lapangan di sini."
+  },
+  {
+    "name": "[EDIT] Nama Mentor",
+    "arcana": "High Priestess",
+    "role": "Mentor",
+    "rank": 5,
+    "quote": "[EDIT] Tulis testimoni asli dari mentor di sini."
+  },
+  {
+    "name": "[EDIT] Nama Rekan Tim",
+    "arcana": "Fool",
+    "role": "Rekan Tim AMANIN / Pharvia",
+    "rank": 9,
+    "quote": "[EDIT] Tulis testimoni asli dari rekan tim di sini."
+  }
+]

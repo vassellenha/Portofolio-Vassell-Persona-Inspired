@@ -4,6 +4,7 @@ import Slash from "./Slash";
 const NAV = [
   ["#home", "Home"],
   ["#profile", "Profile"],
+  ["#skills", "Skills"],
   ["#heists", "Heists"],
   ["#confidant", "Confidant"],
   ["#contact", "Contact"],

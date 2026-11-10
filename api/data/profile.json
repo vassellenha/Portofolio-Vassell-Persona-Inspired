@@ -3,58 +3,46 @@
   "nickname": "Marcell",
   "title": "Full Stack Developer",
   "tagline": "Steal the spotlight. Ship the code.",
-  "bio": "Mahasiswa Sistem Informasi Telkom University yang membangun aplikasi web dari database sampai antarmuka, dengan gaya yang tidak malu-malu.",
+  "bio": "Mahasiswa Sistem Informasi Telkom University yang menyusup ke dunia web dari database sampai antarmuka. Magang di Biro Teknologi Informasi PT Adhi Karya (Persero) Tbk, tempat sistem tiket dan asisten virtual jadi target operasi berikutnya. Kalau ada bug, dia bukan kabur — dia mencurinya sampai bersih.",
   "university": "Telkom University — Sistem Informasi",
+  "email": "ganti-dengan-emailmu@example.com",
+  "cv": "/cv.pdf",
   "links": {
     "github": "https://github.com/vassellenha",
     "linkedin": "https://www.linkedin.com/in/vassell-enha-atthayya-182661323/",
     "instagram": "https://instagram.com/vassellenha"
   },
   "stats": [
-    {
-      "key": "Knowledge",
-      "level": 8,
-      "skill": "JavaScript / TypeScript, SQL, Sistem Informasi"
-    },
-    {
-      "key": "Guts",
-      "level": 7,
-      "skill": "Deploy ke production & debugging di bawah tekanan"
-    },
-    {
-      "key": "Proficiency",
-      "level": 8,
-      "skill": "Next.js, React, Node.js, Express, Tailwind"
-    },
-    {
-      "key": "Kindness",
-      "level": 7,
-      "skill": "Code review, dokumentasi, kolaborasi tim"
-    },
-    {
-      "key": "Charm",
-      "level": 6,
-      "skill": "UI/UX, presentasi, storytelling produk"
-    }
+    { "key": "Knowledge", "level": 8, "skill": "Sistem Informasi, analisis & perancangan sistem, SQL, JavaScript" },
+    { "key": "Guts", "level": 7, "skill": "Deploy ke production, debugging di bawah tekanan, ikut kompetisi bisnis" },
+    { "key": "Proficiency", "level": 8, "skill": "Next.js, React, Node.js, Express, Tailwind CSS" },
+    { "key": "Kindness", "level": 7, "skill": "Code review, dokumentasi, kolaborasi lintas tim" },
+    { "key": "Charm", "level": 6, "skill": "UI/UX, presentasi, storytelling produk" }
   ],
-  "confidants": [
+  "skills": [
+    { "group": "Frontend", "items": ["Next.js", "React", "Tailwind CSS", "JavaScript", "HTML/CSS"] },
+    { "group": "Backend", "items": ["Node.js", "Express", "REST API", "SQL", "JSON data layer"] },
+    { "group": "Tools", "items": ["Git & GitHub", "Vercel", "Render", "VS Code"] },
+    { "group": "Domain", "items": ["Sistem Informasi", "Analisis Sistem", "UI/UX", "Business Plan"] }
+  ],
+  "experience": [
     {
-      "name": "Nama Dosen / Mentor",
-      "arc": "Mentor",
-      "rank": 5,
-      "quote": "Ganti teks ini dengan testimoni asli dari mentor atau dosen."
+      "role": "Intern — KPPM (Full Stack)",
+      "org": "PT Adhi Karya (Persero) Tbk — Biro Teknologi Informasi",
+      "period": "[EDIT] periode magang",
+      "desc": "Membangun Enterprise Helpdesk 2.0 dan asisten virtual E.V.A untuk kebutuhan layanan TI internal."
     },
     {
-      "name": "Nama Rekan Tim",
-      "arc": "Partner",
-      "rank": 4,
-      "quote": "Ganti teks ini dengan testimoni asli dari rekan satu tim."
+      "role": "Peserta — RISE 2026 Business Plan Competition",
+      "org": "Tim AMANIN",
+      "period": "2026",
+      "desc": "Merancang asisten AI anti-scam dan business plan-nya untuk kompetisi."
     },
     {
-      "name": "Nama Klien",
-      "arc": "Client",
-      "rank": 3,
-      "quote": "Ganti teks ini dengan testimoni asli dari klien."
+      "role": "Mahasiswa S1 Sistem Informasi",
+      "org": "Telkom University",
+      "period": "[EDIT] tahun masuk — sekarang",
+      "desc": "Fokus pada pengembangan web, basis data, dan analisis sistem."
     }
   ]
 }
