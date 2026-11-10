@@ -55,6 +55,7 @@
       "items": [
         "Node.js",
         "Express",
+        "Laravel",
         "REST API",
         "SQL",
         "JSON data layer"
@@ -66,7 +67,9 @@
         "Git & GitHub",
         "Vercel",
         "Render",
-        "VS Code"
+        "VS Code",
+        "Figma",
+        "SAP ERP"
       ]
     },
     {
@@ -81,10 +84,10 @@
   ],
   "experience": [
     {
-      "role": "Intern — KPPM (Full Stack)",
+      "role": "Fullstack Developer — Intern (KPPM)",
       "org": "PT Adhi Karya (Persero) Tbk — Biro Teknologi Informasi",
-      "period": "[EDIT] periode magang",
-      "desc": "Membangun Enterprise Helpdesk 2.0 dan asisten virtual E.V.A untuk kebutuhan layanan TI internal."
+      "period": "Juni 2026 – September 2026 (4 bulan)",
+      "desc": "Membangun Enterprise Helpdesk 2.0, platform manajemen tiket internal, menggunakan React.js, Laravel, dan MySQL. Menerapkan alur kerja berbasis peran, katalog layanan, proses approval, pemantauan SLA, dan audit trail."
     },
     {
       "role": "Peserta — RISE 2026 Business Plan Competition",
@@ -93,10 +96,34 @@
       "desc": "Merancang asisten AI anti-scam dan business plan-nya untuk kompetisi."
     },
     {
+      "role": "Lead Photographer — WebVenture (Divisi PDD)",
+      "org": "Himpunan Mahasiswa Sistem Informasi (HIMSI) — Jakarta",
+      "period": "April 2025 – Oktober 2025 (7 bulan)",
+      "desc": "Memimpin divisi Publikasi, Dokumentasi & Desain (PDD) untuk kegiatan dan acara WebVenture. Mengoordinasikan produksi konten visual, dokumentasi acara, dan materi publikasi digital."
+    },
+    {
+      "role": "Research and Development Staff",
+      "org": "Himpunan Mahasiswa Sistem Informasi (HIMSI) — Jakarta",
+      "period": "Januari 2024 – Oktober 2025 (1 tahun 10 bulan)",
+      "desc": "Berkontribusi mengembangkan HIMSI Web Platform untuk meningkatkan penyampaian informasi dan aksesibilitas bagi mahasiswa, melalui publikasi, dokumentasi, dan dukungan kolaboratif pada kegiatan organisasi."
+    },
+    {
+      "role": "Lead Photographer — Ramadhan Berbagi",
+      "org": "Kegiatan sosial kampus",
+      "period": "Maret 2024 – April 2024 (2 bulan)",
+      "desc": "Memimpin tim fotografi untuk Ramadhan Berbagi, acara sosial kampus bersama anak-anak panti asuhan. Mengoordinasikan liputan acara dari persiapan hingga selesai."
+    },
+    {
+      "role": "Asisten Praktikum — Sistem Enterprise (SAP)",
+      "org": "Telkom University — Prodi S1 Sistem Informasi, Kampus Jakarta",
+      "period": "September 2024 – Februari 2025 (6 bulan)",
+      "desc": "Mendampingi mahasiswa mempelajari integrasi proses bisnis menggunakan SAP Enterprise System. Meraih predikat Baik Sekali pada sertifikat penghargaan asisten praktikum semester ganjil 2024/2025."
+    },
+    {
       "role": "Mahasiswa S1 Sistem Informasi",
       "org": "Telkom University",
-      "period": "[EDIT] tahun masuk — sekarang",
-      "desc": "Fokus pada pengembangan web, basis data, dan analisis sistem."
+      "period": "2023 – 2026",
+      "desc": "Fokus pada pengembangan web, basis data, dan analisis sistem. IPK 3.71."
     }
   ]
 }

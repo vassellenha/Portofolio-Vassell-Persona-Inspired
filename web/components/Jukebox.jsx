@@ -69,7 +69,7 @@ export default function Jukebox({ tracks, autoStart = false, initialOpen = false
   });
   const [open, setOpen] = useState(initialOpen || n === 0);
   const [shuffleOn, setShuffleOn] = useState(!!init.shuffle);
-  const [volume, setVolume] = useState(init.v === 2 && typeof init.vol === "number" ? init.vol : 0.25); // bawaan pelan
+  const [volume, setVolume] = useState(init.v === 2 && typeof init.vol === "number" ? init.vol : 0.4); // bawaan: sinkron dengan volume opening
   const [time, setTime] = useState(0);
   const [dur, setDur] = useState(0);
   const [failed, setFailed] = useState([]);

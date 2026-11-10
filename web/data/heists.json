@@ -7,7 +7,7 @@
       "Next.js",
       "Node.js",
       "REST API",
-      "[EDIT] tambah stack"
+      "Tailwind CSS"
     ],
     "status": "Selesai",
     "link": null
@@ -19,10 +19,10 @@
     "loot": [
       "AI Assistant",
       "Business Plan",
-      "[EDIT] tambah stack"
+      "JavaScript"
     ],
     "status": "Berjalan",
-    "link": null
+    "link": "https://github.com/vassellenha/AMANIN-Project"
   },
   {
     "id": 3,
@@ -30,13 +30,36 @@
     "target": "Platform digital pharmaceutical take-back: mengembalikan obat sisa/kedaluwarsa dengan aman",
     "loot": [
       "Web Platform",
-      "[EDIT] tambah stack"
+      "HTML"
     ],
     "status": "Berjalan",
-    "link": null
+    "link": "https://github.com/vassellenha/PHARVIA-Project"
   },
   {
     "id": 4,
+    "codename": "KWU-BRREAD",
+    "target": "Aplikasi manajemen toko roti all-in-one: storefront & keranjang online, sinkronisasi stok MRP, analitik penjualan (best seller & tren), buku kas dengan ekspor Excel, serta akses berbasis peran.",
+    "loot": [
+      "Laravel",
+      "Blade"
+    ],
+    "status": "Berjalan",
+    "link": "https://github.com/vassellenha/KWU-BRREAD"
+  },
+  {
+    "id": 5,
+    "codename": "Catch & Clash",
+    "target": "Game multiplayer Roblox: pemain memancing, bertarung, dan mengumpulkan ikan unik dengan berbagai senjata, lalu bertanding PvP melawan pemain lain.",
+    "loot": [
+      "Roblox",
+      "Python",
+      "Lua"
+    ],
+    "status": "Berjalan",
+    "link": "https://github.com/vassellenha/CatchAndClash_Roblox_Project"
+  },
+  {
+    "id": 6,
     "codename": "Portfolio",
     "target": "Situs portofolio pribadi yang sedang kamu lihat — ringan, bertema Persona 5, tanpa library animasi",
     "loot": [

@@ -22,7 +22,7 @@ const RED = "#f40000";
 const PANE = "#e8140a";
 // Suara bawaan sengaja pelan; pengunjung bisa mengeraskan dari Jukebox.
 const SFX_GAIN = 0.3;
-const MUSIC_VOL = 0.25;
+const MUSIC_VOL = 0.4; // bawaan: nyala pelan di opening
 
 // Garis waktu (detik). Sama dengan garis waktu SFX di public/sfx/intro.mp3.
 const T = {
@@ -310,6 +310,7 @@ export default function Intro({ cue = null }) {
     let unlocked = !!navigator.userActivation?.hasBeenActive;
     let musicOn = false;
     let lateMusic = false;
+    let baseVol = MUSIC_VOL;
     let assets = false;
     let aPerf = 0;
     let aT = 0;
@@ -354,13 +355,12 @@ export default function Intro({ cue = null }) {
     };
     if (audio) {
       audio.muted = true;
-      // volume: pakai setelan Jukebox bila pengunjung pernah mengaturnya, kalau belum pakai bawaan yang pelan
-      let vol = MUSIC_VOL;
+      // volume dasar: pakai setelan Jukebox bila pengunjung pernah mengaturnya, kalau belum pakai bawaan 40%
       try {
         const pf = JSON.parse(localStorage.getItem("p5:jukebox") || "{}");
-        if (pf && pf.v === 2 && typeof pf.vol === "number") vol = pf.vol;
+        if (pf && pf.v === 2 && typeof pf.vol === "number") baseVol = pf.vol;
       } catch {}
-      audio.volume = vol;
+      audio.volume = 0; // envelope() di frame() yang mengatur naik-turunnya tiap tick
       audio.preload = "auto";
       audio.src = src;
       audio.addEventListener("loadedmetadata", seek, { once: true });
@@ -1055,6 +1055,19 @@ export default function Intro({ cue = null }) {
         sfxNode.start(0, Math.max(0, t));
       } catch {}
     }
+    // Lengkung volume musik: masuk pelan-pelan, bengkak sesaat menjelang & sesudah potret
+    // muncul (klimaks "As the Black Feathers Fall" ini jatuh di pertengahan lagu), lalu
+    // turun lagi ke level dasar supaya pas Jukebox mengambil alih, suaranya mulus.
+    function envelope(t) {
+      const peak = Math.min(1, baseVol * 1.6);
+      if (t < T.music) return baseVol * easeOut(seg(t, 0, T.music));
+      const swellStart = T.art - 1.0;
+      const swellEnd = T.art + 1.2;
+      if (t < swellStart) return baseVol;
+      if (t < T.art) return baseVol + (peak - baseVol) * easeIO(seg(t, swellStart, T.art));
+      if (t < swellEnd) return peak + (baseVol - peak) * easeIO(seg(t, T.art, swellEnd));
+      return baseVol;
+    }
     function playFromCue() {
       lateMusic = false;
       try {
@@ -1115,6 +1128,7 @@ export default function Intro({ cue = null }) {
       if (window.__introDebug) canvas.dataset.t = t.toFixed(3);
       if (unlocked && musicOn && audio.muted && t >= T.music) audio.muted = false;
       if (unlocked && lateMusic && t >= T.art) playFromCue();
+      if (musicOn && !audio.muted) audio.volume = envelope(t);
       if (t >= T.out && !exiting) {
         exiting = true;
         wrap.current?.classList.add("out");
