@@ -72,3 +72,18 @@ export const IconCap = (p) => (
     <path d="M12 4 2 9l10 5 10-5-10-5z" /><path d="M6 11.5V17c0 1.4 2.7 3 6 3s6-1.6 6-3v-5.5M22 9v6" />
   </svg>
 );
+export const IconCode = (p) => (
+  <svg {...base} fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" {...p}>
+    <path d="M8.5 7 3.5 12l5 5M15.5 7l5 5-5 5" />
+  </svg>
+);
+export const IconImage = (p) => (
+  <svg {...base} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}>
+    <rect x="3" y="4" width="18" height="16" rx="1.5" /><circle cx="8.5" cy="9.5" r="1.7" /><path d="m4 17 5-5 4 4 3-3 4 4" />
+  </svg>
+);
+export const IconArrowLeft = (p) => (
+  <svg {...base} fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" {...p}>
+    <path d="M19 12H5M11 6l-6 6 6 6" />
+  </svg>
+);

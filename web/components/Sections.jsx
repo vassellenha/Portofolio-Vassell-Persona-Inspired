@@ -146,6 +146,20 @@ export function Skills({ profile }) {
       <h3 className="mb-6 mt-14">
         <Slash tone="r" className="text-2xl sm:text-3xl">Work Experiences</Slash>
       </h3>
+
+      {/* strip ringkas: lini masa cepat sebelum kartu detail */}
+      <ol className="no-scrollbar mb-8 flex gap-3 overflow-x-auto pb-2" aria-label="Ringkasan lini masa">
+        {profile.experience.map((e, i) => (
+          <li key={i} className="flex shrink-0 items-center gap-2 -skew-x-12 border-2 border-fg bg-bg px-3 py-1.5">
+            <span className="inline-flex items-center gap-2 skew-x-12">
+              <span className="font-display text-base font-black italic text-rt">{String(i + 1).padStart(2, "0")}</span>
+              <span className="text-[0.65rem] font-black uppercase tracking-tighter text-mu">{e.year}</span>
+              <span className="text-xs font-black uppercase italic tracking-tighter">{e.short}</span>
+            </span>
+          </li>
+        ))}
+      </ol>
+
       <ul className="grid gap-6 sm:grid-cols-2">
         {profile.experience.map((e, i) => {
           const Icon = XP_ICON[e.kind] ?? IconBriefcase;
@@ -209,28 +223,73 @@ function Stamp({ status }) {
   );
 }
 
+const PF_LABEL = { all: "Semua", web: "Web App", internal: "Internal", game: "Game" };
+
 export function Heists({ heists }) {
+  const done = heists.filter((h) => h.status === "Selesai" || h.status === "Secured").length;
+  const types = ["all", ...Array.from(new Set(heists.map((h) => h.type).filter(Boolean)))];
   return (
     <section id="projects" aria-labelledby="projects-title" className="inv torn -mt-5 pb-20 pt-24">
       <div className="mx-auto max-w-6xl px-4">
         <SectionTitle id="projects-title" kicker="Proyek — klik kartu untuk melihat detail">
           Proyek
         </SectionTitle>
-        <ul className="grid gap-8 md:grid-cols-2">
-          {heists.map((h, i) => (
-            <li key={h.id ?? h.codename} className={`transition-transform duration-150 hover:rotate-0 ${i % 2 ? "md:mt-10 rotate-1" : "-rotate-1"}`}>
+
+        <p className="-mt-6 mb-8 flex flex-wrap gap-x-6 gap-y-1 text-xs font-black uppercase italic tracking-tighter text-mu">
+          <span><span className="text-rt">{heists.length}</span> Total</span>
+          <span><span className="text-rt">{done}</span> Selesai</span>
+          <span><span className="text-rt">{heists.length - done}</span> Berjalan</span>
+        </p>
+
+        <div className="pf-tabs mb-8 flex flex-wrap gap-2" role="tablist" aria-label="Filter tipe proyek">
+          {types.map((t, ti) => (
+            <span key={t}>
+              <input type="radio" name="pf" id={`pf-${t}`} className="peer sr-only" defaultChecked={ti === 0} />
+              <label
+                htmlFor={`pf-${t}`}
+                className="pf-tab -skew-x-12 cursor-pointer border-2 border-fg px-3 py-1 text-xs font-black uppercase italic tracking-tighter transition-colors duration-100"
+              >
+                <span className="inline-block skew-x-12">{PF_LABEL[t] ?? t}</span>
+              </label>
+            </span>
+          ))}
+        </div>
+
+        <ul className="pf-grid grid gap-8 md:grid-cols-2">
+          {heists.map((h, i) => {
+            const slug = (h.code ? h.code : `vea-${String(i + 1).padStart(2, "0")}`).toLowerCase();
+            return (
+            <li
+              key={h.id ?? h.codename}
+              data-type={h.type}
+              className={`transition-transform duration-150 hover:rotate-0 ${i % 2 ? "md:mt-10 rotate-1" : "-rotate-1"}`}
+            >
               <FlipCard
                 id={`project-${i}`}
                 label={`Buka detail ${h.codename}`}
                 front={
                   <>
+                    {h.image && (
+                      <div className="-mx-5 -mt-5 mb-4 overflow-hidden border-b-[3px] border-fg">
+                        <img
+                          src={h.image}
+                          alt={h.codename}
+                          className="h-28 w-full object-cover grayscale-[15%] contrast-125 sm:h-36"
+                          loading="lazy"
+                        />
+                      </div>
+                    )}
                     <p className="flex items-center justify-between gap-3">
-                      <span className="text-xs font-black uppercase italic tracking-tighter text-rt">Proyek {String(i + 1).padStart(2, "0")}</span>
+                      <span className="text-[0.65rem] font-black uppercase italic tracking-tighter text-rt sm:text-xs">
+                        {h.category ?? `Proyek ${String(i + 1).padStart(2, "0")}`}
+                      </span>
                       <span className="-skew-x-12 bg-fg px-3 py-1 text-xs font-black uppercase italic tracking-tighter text-bg">
                         <span className="inline-block skew-x-12">{{ Secured: "Selesai", "In Progress": "Berjalan" }[h.status] ?? h.status}</span>
                       </span>
                     </p>
-                    <h3 className="mt-3 text-2xl font-black uppercase italic leading-tight tracking-tighter sm:text-3xl">{h.codename}</h3>
+                    {h.code && <p className="mt-1 font-mono text-[0.65rem] tracking-[0.2em] text-mu">{h.code}</p>}
+                    <h3 className="mt-2 text-2xl font-black uppercase italic leading-tight tracking-tighter sm:text-3xl">{h.codename}</h3>
+                    {h.tagline && <p className="mt-1 text-sm font-bold uppercase italic tracking-tight text-rt">{h.tagline}</p>}
                     <p className="mt-4 text-xs font-black uppercase italic tracking-tighter text-mu">Klik untuk membuka</p>
                   </>
                 }
@@ -259,22 +318,32 @@ export function Heists({ heists }) {
                         </ul>
                       </>
                     )}
-                    {h.link && (
+                    <p className="mt-5 flex flex-wrap items-center gap-4">
+                      {h.link && (
+                        <a
+                          href={h.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`Buka kode ${h.codename} di GitHub (tab baru)`}
+                          className="inline-flex items-center gap-1.5 border-b-[3px] border-current text-sm font-black uppercase italic tracking-tighter hover:text-rt"
+                        >
+                          <IconGithub width={14} height={14} /> Lihat Kode
+                        </a>
+                      )}
                       <a
-                        href={h.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`Buka ${h.codename} (tab baru)`}
-                        className="mt-4 inline-block border-b-[3px] border-current text-sm font-black uppercase italic tracking-tighter hover:text-rt"
+                        href={`/projek/${slug}`}
+                        aria-label={`Lihat detail lengkap ${h.codename}`}
+                        className="inline-flex items-center gap-1 text-sm font-black uppercase italic tracking-tighter text-rt hover:text-fg"
                       >
-                        Lihat proyek
+                        Detail Lengkap →
                       </a>
-                    )}
+                    </p>
                   </div>
                 }
               />
             </li>
-          ))}
+            );
+          })}
         </ul>
       </div>
     </section>

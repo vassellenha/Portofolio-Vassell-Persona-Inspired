@@ -10,7 +10,11 @@
       "Tailwind CSS"
     ],
     "status": "Selesai",
-    "link": null
+    "link": null,
+    "code": "VEA-01",
+    "category": "Berkas Layanan TI",
+    "tagline": "Tiket · Approval · SLA",
+    "type": "internal"
   },
   {
     "id": 2,
@@ -40,7 +44,12 @@
         "src": "/projects/amanin/screen-news.jpg",
         "alt": "AMANIN — wawasan siber"
       }
-    ]
+    ],
+    "code": "VEA-02",
+    "category": "Berkas Ancaman Digital",
+    "tagline": "Scan · Deteksi · Lindungi",
+    "type": "web",
+    "image": "/projects/amanin/screen-dashboard.jpg"
   },
   {
     "id": 3,
@@ -51,7 +60,12 @@
       "HTML"
     ],
     "status": "Berjalan",
-    "link": "https://github.com/vassellenha/PHARVIA-Project"
+    "link": "https://github.com/vassellenha/PHARVIA-Project",
+    "code": "VEA-03",
+    "category": "Registrasi Pengembalian",
+    "tagline": "Scan · Kembalikan · Lacak",
+    "type": "web",
+    "image": "/projects/pharvia/hero.jpg"
   },
   {
     "id": 4,
@@ -62,7 +76,12 @@
       "Blade"
     ],
     "status": "Berjalan",
-    "link": "https://github.com/vassellenha/KWU-BRREAD"
+    "link": "https://github.com/vassellenha/KWU-BRREAD",
+    "code": "VEA-04",
+    "category": "Berkas Wirausaha",
+    "tagline": "Stok · Kasir · Analitik",
+    "type": "web",
+    "image": "/projects/brread/hero.jpg"
   },
   {
     "id": 5,
@@ -74,7 +93,12 @@
       "Lua"
     ],
     "status": "Berjalan",
-    "link": "https://github.com/vassellenha/CatchAndClash_Roblox_Project"
+    "link": "https://github.com/vassellenha/CatchAndClash_Roblox_Project",
+    "code": "VEA-05",
+    "category": "Arsip Permainan",
+    "tagline": "Pancing · Lawan · Kumpulkan",
+    "type": "game",
+    "image": "/projects/catchclash/hero.jpg"
   },
   {
     "id": 6,
@@ -87,6 +111,10 @@
       "Vercel"
     ],
     "status": "Selesai",
-    "link": "https://github.com/vassellenha/Persona5_Inspired_Portofolio_Vassell-Enha-Atthayya"
+    "link": "https://github.com/vassellenha/Persona5_Inspired_Portofolio_Vassell-Enha-Atthayya",
+    "code": "VEA-06",
+    "category": "Berkas Arsip Diri",
+    "tagline": "Kaca Pecah · Lanyard · Jukebox",
+    "type": "web"
   }
 ]

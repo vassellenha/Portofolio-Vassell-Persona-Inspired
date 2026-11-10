@@ -454,3 +454,22 @@ html {
 ::-webkit-scrollbar-corner {
   background: var(--fg);
 }
+
+/* ---------- Filter tab proyek (CSS-only, nol JS) ---------- */
+.pf-tab {
+  background: var(--bg);
+  color: var(--fg);
+}
+#pf-all:checked + label[for="pf-all"],
+#pf-web:checked + label[for="pf-web"],
+#pf-internal:checked + label[for="pf-internal"],
+#pf-game:checked + label[for="pf-game"] {
+  background: var(--red);
+  border-color: var(--red);
+  color: #f5f5f5;
+}
+.pf-tabs:has(#pf-web:checked) ~ .pf-grid > li[data-type]:not([data-type="web"]),
+.pf-tabs:has(#pf-internal:checked) ~ .pf-grid > li[data-type]:not([data-type="internal"]),
+.pf-tabs:has(#pf-game:checked) ~ .pf-grid > li[data-type]:not([data-type="game"]) {
+  display: none;
+}
