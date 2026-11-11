@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSiteData } from "../../../lib/api";
 import Slash from "../../../components/Slash";
@@ -24,12 +23,13 @@ export default async function ProjekDetail({ params }) {
   return (
     <main id="main" className="min-h-screen pb-24 pt-10">
       <div className="mx-auto max-w-5xl px-4">
-        <Link
+        <a
           href="/#projects"
+          data-nav="wipe"
           className="inline-flex items-center gap-2 text-sm font-black uppercase italic tracking-tighter text-mu hover:text-rt"
         >
           <IconArrowLeft width={18} height={18} /> Kembali ke Proyek
-        </Link>
+        </a>
 
         <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
           <p className="text-xs font-black uppercase italic tracking-tighter text-rt sm:text-sm">{h.category}</p>
@@ -48,9 +48,13 @@ export default async function ProjekDetail({ params }) {
           <p className="mt-3 text-base font-bold uppercase italic tracking-tight text-rt sm:text-lg">{h.tagline}</p>
         )}
 
-        {h.image && !h.shots?.length && (
-          <div className="mt-8 border-[3px] border-fg">
-            <img src={h.image} alt={h.codename} className="block w-full" />
+        {h.image && (
+          <div className="pj-shot mt-10 max-w-4xl" style={{ rotate: "-0.8deg" }}>
+            <span className="pj-frame">
+              <span className="pj-img">
+                <img src={h.image} alt={`Tampilan ${h.codename}`} />
+              </span>
+            </span>
           </div>
         )}
 
@@ -118,16 +122,11 @@ export default async function ProjekDetail({ params }) {
             <h2 className="mb-4 mt-14">
               <Slash tone="r" className="text-xl sm:text-2xl">Tampilan Aplikasi</Slash>
             </h2>
-            <ul className="grid gap-4 sm:grid-cols-2">
+            <ul className="grid grid-cols-2 gap-5 sm:gap-6 md:grid-cols-4">
               {h.shots.map((s, si) => (
-                <li
-                  key={s.src}
-                  className={`border-[3px] border-fg transition-transform duration-150 hover:rotate-0 ${
-                    si % 2 ? "rotate-1" : "-rotate-1"
-                  }`}
-                >
+                <li key={s.src} className="pj-phone" style={{ rotate: si % 2 ? "1.2deg" : "-1.2deg" }}>
                   <img src={s.src} alt={s.alt} className="block w-full" loading="lazy" />
-                  {s.alt && <p className="border-t-[3px] border-fg bg-fg px-3 py-2 text-xs font-bold text-bg">{s.alt}</p>}
+                  {s.alt && <p className="bg-fg px-2.5 py-2 text-[0.7rem] font-bold leading-snug text-bg">{s.alt}</p>}
                 </li>
               ))}
             </ul>

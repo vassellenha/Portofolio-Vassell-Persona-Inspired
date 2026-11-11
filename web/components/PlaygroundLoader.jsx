@@ -6,11 +6,11 @@ import { playSfx } from "../lib/sfx";
 
 const Loading = () => <p className="p-4 text-sm font-black uppercase italic">Loading…</p>;
 const CallingCard = dynamic(() => import("./play/CallingCard"), { ssr: false, loading: Loading });
-const TimingGame = dynamic(() => import("./play/TimingGame"), { ssr: false, loading: Loading });
+const FishingGame = dynamic(() => import("./play/FishingGame"), { ssr: false, loading: Loading });
 
 const TILES = [
   { id: "card", title: "Generator Kartu Pesan", desc: "Tulis pesan, unduh sebagai kartu PNG bergaya Persona.", Comp: CallingCard },
-  { id: "game", title: "Timing Challenge", desc: "Mini-game timing: klik di zona merah. 3 ronde.", Comp: TimingGame },
+  { id: "game", title: "Mancing", desc: "Kolam pemancingan: jaga penanda di zona merah, tarik, lalu All-Out Attack.", Comp: FishingGame },
 ];
 
 export default function PlaygroundLoader() {

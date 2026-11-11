@@ -16,27 +16,32 @@
     {
       "key": "Analisis",
       "level": 8,
-      "skill": "Sistem Informasi, analisis & perancangan sistem, SQL, JavaScript"
+      "skill": "Sistem Informasi, analisis & perancangan sistem, SQL, JavaScript",
+      "rank": "Tajam"
     },
     {
       "key": "Eksekusi",
       "level": 7,
-      "skill": "Deploy ke production, debugging, ikut kompetisi bisnis"
+      "skill": "Deploy ke production, debugging, ikut kompetisi bisnis",
+      "rank": "Tangguh"
     },
     {
       "key": "Teknis",
       "level": 8,
-      "skill": "Next.js, React, Node.js, Express, Tailwind CSS"
+      "skill": "Next.js, React, Node.js, Express, Tailwind CSS",
+      "rank": "Ahli"
     },
     {
       "key": "Kolaborasi",
       "level": 7,
-      "skill": "Code review, dokumentasi, kerja lintas tim"
+      "skill": "Code review, dokumentasi, kerja lintas tim",
+      "rank": "Solid"
     },
     {
       "key": "Komunikasi",
       "level": 6,
-      "skill": "UI/UX, presentasi, storytelling produk"
+      "skill": "UI/UX, presentasi, storytelling produk",
+      "rank": "Luwes"
     }
   ],
   "skills": [

@@ -48,6 +48,7 @@ export default function HeroCard({ name, role }) {
       reach = L + el.offsetHeight * 0.5;
     }
     function render() {
+      if (!holder.current) return; // komponen sudah dilepas (pindah halaman)
       const x = ax + Math.sin(th) * L;
       const y = ay + Math.cos(th) * L;
       // kartu sedikit tertinggal dari tali supaya ayunannya terasa berat

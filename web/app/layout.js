@@ -5,6 +5,7 @@ import "./globals.css";
 import Header from "../components/Header";
 import JukeboxLoader from "../components/JukeboxLoader";
 import GlobalFx from "../components/GlobalFx";
+import NavFx from "../components/NavFx";
 import Intro from "../components/Intro";
 
 
@@ -107,6 +108,7 @@ export default async function RootLayout({ children }) {
         {/* Di root layout: tetap bermain saat navigasi antar halaman */}
         <JukeboxLoader tracks={tracks} />
         <GlobalFx />
+        <NavFx />
       </body>
     </html>
   );

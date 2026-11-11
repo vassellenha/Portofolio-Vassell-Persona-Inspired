@@ -29,27 +29,27 @@
     "link": "https://github.com/vassellenha/AMANIN-Project",
     "shots": [
       {
-        "src": "/projects/amanin/screen-dashboard.jpg",
-        "alt": "AMANIN — dashboard cek risiko"
+        "src": "/projects/amanin/screen-landing.jpg",
+        "alt": "Landing — ajakan scan cepat tanpa login"
       },
       {
-        "src": "/projects/amanin/screen-login.jpg",
-        "alt": "AMANIN — layar masuk"
-      },
-      {
-        "src": "/projects/amanin/screen-history.jpg",
-        "alt": "AMANIN — riwayat pemeriksaan"
+        "src": "/projects/amanin/screen-scan.jpg",
+        "alt": "Cek Risiko — scan chat, screenshot, tautan, dan QR"
       },
       {
         "src": "/projects/amanin/screen-news.jpg",
-        "alt": "AMANIN — wawasan siber"
+        "alt": "Radar Scam & Siber — panduan modus penipuan"
+      },
+      {
+        "src": "/projects/amanin/screen-login.jpg",
+        "alt": "Masuk — profil lokal atau lanjut sebagai tamu"
       }
     ],
     "code": "VEA-02",
     "category": "Berkas Ancaman Digital",
     "tagline": "Scan · Deteksi · Lindungi",
     "type": "web",
-    "image": "/projects/amanin/screen-dashboard.jpg"
+    "image": "/projects/amanin/hero.jpg"
   },
   {
     "id": 3,
