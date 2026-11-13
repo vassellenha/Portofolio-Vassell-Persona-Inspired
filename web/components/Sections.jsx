@@ -1,16 +1,15 @@
 import Slash from "./Slash";
 import FlipCard from "./FlipCard";
 import SocialStats from "./SocialStats";
+import MissionLogs from "./MissionLogs";
 import PlaygroundLoader from "./PlaygroundLoader";
 import CopyEmail from "./CopyEmail";
 import HeroCard from "./HeroCard";
-import { IconGithub, IconInstagram, IconLinkedin, IconBriefcase, IconUsers, IconCamera, IconCap, IconStar, IconImage } from "./Icons";
+import { IconGithub, IconInstagram, IconLinkedin, IconImage } from "./Icons";
 
 const TONES = ["w", "r", "k"];
 const ROTS = [-1.5, 1, -0.5];
 const ROMAN = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
-const XP_ICON = { internship: IconBriefcase, competition: IconStar, photo: IconCamera, org: IconUsers, academic: IconCap };
-const XP_KIND = { internship: "Magang", competition: "Kompetisi", photo: "Dokumentasi", org: "Organisasi", academic: "Akademik" };
 
 function SectionTitle({ id, children, kicker }) {
   return (
@@ -147,47 +146,7 @@ export function Skills({ profile }) {
         ))}
       </div>
 
-      <h3 className="mb-6 mt-14">
-        <Slash tone="r" className="text-2xl sm:text-3xl">Work Experiences</Slash>
-      </h3>
-
-      <ol className="wx" aria-label="Riwayat pengalaman, terbaru di atas">
-        {profile.experience.map((e, i) => {
-          const Icon = XP_ICON[e.kind] ?? IconBriefcase;
-          const no = String(i + 1).padStart(2, "0");
-          return (
-            <li key={i} className={`wx-row ${i % 2 ? "is-alt" : ""}`}>
-              <div className="wx-date" aria-hidden="true">
-                <span className="wx-yr">{e.year}</span>
-                <span className="wx-no">{no}</span>
-              </div>
-              <article className="wx-card">
-                {i === 0 && <span className="wx-new">Terbaru</span>}
-                <div className="wx-in inv">
-                  <span className="wx-dots" aria-hidden="true" />
-                  <span className="wx-ghost" aria-hidden="true">{no}</span>
-                  <div className="relative flex flex-wrap items-center gap-x-3 gap-y-2">
-                    <span className="wx-icon">
-                      <Icon width={20} height={20} />
-                    </span>
-                    <span className="-skew-x-12 bg-fg px-2 py-0.5 text-[0.7rem] font-black uppercase italic tracking-tighter text-bg">
-                      <span className="inline-block skew-x-12">{XP_KIND[e.kind] ?? "Pengalaman"}</span>
-                    </span>
-                    <span className="text-[0.7rem] font-black uppercase italic tracking-tighter text-rt sm:text-xs">{e.period}</span>
-                  </div>
-                  <h4 className="relative mt-4 font-display text-xl font-black uppercase italic leading-[1.05] tracking-tighter sm:text-2xl">{e.role}</h4>
-                  <p className="relative mt-2">
-                    <span className="inline-block -skew-x-12 bg-red px-2 py-1 text-xs font-black tracking-tight text-[#f5f5f5] sm:text-sm">
-                      <span className="inline-block skew-x-12">{e.org}</span>
-                    </span>
-                  </p>
-                  <p className="relative mt-3 text-sm font-semibold leading-relaxed">{e.desc}</p>
-                </div>
-              </article>
-            </li>
-          );
-        })}
-      </ol>
+      <MissionLogs items={profile.experience} />
 
       <h3 className="mb-6 mt-14">
         <Slash tone="r" className="text-2xl sm:text-3xl">Sertifikat</Slash>

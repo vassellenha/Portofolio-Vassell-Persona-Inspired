@@ -102,7 +102,7 @@ export default async function RootLayout({ children }) {
           <i className="w-b" />
           <i className="w-a" />
         </div>
-        <Intro cue={cue} />
+        <Intro cue={cue} theme={tracks[0]?.file ?? null} />
         <Header />
         {children}
         {/* Di root layout: tetap bermain saat navigasi antar halaman */}

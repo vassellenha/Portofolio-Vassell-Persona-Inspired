@@ -119,9 +119,15 @@ export default function Jukebox({ tracks, autoStart = false, initialOpen = false
     const a = audioRef.current;
     if (!a || empty) return setOpen(true);
     const shouldPlay = force ?? (a.paused || a.muted); // intro bisa meninggalkan lagu berjalan senyap
+    // ingat pilihan pengunjung selama sesi ini: kalau musik sengaja dimatikan, refresh tidak menyalakannya lagi
+    try {
+      if (shouldPlay) sessionStorage.removeItem("p5:bgm-off");
+      else sessionStorage.setItem("p5:bgm-off", "1");
+    } catch {}
     if (shouldPlay) {
       want.current = true;
       a.muted = false;
+      if (a.volume < 0.02 && volume >= 0.02) a.volume = volume;
       a.play().catch(() => setPlaying(false));
     } else {
       want.current = false;

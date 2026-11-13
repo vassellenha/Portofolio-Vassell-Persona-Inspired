@@ -7,7 +7,7 @@
 // Jam animasi mengikuti posisi lagu (lib/bgm.js), jadi gambar, SFX (public/sfx/intro.mp3) dan musik selalu serempak.
 // Sekali per sesi; Esc / "Lewati" menutup. Dilewati sepenuhnya bila prefers-reduced-motion.
 import { useEffect, useRef } from "react";
-import { sharedAudio } from "../lib/bgm";
+import { sharedAudio, samePath } from "../lib/bgm";
 import { isSfxOn, sfxOutput } from "../lib/sfx";
 
 const TAU = Math.PI * 2;
@@ -283,7 +283,59 @@ function endIntro() {
   } catch {}
 }
 
-export default function Intro({ cue = null }) {
+// Halaman dibuka tanpa intro (refresh / kunjungan berikutnya di tab yang sama): intro tidak tampil lagi,
+// jadi musik tema dinyalakan dari sini. Browser hanya mengizinkan suara otomatis kalau situsnya sudah
+// "dipercaya"; kalau ditolak, musik menyusul di interaksi pertama (klik / tombol / sentuh).
+function autoBgm(theme) {
+  const a = sharedAudio();
+  if (!a || !theme) return;
+  if (a.src && !a.paused) return; // sudah berjalan (pindah halaman tanpa reload)
+  try {
+    if (sessionStorage.getItem("p5:bgm-off") === "1") return; // pengunjung sengaja mematikan musik
+  } catch {}
+  let vol = MUSIC_VOL;
+  let file = theme;
+  try {
+    const pf = JSON.parse(localStorage.getItem("p5:jukebox") || "{}");
+    if (pf && pf.v === 2 && typeof pf.vol === "number") vol = pf.vol;
+  } catch {}
+  let stopped = false;
+  let fade = 0;
+  const EVENTS = ["pointerdown", "pointerup", "click", "keydown", "touchend"];
+  const off = () => EVENTS.forEach((e) => window.removeEventListener(e, onGesture, true));
+  const play = () => {
+    if (stopped) return Promise.resolve();
+    if (!samePath(a, file)) a.src = file;
+    a.muted = false;
+    a.volume = 0;
+    return a.play().then(() => {
+      off();
+      // masuk pelan-pelan
+      const t0 = performance.now();
+      const step = (now) => {
+        if (stopped || a.paused) return;
+        const k = Math.min(1, (now - t0) / 1800);
+        a.volume = vol * k;
+        if (k < 1) fade = requestAnimationFrame(step);
+      };
+      fade = requestAnimationFrame(step);
+    });
+  };
+  function onGesture(e) {
+    if (e.target?.closest?.("[data-bgm]")) return off(); // tombol Jukebox mengurus sendiri
+    if (!a.paused && !a.muted) return off();
+    play().catch(() => {});
+  }
+  EVENTS.forEach((e) => window.addEventListener(e, onGesture, true));
+  play().catch(() => {});
+  return () => {
+    stopped = true;
+    cancelAnimationFrame(fade);
+    off();
+  };
+}
+
+export default function Intro({ cue = null, theme = null }) {
   const ref = useRef(null);
   const wrap = useRef(null);
   const ctl = useRef(null);
@@ -292,7 +344,7 @@ export default function Intro({ cue = null }) {
 
   useEffect(() => {
     const root = document.documentElement;
-    if (!root.classList.contains("intro")) return;
+    if (!root.classList.contains("intro")) return autoBgm(theme);
     const canvas = ref.current;
     const ctx = canvas.getContext("2d");
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
@@ -1074,22 +1126,33 @@ export default function Intro({ cue = null }) {
         audio.currentTime = at;
       } catch {}
       audio.muted = false;
-      audio.play().catch(() => {});
+      audio.volume = baseVol; // tanpa ini volume bisa tertinggal 0 (envelope hanya jalan selama intro)
+      audio.play().catch(() => {
+        // ditolak browser: coba lagi di interaksi berikutnya
+        lateMusic = true;
+        unlocked = false;
+        listen();
+      });
     }
     // Browser baru mengizinkan suara setelah ada interaksi (klik / tombol / sentuh).
     // Sampai itu terjadi intro berjalan senyap; begitu ada interaksi, suara menyusul di posisi yang pas.
+    const UNLOCK = ["pointerdown", "pointerup", "click", "keydown", "touchend"];
+    function listen() {
+      UNLOCK.forEach((e) => window.addEventListener(e, unlock));
+    }
     function unlock(e) {
       if (unlocked) return;
       unlocked = true;
-      window.removeEventListener("pointerdown", unlock);
-      window.removeEventListener("keydown", unlock);
-      window.removeEventListener("touchend", unlock);
+      UNLOCK.forEach((ev) => window.removeEventListener(ev, unlock));
       if (!audio && dead) return;
       if (dead && e?.target?.closest?.("[data-bgm]")) return; // tombol Jukebox mengurus sendiri
       if (dead) {
-        // intro sudah selesai: nyalakan musik (lanjut bila masih berjalan senyap, kalau tidak mulai dari bagian puncak)
-        if (!audio.paused) audio.muted = false;
-        else if (lateMusic) playFromCue();
+        // intro sudah selesai tanpa interaksi: nyalakan musik sekarang.
+        // Masih berjalan senyap -> tinggal dibunyikan; sudah berhenti (dijeda browser) -> mulai dari bagian puncak.
+        if (!audio.paused) {
+          audio.muted = false;
+          if (audio.volume < 0.02) audio.volume = baseVol;
+        } else playFromCue();
         return;
       }
       if (!running) return;
@@ -1114,8 +1177,10 @@ export default function Intro({ cue = null }) {
       if (audio) {
         audio.removeEventListener("loadedmetadata", seek);
         if (unlocked) {
-          if (musicOn) audio.muted = false;
-          else playFromCue();
+          if (musicOn && !audio.paused) {
+            audio.muted = false;
+            if (audio.volume < 0.02) audio.volume = baseVol;
+          } else playFromCue();
         }
         // belum ada interaksi: musik menunggu di unlock()
       }
@@ -1182,9 +1247,22 @@ export default function Intro({ cue = null }) {
     const onResize = () => running && size();
     window.addEventListener("keydown", key);
     window.addEventListener("resize", onResize);
-    window.addEventListener("pointerdown", unlock);
-    window.addEventListener("keydown", unlock);
-    window.addEventListener("touchend", unlock);
+    listen();
+    // Uji cepat: kalau browser mengizinkan suara tanpa interaksi (situs sudah "dipercaya"),
+    // langsung buka kunci supaya musik pembuka terdengar sejak awal tanpa menunggu klik.
+    if (!unlocked) {
+      try {
+        const probe = new Audio("/sfx/select.mp3");
+        probe.volume = 0.001;
+        probe
+          .play()
+          .then(() => {
+            probe.pause();
+            unlock();
+          })
+          .catch(() => {});
+      } catch {}
+    }
     ctl.current = { skip: finish };
     ready.then(start);
 
@@ -1199,9 +1277,7 @@ export default function Intro({ cue = null }) {
       stopSfx();
       if (!wasDone) {
         unlocked = true; // efek yang dibatalkan tidak boleh menyalakan audio
-        window.removeEventListener("pointerdown", unlock);
-        window.removeEventListener("keydown", unlock);
-        window.removeEventListener("touchend", unlock);
+        UNLOCK.forEach((ev) => window.removeEventListener(ev, unlock));
         if (audio) {
           audio.removeEventListener("loadedmetadata", seek);
           audio.pause();
@@ -1209,7 +1285,7 @@ export default function Intro({ cue = null }) {
       }
       ctl.current = null;
     };
-  }, [src, at]);
+  }, [src, at, theme]);
 
   const skip = () => (ctl.current ? ctl.current.skip() : endIntro());
 

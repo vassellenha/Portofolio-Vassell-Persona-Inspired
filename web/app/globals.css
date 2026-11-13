@@ -646,17 +646,7 @@ html {
 }
 
 /* ---------- Work Experiences: lini masa zig-zag + kartu dialog ---------- */
-.wx { position: relative; display: grid; gap: 2.4rem; }
-.wx::before {
-  content: "";
-  position: absolute;
-  top: 0.5rem;
-  bottom: 0.5rem;
-  left: 2rem;
-  width: 8px;
-  background: repeating-linear-gradient(170deg, var(--red) 0 22px, var(--fg) 22px 30px);
-  transform: skewX(-3deg);
-}
+.wx { position: relative; display: grid; gap: 2.4rem; padding: 5.5rem 0 12rem; }
 .wx-row { position: relative; display: grid; grid-template-columns: 4.2rem minmax(0, 1fr); gap: 0.9rem; align-items: start; }
 .wx-date {
   position: relative;
@@ -743,9 +733,8 @@ html {
   rotate: 7deg;
 }
 @media (min-width: 768px) {
-  .wx { gap: 1.2rem; }
-  .wx::before { left: calc(50% - 4px); }
-  .wx-row { grid-template-columns: minmax(0, 1fr) 6.5rem minmax(0, 1fr); gap: 1.4rem; }
+  .wx { gap: 1.6rem; }
+  .wx-row { grid-template-columns: minmax(0, 1fr) 10rem minmax(0, 1fr); gap: 1rem; }
   .wx-date { grid-column: 2; grid-row: 1; }
   .wx-card { grid-column: 1; grid-row: 1; }
   .wx-row.is-alt .wx-card { grid-column: 3; }
@@ -1216,3 +1205,70 @@ html {
 .fish-dex.is-got .fish-dex-ico { color: var(--red); }
 .fish-trophy { width: 5.5rem; height: 2.75rem; margin: 0 auto 0.4rem; color: #f5f5f5; filter: drop-shadow(3px 3px 0 #0b0b0b); rotate: -8deg; }
 @media (prefers-reduced-motion: reduce) { .fish-pond, .fish-rod.is-live, .fish-marker.is-hot b { animation: none; } }
+
+/* ---------- Mission Logs: lintasan berkelok + van misi ---------- */
+.ml-layer { position: absolute; inset: 0; z-index: 0; pointer-events: none; list-style: none; }
+.ml-road { position: absolute; left: 0; top: 0; width: 100%; overflow: visible; }
+.ml-asphalt { stroke: var(--fg); stroke-width: 26; stroke-linecap: round; opacity: 0.9; }
+.ml-done { stroke: #dc0000; stroke-width: 26; stroke-linecap: round; }
+.ml-dash { stroke: var(--bg); stroke-width: 3; stroke-dasharray: 14 12; }
+.wx-row { z-index: 1; }
+.ml-pin { position: absolute; left: 0; top: 0; z-index: 1; display: block; width: 0; height: 0; }
+.ml-pin b {
+  position: absolute;
+  left: 0;
+  top: 0;
+  translate: -50% -50%;
+  white-space: nowrap;
+  background: var(--fg);
+  color: var(--bg);
+  padding: 0.25rem 0.6rem;
+  font: italic 900 0.75rem/1 "Arial Black", Impact, Arial, sans-serif;
+  text-transform: uppercase;
+  box-shadow: 3px 3px 0 #dc0000;
+  rotate: -6deg;
+}
+.ml-start b { translate: -50% -190%; }
+.ml-goal i {
+  position: absolute;
+  left: -30px;
+  top: -30px;
+  width: 60px;
+  height: 60px;
+  border: 3px solid var(--fg);
+  background: repeating-conic-gradient(var(--fg) 0 25%, var(--bg) 0 50%) 0 0 / 20px 20px;
+  rotate: 8deg;
+}
+.ml-goal b { translate: -50% 150%; font-size: 0.85rem; }
+.wx.is-done .ml-goal b { background: #dc0000; color: #f5f5f5; box-shadow: 0 0 0 2px #f5f5f5, 4px 4px 0 #0b0b0b; animation: stamp-in 0.35s cubic-bezier(0.34, 1.6, 0.64, 1) both; }
+.wx.is-done .ml-goal i { animation: ml-flag 0.5s ease-out; }
+@keyframes stamp-in { from { scale: 2.4; opacity: 0; } to { scale: 1; opacity: 1; } }
+@keyframes ml-flag { 0% { scale: 1; } 40% { scale: 1.35; rotate: -10deg; } 100% { scale: 1; } }
+.ml-van { position: absolute; left: 0; top: 0; z-index: 3; display: none; width: 0; height: 0; }
+.wx.is-armed .ml-van { display: block; }
+.ml-van-in { position: absolute; left: 0; top: 0; display: block; transform: translate(-50%, -78%); transition: transform 160ms ease-out; filter: drop-shadow(4px 5px 0 rgba(0, 0, 0, 0.55)); }
+.ml-van svg { display: block; }
+.ml-van.is-moving svg { animation: ml-bounce 0.22s ease-in-out infinite alternate; }
+.ml-van.is-moving .ml-wheel { stroke-dasharray: 6 6.6; animation: ml-spin 0.25s linear infinite; }
+@keyframes ml-bounce { from { translate: 0 0; } to { translate: 0 -3px; } }
+@keyframes ml-spin { to { stroke-dashoffset: -12.6; } }
+/* log belum terbuka: kartu tersembunyi, pos masih redup */
+.wx.is-armed .wx-row:not(.is-shown) .wx-card { opacity: 0; visibility: hidden; }
+.wx.is-armed .wx-row:not(.is-shown) .wx-date { opacity: 0.35; filter: grayscale(1); }
+.wx.is-armed .wx-row.is-shown .wx-card { animation: ml-open 0.5s cubic-bezier(0.2, 1.3, 0.4, 1) backwards; }
+.wx.is-armed .wx-row.is-alt.is-shown .wx-card { animation-name: ml-open-r; }
+.wx.is-armed .wx-row.is-shown .wx-date { animation: ml-stamp 0.35s cubic-bezier(0.34, 1.7, 0.64, 1) backwards; }
+@keyframes ml-open { from { opacity: 0; translate: 70px 0; scale: 0.9; rotate: 3deg; } to { opacity: 1; translate: 0 0; scale: 1; rotate: -0.8deg; } }
+@keyframes ml-open-r { from { opacity: 0; translate: -70px 0; scale: 0.9; rotate: -3deg; } to { opacity: 1; translate: 0 0; scale: 1; rotate: 0.8deg; } }
+@keyframes ml-stamp { from { scale: 1.7; } to { scale: 1; } }
+@media (max-width: 767px) {
+  .ml-asphalt, .ml-done { stroke-width: 16; }
+  .ml-dash { stroke-width: 2; stroke-dasharray: 9 9; }
+  .ml-van-in svg { width: 58px; height: 36px; }
+  .ml-goal i { left: -22px; top: -22px; width: 44px; height: 44px; background-size: 14.67px 14.67px; }
+  .ml-pin b { translate: -20% -50%; }
+  .ml-start b { translate: -20% -190%; }
+  .ml-goal b { translate: -20% 130%; }
+  @keyframes ml-open { from { opacity: 0; translate: 50px 0; scale: 0.92; } to { opacity: 1; translate: 0 0; scale: 1; rotate: -0.8deg; } }
+  @keyframes ml-open-r { from { opacity: 0; translate: 50px 0; scale: 0.92; } to { opacity: 1; translate: 0 0; scale: 1; rotate: 0.8deg; } }
+}
